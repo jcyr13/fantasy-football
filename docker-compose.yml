@@ -1,0 +1,25 @@
+# Two deployables + the consensus sidecar, per docs/adr/0003.
+#   api      FastAPI backend, owns all numeric logic; hosts the scheduler.
+#   web      nginx serving the built SPA and proxying /api to api.
+#   rsidecar consensus projection feed (stub until ticket #8).
+
+services:
+  api:
+    build: ./backend
+    environment:
+      DEADPARROTS_DATA_DIR: /data
+    volumes:
+      - ./data:/data
+    ports:
+      - "8000:8000"
+
+  web:
+    build: ./frontend
+    depends_on:
+      - api
+    ports:
+      - "8080:80"
+
+  rsidecar:
+    build: ./rsidecar
+    restart: unless-stopped
