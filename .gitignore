@@ -5,3 +5,15 @@ dist/
 build/
 *.log
 .DS_Store
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+
+# App data: parquet cache, SQLite app DB, weekly snapshots
+/data/*
+!/data/.gitkeep
+!/data/README.md
