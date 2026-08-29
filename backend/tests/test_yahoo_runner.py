@@ -71,7 +71,7 @@ def test_one_page_failure_is_isolated_and_never_alerts(
     assert "1 failed page(s): injuries" in caplog.text
 
 
-def test_standings_without_waiver_priority_flags_manual_entry_on_the_run(
+def test_standings_without_waiver_priority_flags_manual_entry_and_persists_it(
     make_fake_yahoo_source, yahoo_raw_store, sqlite_conn
 ):
     source = make_fake_yahoo_source(
@@ -84,6 +84,43 @@ def test_standings_without_waiver_priority_flags_manual_entry_on_the_run(
 
     assert run.ok
     assert run.standings.waiver_priority_needs_manual_entry is True
+    assert run.waiver_priority_needs_manual_entry is True
+    # the flag outlives the run: it is written to the pull manifest
+    manifest = yahoo_raw_store.load_manifest(run.pull_id)
+    assert manifest["waiver_priority_needs_manual_entry"] is True
+    assert yahoo_raw_store.latest_manifest()["waiver_priority_needs_manual_entry"] is True
+
+
+def test_manifest_records_a_present_waiver_priority_column_as_not_needing_entry(
+    fake_yahoo_source, yahoo_raw_store, sqlite_conn
+):
+    run = run_yahoo_pull(
+        source=fake_yahoo_source,
+        raw_store=yahoo_raw_store,
+        conn=sqlite_conn,
+        pulled_at=PULLED_AT,
+    )
+
+    assert run.waiver_priority_needs_manual_entry is False
+    assert yahoo_raw_store.load_manifest(run.pull_id)[
+        "waiver_priority_needs_manual_entry"
+    ] is False
+
+
+def test_waiver_priority_flag_is_none_when_the_standings_page_failed(
+    make_fake_yahoo_source, yahoo_raw_store, sqlite_conn
+):
+    source = make_fake_yahoo_source(fail_for={YahooPage.STANDINGS})
+
+    run = run_yahoo_pull(
+        source=source, raw_store=yahoo_raw_store, conn=sqlite_conn, pulled_at=PULLED_AT
+    )
+
+    assert run.waiver_priority_needs_manual_entry is None
+    assert (
+        yahoo_raw_store.load_manifest(run.pull_id)["waiver_priority_needs_manual_entry"]
+        is None
+    )
 
 
 def test_rerun_in_the_same_second_starts_a_fresh_pull_set(

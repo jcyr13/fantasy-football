@@ -55,6 +55,5 @@ class BrowserYahooSource(YahooSource):
             source=self.source_label,
             fetched_at=self._clock(),
             url=url,
-            content_type="application/json",
             body=json.dumps(data, ensure_ascii=False, indent=1),
         )

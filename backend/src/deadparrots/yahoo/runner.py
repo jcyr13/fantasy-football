@@ -80,6 +80,17 @@ class YahooPullRun:
     def standings(self) -> StandingsSnapshot | None:
         return self.normalized(YahooPage.STANDINGS)
 
+    @property
+    def waiver_priority_needs_manual_entry(self) -> bool | None:
+        """Whether this pull found no waiver-priority column on the standings
+        page and so needs John to enter it by hand (spec issue #7, last
+        acceptance criterion). ``None`` when the standings page did not pull.
+        """
+        standings = self.standings
+        if not isinstance(standings, StandingsSnapshot):
+            return None
+        return standings.waiver_priority_needs_manual_entry
+
 
 def run_yahoo_pull(
     *,
@@ -144,6 +155,10 @@ def run_yahoo_pull(
             "pulled_at": pulled_at.isoformat(),
             "source": getattr(source, "source_label", "yahoo"),
             "week": week,
+            # Persisted here so the "flag for manual entry" outcome survives the
+            # run and can be read back by the freshness endpoint — not only
+            # returned in the POST response (spec issue #7, last criterion).
+            "waiver_priority_needs_manual_entry": run.waiver_priority_needs_manual_entry,
             "pages": {
                 r.page.value: {
                     "status": r.status,

@@ -120,7 +120,6 @@ def load_yahoo_payload(page: YahooPage, name: str | None = None) -> RawYahooPayl
         source="yahoo-fixture",
         fetched_at=datetime(2026, 9, 22, 13, 0, 0, tzinfo=UTC),
         url=f"https://example.test/{page.value}",
-        content_type="application/json",
         body=body,
     )
 

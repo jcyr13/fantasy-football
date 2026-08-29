@@ -51,9 +51,16 @@ def test_archived_payload_round_trips_through_load_payload(tmp_path, yahoo_paylo
     assert json.loads(reloaded.body) == json.loads(original.body)
 
 
-def test_write_manifest_records_the_run(tmp_path):
+def test_write_manifest_round_trips_and_latest_manifest_tracks_the_newest_pull(tmp_path):
     store = YahooRawStore(tmp_path / "data")
 
-    path = store.write_manifest("20260922T130000Z", {"pull_id": "20260922T130000Z", "week": 3})
+    store.write_manifest("20260901T120000Z", {"pull_id": "20260901T120000Z", "week": 2})
+    store.write_manifest("20260922T130000Z", {"pull_id": "20260922T130000Z", "week": 3})
 
-    assert json.loads(path.read_text())["week"] == 3
+    assert store.load_manifest("20260901T120000Z")["week"] == 2
+    assert store.latest_manifest()["week"] == 3
+    assert store.load_manifest("nope") is None
+
+
+def test_latest_manifest_is_none_before_any_pull(tmp_path):
+    assert YahooRawStore(tmp_path / "data").latest_manifest() is None

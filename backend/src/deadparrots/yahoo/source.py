@@ -59,11 +59,9 @@ class StaticYahooSource(YahooSource):
         self,
         bodies: dict[YahooPage, str],
         *,
-        content_type: str = "application/json",
         clock=lambda: datetime.now(UTC),
     ) -> None:
         self._bodies = bodies
-        self._content_type = content_type
         self._clock = clock
 
     def fetch(self, page: YahooPage, *, week: int | None = None) -> RawYahooPayload:
@@ -74,6 +72,5 @@ class StaticYahooSource(YahooSource):
             source=self.source_label,
             fetched_at=self._clock(),
             url=page_path(page, week=week),
-            content_type=self._content_type,
             body=self._bodies[page],
         )

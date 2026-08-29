@@ -5,7 +5,6 @@ from datetime import datetime
 from fastapi import APIRouter, HTTPException, Request
 from pydantic import BaseModel
 
-from deadparrots.yahoo.models import StandingsSnapshot
 from deadparrots.yahoo.pages import ALL_PAGES
 from deadparrots.yahoo.raw import YahooRawStore
 from deadparrots.yahoo.reminders import due_reminder
@@ -37,6 +36,9 @@ class YahooFreshnessResponse(BaseModel):
     reminder: str | None
     stale_pages: list[str]
     pages: list[YahooPageResult]
+    # Carried forward from the most recent pull's manifest so the "enter waiver
+    # priority by hand" prompt survives past the POST response (spec issue #7).
+    waiver_priority_needs_manual_entry: bool | None = None
 
 
 @router.post("/pull", response_model=YahooPullResponse)
@@ -56,7 +58,6 @@ def trigger_pull(request: Request) -> YahooPullResponse:
         raw_store=YahooRawStore(settings.data_dir),
         conn=request.app.state.sqlite,
     )
-    standings = run.standings
     return YahooPullResponse(
         pull_id=run.pull_id,
         ok=run.ok,
@@ -64,11 +65,7 @@ def trigger_pull(request: Request) -> YahooPullResponse:
             YahooPageResult(page=r.page.value, status=r.status, error=r.error)
             for r in run.results
         ],
-        waiver_priority_needs_manual_entry=(
-            standings.waiver_priority_needs_manual_entry
-            if isinstance(standings, StandingsSnapshot)
-            else None
-        ),
+        waiver_priority_needs_manual_entry=run.waiver_priority_needs_manual_entry,
     )
 
 
@@ -78,8 +75,10 @@ def freshness(request: Request) -> YahooFreshnessResponse:
     status — everything the data-freshness header needs.
     """
     conn = request.app.state.sqlite
+    settings = request.app.state.settings
     reminder = due_reminder(conn, now=datetime.now().astimezone())
     last = last_successful_pull_at(conn)
+    manifest = YahooRawStore(settings.data_dir).latest_manifest() or {}
 
     latest_by_page: dict[str, YahooPageResult] = {}
     for status in recent_yahoo_pull_statuses(conn, limit=200):
@@ -92,5 +91,6 @@ def freshness(request: Request) -> YahooFreshnessResponse:
         last_successful_pull=last.isoformat() if last else None,
         reminder=reminder.reason if reminder else None,
         stale_pages=list(reminder.stale_pages) if reminder else [],
+        waiver_priority_needs_manual_entry=manifest.get("waiver_priority_needs_manual_entry"),
         pages=[latest_by_page[p.value] for p in ALL_PAGES if p.value in latest_by_page],
     )

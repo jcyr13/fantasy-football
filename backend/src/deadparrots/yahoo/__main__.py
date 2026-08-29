@@ -56,6 +56,8 @@ def main(argv: list[str] | None = None) -> int:
     print(f"yahoo pull {run.pull_id} (replay of {args.replay})")
     for result in run.results:
         print(f"  {result.status:6} {result.page.value:10} {result.error or ''}".rstrip())
+    if run.waiver_priority_needs_manual_entry:
+        print("  waiver priority not on the standings page - flagged for manual entry")
     return 0 if run.ok else 1
 
 
