@@ -1,0 +1,53 @@
+{
+  "week": 3,
+  "teams": [
+    {
+      "team_name": "Dead Parrots",
+      "manager": "John",
+      "is_dead_parrots": true,
+      "roster": [
+        {"slot": "QB", "name": "Josh Allen", "team": "Buf", "position": "QB", "opponent": "@Jax", "projected_points": "23.8", "injury_status": null},
+        {"slot": "WR", "name": "Ja'Marr Chase", "team": "Cin", "position": "WR", "opponent": "vs Min", "projected_points": "17.4", "injury_status": null},
+        {"slot": "WR", "name": "Jaylen Waddle", "team": "Mia", "position": "WR", "opponent": "@Sea", "projected_points": "12.1", "injury_status": "Q"},
+        {"slot": "RB", "name": "Bijan Robinson", "team": "Atl", "position": "RB", "opponent": "@Car", "projected_points": "16.9", "injury_status": null},
+        {"slot": "RB", "name": "Kyren Williams", "team": "LAR", "position": "RB", "opponent": "vs SF", "projected_points": "13.6", "injury_status": null},
+        {"slot": "TE", "name": "Trey McBride", "team": "Ari", "position": "TE", "opponent": "@Det", "projected_points": "10.2", "injury_status": null},
+        {"slot": "W/R/T", "name": "Chris Godwin", "team": "TB", "position": "WR", "opponent": "@Den", "projected_points": "11.3", "injury_status": null},
+        {"slot": "K", "name": "Brandon Aubrey", "team": "Dal", "position": "K", "opponent": "vs Bal", "projected_points": "9.1", "injury_status": null},
+        {"slot": "DEF", "name": "Ravens", "team": "Bal", "position": "DEF", "opponent": "@Dal", "projected_points": "7.5", "injury_status": null},
+        {"slot": "D", "name": "Fred Warner", "team": "SF", "position": "LB", "opponent": "@LAR", "projected_points": "9.8", "injury_status": null},
+        {"slot": "BN", "name": "Jordan Addison", "team": "Min", "position": "WR", "opponent": "@Cin", "projected_points": "10.4", "injury_status": null},
+        {"slot": "BN", "name": "Tyjae Spears", "team": "Ten", "position": "RB", "opponent": "vs GB", "projected_points": "7.7", "injury_status": null},
+        {"slot": "BN", "name": "Jake Ferguson", "team": "Dal", "position": "TE", "opponent": "vs Bal", "projected_points": "6.9", "injury_status": null},
+        {"slot": "BN", "name": "Cam Akers", "team": "Hou", "position": "RB", "opponent": "@Jax", "projected_points": "5.1", "injury_status": null},
+        {"slot": "BN", "name": "Younghoe Koo", "team": "Atl", "position": "K", "opponent": "@Car", "projected_points": "8.3", "injury_status": null},
+        {"slot": "IR", "name": "Christian McCaffrey", "team": "SF", "position": "RB", "opponent": "@LAR", "projected_points": "-", "injury_status": "IR"},
+        {"slot": "IR", "name": "Tank Dell", "team": "Hou", "position": "WR", "opponent": "@Jax", "projected_points": "-", "injury_status": "IR"}
+      ]
+    },
+    {
+      "team_name": "Norwegian Blues",
+      "manager": "Praline",
+      "is_dead_parrots": false,
+      "roster": [
+        {"slot": "QB", "name": "Jalen Hurts", "team": "Phi", "position": "QB", "opponent": "vs NO", "projected_points": "22.1", "injury_status": null},
+        {"slot": "WR", "name": "Justin Jefferson", "team": "Min", "position": "WR", "opponent": "@Cin", "projected_points": "18.0", "injury_status": null},
+        {"slot": "WR", "name": "Nico Collins", "team": "Hou", "position": "WR", "opponent": "@Jax", "projected_points": "14.2", "injury_status": null},
+        {"slot": "RB", "name": "Saquon Barkley", "team": "Phi", "position": "RB", "opponent": "vs NO", "projected_points": "17.7", "injury_status": null},
+        {"slot": "RB", "name": "De'Von Achane", "team": "Mia", "position": "RB", "opponent": "@Sea", "projected_points": "14.9", "injury_status": null},
+        {"slot": "TE", "name": "George Kittle", "team": "SF", "position": "TE", "opponent": "@LAR", "projected_points": "11.1", "injury_status": "Q"},
+        {"slot": "W/R/T", "name": "DK Metcalf", "team": "Sea", "position": "WR", "opponent": "vs Mia", "projected_points": "12.6", "injury_status": null},
+        {"slot": "K", "name": "Jake Bates", "team": "Det", "position": "K", "opponent": "vs Ari", "projected_points": "8.7", "injury_status": null},
+        {"slot": "DEF", "name": "Broncos", "team": "Den", "position": "DEF", "opponent": "vs TB", "projected_points": "8.9", "injury_status": null},
+        {"slot": "D", "name": "Roquan Smith", "team": "Bal", "position": "LB", "opponent": "@Dal", "projected_points": "8.4", "injury_status": null},
+        {"slot": "BN", "name": "Jaylen Warren", "team": "Pit", "position": "RB", "opponent": "vs LAC", "projected_points": "8.1", "injury_status": null},
+        {"slot": "BN", "name": "Rome Odunze", "team": "Chi", "position": "WR", "opponent": "vs Ind", "projected_points": "9.2", "injury_status": null},
+        {"slot": "BN", "name": "Tucker Kraft", "team": "GB", "position": "TE", "opponent": "@Ten", "projected_points": "6.4", "injury_status": null},
+        {"slot": "BN", "name": "Jameson Williams", "team": "Det", "position": "WR", "opponent": "vs Ari", "projected_points": "10.8", "injury_status": null},
+        {"slot": "BN", "name": "Chase McLaughlin", "team": "TB", "position": "K", "opponent": "@Den", "projected_points": "8.0", "injury_status": null},
+        {"slot": "IR", "name": "Rashee Rice", "team": "KC", "position": "WR", "opponent": "vs NYG", "projected_points": "-", "injury_status": "IR"},
+        {"slot": "IR", "name": "J.K. Dobbins", "team": "LAC", "position": "RB", "opponent": "@Pit", "projected_points": "-", "injury_status": "O"}
+      ]
+    }
+  ]
+}
