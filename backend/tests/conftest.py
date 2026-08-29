@@ -15,12 +15,15 @@ from deadparrots.config import Settings
 from deadparrots.consensus.raw import ConsensusRawStore, RawConsensusPayload
 from deadparrots.db import init_sqlite
 from deadparrots.ingest.datasets import DatasetSpec
+from deadparrots.news.raw import NewsPayloadFormat, NewsRawStore, RawNewsPayload
+from deadparrots.news.tagging import NewsTargets
 from deadparrots.yahoo.pages import YahooPage
 from deadparrots.yahoo.raw import RawYahooPayload, YahooRawStore
 
 FIXTURE_DIR = Path(__file__).parent / "fixtures" / "nflverse"
 YAHOO_FIXTURE_DIR = Path(__file__).parent / "fixtures" / "yahoo"
 CONSENSUS_FIXTURE_DIR = Path(__file__).parent / "fixtures" / "consensus"
+NEWS_FIXTURE_DIR = Path(__file__).parent / "fixtures" / "news"
 
 
 @pytest.fixture
@@ -246,3 +249,87 @@ def fake_consensus_source() -> FakeConsensusSource:
 @pytest.fixture
 def consensus_raw_store(tmp_path) -> ConsensusRawStore:
     return ConsensusRawStore(tmp_path / "data")
+
+
+# --- news module (issue #15) ---------------------------------------------
+
+_NEWS_FIXTURES: dict[str, tuple[NewsPayloadFormat, str]] = {
+    "espn_api_news": (NewsPayloadFormat.ESPN_API_JSON, "espn-api"),
+    "espn_rss": (NewsPayloadFormat.RSS, "espn-rss"),
+    "yahoo_rss": (NewsPayloadFormat.RSS, "yahoo-rss"),
+}
+
+
+def load_news_payload(name: str, *, source: str | None = None) -> RawNewsPayload:
+    """A recorded news feed body (ESPN endpoint JSON or an RSS feed), wrapped
+    exactly as a :class:`~deadparrots.news.sources.NewsSource` would return it.
+    """
+    fmt, default_source = _NEWS_FIXTURES[name]
+    path = NEWS_FIXTURE_DIR / f"{name}.{fmt.extension}"
+    return RawNewsPayload(
+        source=source or default_source,
+        fmt=fmt,
+        fetched_at=datetime(2026, 9, 23, 12, 0, 0, tzinfo=UTC),
+        url=f"https://example.test/news/{name}",
+        body=path.read_text(encoding="utf-8"),
+    )
+
+
+@pytest.fixture
+def news_payload():
+    """Factory: ``news_payload("espn_api_news")`` -> ``RawNewsPayload``."""
+    return load_news_payload
+
+
+class FakeNewsSource:
+    """A source backed by a recorded news fixture; ``fail_with`` raises."""
+
+    def __init__(
+        self,
+        name: str = "espn_api_news",
+        *,
+        source_label: str | None = None,
+        fail_with: Exception | None = None,
+    ) -> None:
+        self._name = name
+        self.source_label = source_label or _NEWS_FIXTURES[name][1]
+        self._fail_with = fail_with
+        self.calls = 0
+
+    def fetch(self) -> list[RawNewsPayload]:
+        self.calls += 1
+        if self._fail_with is not None:
+            raise self._fail_with
+        return [load_news_payload(self._name, source=self.source_label)]
+
+
+@pytest.fixture
+def make_fake_news_source():
+    """Factory: ``make_fake_news_source("espn_rss", fail_with=...)``."""
+
+    def _make(
+        name: str = "espn_api_news",
+        *,
+        source_label: str | None = None,
+        fail_with: Exception | None = None,
+    ) -> FakeNewsSource:
+        return FakeNewsSource(name, source_label=source_label, fail_with=fail_with)
+
+    return _make
+
+
+@pytest.fixture
+def news_raw_store(tmp_path) -> NewsRawStore:
+    return NewsRawStore(tmp_path / "data")
+
+
+@pytest.fixture
+def news_targets() -> NewsTargets:
+    """The three target lists used across the news tests. ``Rashee Rice`` and
+    ``Jaylen Warren`` are the free-agent shortlist; the rosters split the rest.
+    """
+    return NewsTargets(
+        my_roster=("Josh Allen", "Bijan Robinson", "Ja'Marr Chase"),
+        opponent=("Patrick Mahomes", "Tyreek Hill"),
+        free_agents=("Rashee Rice", "Jaylen Warren"),
+    )

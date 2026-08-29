@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:media="http://search.yahoo.com/mrss/">
+  <channel>
+    <title>Yahoo Sports - NFL News</title>
+    <link>https://sports.yahoo.com/nfl/</link>
+    <description>The latest NFL news</description>
+    <item>
+      <title>Report: Jaylen Warren to split backfield work in Pittsburgh</title>
+      <description>Steelers RB Jaylen Warren is trending toward a near-even timeshare, per report.</description>
+      <link>https://sports.yahoo.com/report-jaylen-warren-backfield-120000000.html</link>
+      <pubDate>Tue, 22 Sep 2026 12:00:00 GMT</pubDate>
+      <guid isPermaLink="false">yahoo-nfl-3001</guid>
+    </item>
+    <item>
+      <title>Bijan Robinson leads all running backs in yards from scrimmage</title>
+      <description>Atlanta Falcons RB Bijan Robinson paces the position three weeks in.</description>
+      <link>https://sports.yahoo.com/bijan-robinson-scrimmage-yards-leader-130000000.html</link>
+      <pubDate>Wed, 23 Sep 2026 08:30:00 GMT</pubDate>
+      <guid isPermaLink="false">yahoo-nfl-3002</guid>
+    </item>
+    <item>
+      <title>A.J. Brown says he is fully healthy entering Week 3</title>
+      <description>Philadelphia Eagles WR A.J. Brown practiced fully Wednesday.</description>
+      <link>https://sports.yahoo.com/aj-brown-healthy-week-3-140000000.html</link>
+      <pubDate>Wed, 23 Sep 2026 09:15:00 GMT</pubDate>
+      <guid isPermaLink="false">yahoo-nfl-3003</guid>
+    </item>
+  </channel>
+</rss>

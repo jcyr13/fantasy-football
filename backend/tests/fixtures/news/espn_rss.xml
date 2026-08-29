@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>ESPN.com - NFL</title>
+    <link>https://www.espn.com/nfl/</link>
+    <description>ESPN.com - NFL</description>
+    <language>en-us</language>
+    <item>
+      <title>Ja'Marr Chase catches two touchdowns in Bengals win</title>
+      <description>Cincinnati Bengals WR Ja'Marr Chase went for 9-140-2 on Sunday.</description>
+      <link>https://www.espn.com/nfl/story/_/id/2001/jamarr-chase-two-tds</link>
+      <pubDate>Mon, 22 Sep 2026 15:30:00 GMT</pubDate>
+      <guid>https://www.espn.com/nfl/story/_/id/2001/jamarr-chase-two-tds</guid>
+    </item>
+    <item>
+      <title>Josh Allen (elbow) limited in practice Wednesday</title>
+      <description>Bills QB Josh Allen was limited Wednesday but is expected to play.</description>
+      <link>http://www.espn.com/nfl/story/_/id/1001/josh-allen-elbow-limited?ex_cid=rss</link>
+      <pubDate>Wed, 23 Sep 2026 11:20:00 GMT</pubDate>
+      <guid>https://www.espn.com/nfl/story/_/id/1001/josh-allen-elbow-limited</guid>
+    </item>
+    <item>
+      <title>Tyreek Hill questionable with wrist injury</title>
+      <description>Miami Dolphins WR Tyreek Hill is questionable for Sunday with a wrist injury.</description>
+      <link>https://www.espn.com/nfl/story/_/id/2003/tyreek-hill-wrist</link>
+      <pubDate>Wed, 23 Sep 2026 06:45:00 GMT</pubDate>
+      <guid>https://www.espn.com/nfl/story/_/id/2003/tyreek-hill-wrist</guid>
+    </item>
+    <item>
+      <title>Fantasy football Week 3 rankings: no player named here</title>
+      <description>Our updated positional rankings for the week ahead.</description>
+      <link>https://www.espn.com/fantasy/football/story/_/id/2004/week-3-rankings</link>
+      <pubDate>Wed, 23 Sep 2026 05:00:00 GMT</pubDate>
+    </item>
+  </channel>
+</rss>
