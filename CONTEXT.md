@@ -18,6 +18,20 @@ _Avoid_: "my team", "our team" in code and docs.
 A human who controls a team in the league. The other 11 are relevant only as opponents and trade partners.
 _Avoid_: owner, player (a player is an NFL athlete).
 
+### Scoring
+
+**Scoring engine**:
+The one pure function `(stat rows, league ruleset) → points per player-week`. No I/O. Covers offense, kicker, and team **DEF**; the **IDP / D slot** is a separate scoring surface. Fractional and negative points are on — nothing is rounded to an integer or floored at zero.
+
+**League ruleset**:
+The RIP TIDE scoring values (`RIP_TIDE_RULESET`) transcribed field-for-field from the league settings: 25/10/10 offensive yards-per-point, 6-point TDs, distance-tiered field goals, the team-DEF points-allowed schedule, and so on.
+
+**Scoring oracle**:
+Real 2025 Yahoo per-player weekly fantasy points, captured once via `yfpy` and frozen as golden fixtures. The ground truth the engine is checked against.
+
+**Validation gate**:
+The hard requirement that the engine reproduce the scoring oracle *exactly* (0.00) for every offense/kicker/DEF player-week before anything is built on it. The highest-weight test in the repo.
+
 ### Matchup & win probability
 
 **Matchup**:

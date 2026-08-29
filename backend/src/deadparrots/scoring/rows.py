@@ -1,0 +1,139 @@
+from __future__ import annotations
+
+from collections.abc import Mapping
+from dataclasses import dataclass, field
+from enum import StrEnum
+
+# The engine's input and output vocabulary. ``StatRow`` is the one shape the
+# scoring function consumes: a player-week (or team-week, for DEF) tagged with
+# the scoring unit it belongs to and a flat mapping of canonical stat keys to
+# counts. Anything that can be turned into ``StatRow`` objects can be scored,
+# which keeps the engine free of any knowledge of nflverse column names or I/O.
+
+
+class ScoringUnit(StrEnum):
+    """Which rule set a row is scored under."""
+
+    OFFENSE = "offense"
+    KICKER = "kicker"
+    TEAM_DEFENSE = "team_defense"
+
+
+# Canonical stat keys the engine understands, per unit. A row may omit any key
+# (treated as 0) but may not carry an unknown one — that is a caller bug and the
+# engine raises rather than silently dropping points.
+
+OFFENSE_STATS: frozenset[str] = frozenset(
+    {
+        "passing_yards",
+        "passing_touchdowns",
+        "interceptions_thrown",
+        "sacks_taken",
+        "two_point_conversions",
+        "rushing_yards",
+        "rushing_touchdowns",
+        "receiving_yards",
+        "receiving_touchdowns",
+        "fumbles_lost",
+    }
+)
+
+KICKER_STATS: frozenset[str] = frozenset(
+    {
+        "fg_made_0_19",
+        "fg_made_20_29",
+        "fg_made_30_39",
+        "fg_made_40_49",
+        "fg_made_50_plus",
+        "fg_missed_0_19",
+        "pat_made",
+        "pat_missed",
+    }
+)
+
+TEAM_DEFENSE_STATS: frozenset[str] = frozenset(
+    {
+        "sacks",
+        "interceptions",
+        "fumble_recoveries",
+        "defensive_touchdowns",
+        "safeties",
+        "blocked_kicks",
+        "tackles_for_loss",
+        "points_allowed",
+    }
+)
+
+STATS_BY_UNIT: Mapping[ScoringUnit, frozenset[str]] = {
+    ScoringUnit.OFFENSE: OFFENSE_STATS,
+    ScoringUnit.KICKER: KICKER_STATS,
+    ScoringUnit.TEAM_DEFENSE: TEAM_DEFENSE_STATS,
+}
+
+
+PlayerWeekKey = tuple[str, int, int]
+"""``(entity_id, season, week)`` — the identity of a scored row."""
+
+
+class UnknownStatError(ValueError):
+    """A ``StatRow`` carried a stat key the engine does not recognise."""
+
+    def __init__(self, unit: ScoringUnit, unknown: list[str]) -> None:
+        self.unit = unit
+        self.unknown = unknown
+        super().__init__(
+            f"{unit.value}: unknown stat key(s): {', '.join(sorted(unknown))}"
+        )
+
+
+@dataclass(frozen=True)
+class StatRow:
+    """One player-week (or team-week) of raw counting stats to be scored.
+
+    ``entity_id`` is the nflverse ``player_id`` for offense and kickers, and the
+    team abbreviation for ``TEAM_DEFENSE``. ``stats`` holds canonical keys from
+    the unit's vocabulary; missing keys count as 0.
+    """
+
+    entity_id: str
+    season: int
+    week: int
+    unit: ScoringUnit
+    stats: Mapping[str, float] = field(default_factory=dict)
+    label: str | None = None
+
+    def __post_init__(self) -> None:
+        allowed = STATS_BY_UNIT[self.unit]
+        unknown = [key for key in self.stats if key not in allowed]
+        if unknown:
+            raise UnknownStatError(self.unit, unknown)
+
+    @property
+    def key(self) -> PlayerWeekKey:
+        return (self.entity_id, self.season, self.week)
+
+    def stat(self, name: str) -> float:
+        """The value of ``name``, or 0.0 if the row does not carry it."""
+        return float(self.stats.get(name, 0.0))
+
+
+@dataclass(frozen=True)
+class ScoredPlayerWeek:
+    """The engine's output for one row: the total plus a component breakdown.
+
+    ``points`` is rounded to two decimal places (half-up) to match how Yahoo
+    reports a player's weekly fantasy points. ``breakdown`` keeps the exact
+    unrounded contribution of each scoring component, for the validation gate's
+    outlier catalogue and for UI drill-downs.
+    """
+
+    entity_id: str
+    season: int
+    week: int
+    unit: ScoringUnit
+    points: float
+    breakdown: Mapping[str, float]
+
+    @property
+    def key(self) -> PlayerWeekKey:
+        return (self.entity_id, self.season, self.week)

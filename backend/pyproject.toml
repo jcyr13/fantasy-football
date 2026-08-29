@@ -36,3 +36,6 @@ select = ["E", "F", "I", "UP"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["src"]
+markers = [
+    "gate: the 2025 Yahoo scoring validation gate — the highest-weight test in the repo",
+]
