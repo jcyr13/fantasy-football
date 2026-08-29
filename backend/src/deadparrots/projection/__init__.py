@@ -37,6 +37,7 @@ from .model import (
     ProjectionSource,
     cornish_fisher_unit,
     project,
+    sample_quantile,
 )
 from .params import DEFAULT_PARAMS, ProjectionParams
 from .residuals import (
@@ -68,6 +69,7 @@ __all__ = [
     "per_game_decay",
     "prior_for_position",
     "project",
+    "sample_quantile",
     "weighted_mean",
     "weighted_skew",
     "weighted_slope",

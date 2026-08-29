@@ -8,7 +8,6 @@ import pytest
 from deadparrots.projection import OpportunityMetrics, PlayerGame, PlayerHistory, project
 from deadparrots.simulation import (
     DEFAULT_TRIALS,
-    CorrelationSpec,
     SimPlayer,
     sample_lineup_totals,
     sim_player_from_projection,
@@ -24,9 +23,6 @@ from deadparrots.simulation import (
 #   5. P(win) responds monotonically to a strictly better lineup
 
 SEED = 735806
-NO_CORRELATION = CorrelationSpec(
-    qb_stack_share=0.0, rb_own_team_share=0.0, game_script_share=0.0
-)
 
 
 def player(
@@ -209,20 +205,33 @@ def test_game_script_correlates_players_sharing_an_nfl_game():
     assert abs(corr(diff_games)) < 0.05
 
 
-def test_the_two_sides_are_coupled_when_they_share_a_game():
-    # A shootout that lifts the Dead Parrots WR also lifts the opponent WR, so
-    # sharing a game should move P(win) relative to the uncoupled baseline.
+def test_sharing_a_game_couples_the_two_sides_and_tightens_the_margin():
+    # Dead Parrots' two WRs and the opponent's two WRs all sit in one NFL game
+    # and load the same way on its factor, so the two sides' totals rise and
+    # fall together. Positively-correlated scores have a lower-variance
+    # difference, so the matchup margin is tighter than when the opponent pair
+    # plays in a different game instead (their own mutual correlation is the
+    # same either way, so it cancels — only the cross-side coupling moves).
     dp = a_lineup("dp", DP_MEANS)
-    opp = a_lineup("opp", OPP_MEANS)
-    dp[3] = dataclasses.replace(dp[3], nfl_team="KC", game_id="KC-BUF")
-    opp[3] = dataclasses.replace(opp[3], nfl_team="BUF", game_id="KC-BUF")
-    coupled = simulate_head_to_head(dp, opp, rng_seed=SEED).p_win
+    for i in (3, 4):
+        dp[i] = dataclasses.replace(dp[i], sigma=9.0, nfl_team="KC", game_id="KC-BUF")
 
-    opp_elsewhere = list(opp)
-    opp_elsewhere[3] = dataclasses.replace(opp_elsewhere[3], game_id="NYJ-NE")
-    uncoupled = simulate_head_to_head(dp, opp_elsewhere, rng_seed=SEED).p_win
+    opp_shared = a_lineup("opp", OPP_MEANS)
+    opp_apart = a_lineup("opp", OPP_MEANS)
+    for i in (3, 4):
+        opp_shared[i] = dataclasses.replace(
+            opp_shared[i], sigma=9.0, nfl_team="BUF", game_id="KC-BUF"
+        )
+        opp_apart[i] = dataclasses.replace(
+            opp_apart[i], sigma=9.0, nfl_team="NYJ", game_id="NYJ-NE"
+        )
 
-    assert coupled != uncoupled
+    def margin_sd(opponent: list[SimPlayer]) -> float:
+        dp_totals = sample_lineup_totals(dp, rng_seed=SEED, n_trials=8_000)
+        opp_totals = sample_lineup_totals(opponent, rng_seed=SEED, n_trials=8_000)
+        return statistics.pstdev([d - o for d, o in zip(dp_totals, opp_totals)])
+
+    assert margin_sd(opp_shared) < margin_sd(opp_apart)
 
 
 # --- acceptance criterion 5: monotonic response to a strictly better lineup --

@@ -43,7 +43,7 @@ __all__ = [
     "loadings_for",
     "role_of",
     "sample_lineup_totals",
+    "seed_from_snapshot_id",
     "sim_player_from_projection",
     "simulate_head_to_head",
-    "seed_from_snapshot_id",
 ]

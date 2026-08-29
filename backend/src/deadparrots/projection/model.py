@@ -295,9 +295,9 @@ def _distribution_quantiles(
     ]
     samples.sort()
 
-    floor = round_points(_quantile(samples, params.floor_quantile))
-    projection = round_points(_quantile(samples, params.projection_quantile))
-    ceiling = round_points(_quantile(samples, params.ceiling_quantile))
+    floor = round_points(sample_quantile(samples, params.floor_quantile))
+    projection = round_points(sample_quantile(samples, params.projection_quantile))
+    ceiling = round_points(sample_quantile(samples, params.ceiling_quantile))
 
     gap = params.min_quantile_gap
     projection = max(projection, floor + gap)
@@ -325,8 +325,13 @@ def _skewed_unit(rng: random.Random, skew: float) -> float:
     return cornish_fisher_unit(rng.gauss(0.0, 1.0), skew)
 
 
-def _quantile(sorted_values: Sequence[float], p: float) -> float:
-    """Linear-interpolation quantile (the ``numpy.quantile`` default method)."""
+def sample_quantile(sorted_values: Sequence[float], p: float) -> float:
+    """Linear-interpolation quantile (the ``numpy.quantile`` default method).
+
+    Public so the head-to-head simulation reads its P10/P50/P90 the same way
+    this model does — one quantile method, like the one Cornish-Fisher sampler
+    (ADR-0006, ADR-0007). ``sorted_values`` must already be ascending.
+    """
     n = len(sorted_values)
     if n == 0:
         raise ValueError("cannot take a quantile of an empty sample")

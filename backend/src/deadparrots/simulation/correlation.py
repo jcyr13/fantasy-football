@@ -13,17 +13,22 @@ from dataclasses import dataclass
 #   Z_i = team_coef_i * T_{team(i)} + game_coef_i * G_{game(i)} + idio_coef_i * E_i
 #
 # where T, G and E are independent standard-normal factor streams keyed by NFL
-# team, NFL game, and player id respectively. The coefficients are set so
-# ``Var(Z_i) = 1`` exactly, so the marginal shape :mod:`marginals` describes is
-# untouched. Two consequences matter:
+# team, NFL game, and player id respectively. The coefficients satisfy
+# ``team_coef**2 + game_coef**2 + idio_coef**2 == 1``, so ``Z_i`` is standard
+# normal and the marginal a player is sampled with is exactly the one the
+# projection model reports (ADR-0006). The two channels issue #10 names:
 #
-#   * QB-to-pass-catcher stacks: a QB and his own WR/TE/RB all load (same sign)
-#     on their NFL team's offensive factor T, so they rise and fall together.
+#   * QB-to-pass-catcher stacks: a QB and his own WR/TE load (same sign) on
+#     their NFL team's offensive factor T, so they rise and fall together.
 #   * Game script: everyone in one NFL game loads on that game's factor G, with
 #     a sign by role — passing games and kickers up together in a shootout,
 #     rushing games / team DEF / IDP down. Opposing pass-catchers end up
 #     positively correlated; a rushing attack and the other side's passing game
 #     negatively.
+#
+# Realised player-point correlations are approximately the variance shares below
+# (the Cornish-Fisher skew term perturbs them a little); the shares are pinned
+# by behaviour, not exact value.
 #
 # Because a player's coefficients depend only on its position and its stable
 # team/game ids — never on which other players share the lineup — two candidate
@@ -36,32 +41,32 @@ from dataclasses import dataclass
 class CorrelationSpec:
     """Variance shares for the two shared factors (the rest is idiosyncratic).
 
-    Each value is the share of a player's unit marginal variance carried by that
-    factor, so a coefficient is its square root and the induced correlation
-    between two players sharing a factor (same sign) is roughly the share
-    itself. Defaults are placeholder magnitudes calibrated to typical
+    Each value is the share of a player's unit latent variance carried by that
+    factor, so a coefficient is its square root and the correlation between two
+    players sharing a factor (same sign) is roughly the share itself.
+    ``qb_stack_share`` is the QB-to-pass-catcher channel (QB, WR, TE load on
+    their NFL team's offensive factor); ``game_script_share`` is the shared
+    NFL-game channel. Defaults are placeholder magnitudes calibrated to typical
     fantasy-points correlations — a QB/WR1 stack lands near ``qb_stack_share +
     game_script_share`` — and are pinned by behaviour, not exact value
     (ADR-0007), the same way the positional residual priors are (ADR-0006).
     """
 
     qb_stack_share: float = 0.35
-    rb_own_team_share: float = 0.12
     game_script_share: float = 0.15
 
     def __post_init__(self) -> None:
-        for name in ("qb_stack_share", "rb_own_team_share", "game_script_share"):
+        for name in ("qb_stack_share", "game_script_share"):
             value = getattr(self, name)
             if not 0.0 <= value < 1.0:
                 raise ValueError(f"{name} must be in [0, 1): {value!r}")
-        # The idiosyncratic remainder must stay strictly positive for every role
-        # the model assigns a team loading to.
-        for team_share in (self.qb_stack_share, self.rb_own_team_share):
-            if team_share + self.game_script_share >= 1.0:
-                raise ValueError(
-                    "team share + game_script_share must stay below 1 "
-                    f"(got {team_share} + {self.game_script_share})"
-                )
+        # The idiosyncratic remainder must stay strictly positive for a
+        # stacked pass-catcher, which carries both shares.
+        if self.qb_stack_share + self.game_script_share >= 1.0:
+            raise ValueError(
+                "qb_stack_share + game_script_share must stay below 1 "
+                f"(got {self.qb_stack_share} + {self.game_script_share})"
+            )
 
 
 DEFAULT_CORRELATION = CorrelationSpec()
@@ -126,20 +131,18 @@ def role_of(position: str) -> str:
 def loadings_for(
     position: str, spec: CorrelationSpec = DEFAULT_CORRELATION
 ) -> LatentLoadings:
-    """Factor coefficients for a player at ``position`` under ``spec``."""
+    """Factor coefficients for a player at ``position`` under ``spec``.
+
+    Only QB / WR / TE carry a team-stack loading (the QB-to-pass-catcher
+    channel). RB, K, team DEF and IDP ride the shared game factor only —
+    ``CorrelationSpec.__post_init__`` keeps the idiosyncratic remainder
+    positive for the stacked case, so ``idio_share`` is always > 0 here.
+    """
     role = role_of(position)
 
-    if role in ("QB", "WR", "TE"):
-        team_share = spec.qb_stack_share
-    elif role == "RB":
-        team_share = spec.rb_own_team_share
-    else:
-        team_share = 0.0
-
+    team_share = spec.qb_stack_share if role in ("QB", "WR", "TE") else 0.0
     game_share = spec.game_script_share
     idio_share = 1.0 - team_share - game_share
-    # role_of guarantees the QB/WR/TE/RB branches above; any role without a team
-    # loading keeps the full remainder, so idio_share is always > 0 here.
 
     sign = _GAME_SCRIPT_SIGN.get(role, 1.0)
     return LatentLoadings(

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import dataclasses
 import math
 
 import pytest
@@ -29,11 +30,10 @@ def test_qb_and_pass_catchers_share_the_team_factor_with_the_same_sign():
     assert qb.team_coef * wr.team_coef == pytest.approx(DEFAULT_CORRELATION.qb_stack_share)
 
 
-def test_running_back_rides_its_own_team_more_weakly_than_a_pass_catcher():
-    assert 0.0 < loadings_for("RB").team_coef < loadings_for("WR").team_coef
-
-
-def test_kicker_and_team_defense_carry_no_team_stack_loading():
+def test_only_qb_and_pass_catchers_carry_a_team_stack_loading():
+    # issue #10 names exactly two channels: QB-to-pass-catcher and game script.
+    # Everyone else rides the shared game factor only.
+    assert loadings_for("RB").team_coef == 0.0
     assert loadings_for("K").team_coef == 0.0
     assert loadings_for("DEF").team_coef == 0.0
     assert loadings_for("IDP").team_coef == 0.0
@@ -84,5 +84,5 @@ def test_spec_rejects_a_combination_that_would_exhaust_idiosyncratic_variance():
 
 
 def test_spec_is_frozen():
-    with pytest.raises(Exception):
+    with pytest.raises(dataclasses.FrozenInstanceError):
         DEFAULT_CORRELATION.qb_stack_share = 0.5  # type: ignore[misc]

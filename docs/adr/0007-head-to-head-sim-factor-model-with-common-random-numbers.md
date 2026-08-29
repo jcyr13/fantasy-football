@@ -27,16 +27,21 @@ Z_i = team_coef_i · T_{team(i)} + game_coef_i · G_{game(i)} + idio_coef_i · E
 where `T`, `G`, `E` are independent standard-normal *factor streams* keyed by
 NFL team, NFL game, and player id. The coefficients are fixed by
 `CorrelationSpec` as variance shares (`team_coef = sqrt(share)`, …) so that
-`Var(Z_i) = 1` exactly — the marginal shape ADR-0006 describes is untouched.
-Points are then `mean_i + cornish_fisher_unit(Z_i, skew_i) · sigma_i`.
+`team_coef² + game_coef² + idio_coef² = 1`: `Z_i` is standard normal and each
+player is sampled with exactly the marginal the projection model reports
+(ADR-0006). Points are then `mean_i + cornish_fisher_unit(Z_i, skew_i) ·
+sigma_i`. The Cornish-Fisher term is non-linear, so *realised* player-point
+correlations are only approximately the shares — close enough for
+floor/ceiling comparisons, and the shares are pinned by behaviour, not value.
 
-**2. The marginal sampler is the projection model's, reused verbatim.**
-`projection.model.cornish_fisher_unit` was split out of `_skewed_unit` for this;
-the sim imports it. One Cornish-Fisher transform, one definition — a second
-closed-form path was rejected in ADR-0006 for the same reason.
-`sim_player_from_projection` reconstructs `sigma` with the projection's own
-formula (`residual_cv · max(mean_final, residual_volume_floor)`), so the sim and
-the reported floor/projection/ceiling are the same distribution.
+**2. The marginal sampler and quantile reader are the projection model's,
+reused verbatim.** `projection.model.cornish_fisher_unit` was split out of
+`_skewed_unit`, and `_quantile` promoted to `projection.sample_quantile`, for
+this; the sim imports both. One transform and one quantile method, each with one
+definition — a second closed-form path was rejected in ADR-0006 for the same
+reason. `sim_player_from_projection` reconstructs `sigma` with the projection's
+own formula (`residual_cv · max(mean_final, residual_volume_floor)`), so the sim
+and the reported floor/projection/ceiling are the same distribution.
 
 **3. `sample_lineup_totals` is the common-random-numbers seam.** It returns one
 lineup's per-trial totals as a pure function of `(members, rng_seed,
@@ -66,12 +71,15 @@ pass-catchers in one game end up positively correlated (a shootout lifts both);
 a rushing attack and the other side's passing game, negatively — the standard
 game-stack / bring-back shape.
 
-**6. `CorrelationSpec` magnitudes are placeholders.** `qb_stack_share = 0.35`,
-`game_script_share = 0.15`, `rb_own_team_share = 0.12` are calibrated to typical
-fantasy-points correlations (a QB/WR1 stack lands near `qb_stack_share +
-game_script_share ≈ 0.5`) and pinned by *behaviour* tests — stack widens the
+**6. Exactly the two channels issue #10 names, and their magnitudes are
+placeholders.** `qb_stack_share = 0.35` (QB/WR/TE load on their NFL team's
+offensive factor) and `game_script_share = 0.15` are calibrated to typical
+fantasy-points correlations — a QB/WR1 stack lands near `qb_stack_share +
+game_script_share ≈ 0.5` — and pinned by *behaviour* tests: stack widens the
 lineup distribution, same-game players correlate, `P(win)` is monotonic in a
-strictly better lineup — not by exact value. They swap in cleanly once fitted,
+strictly better lineup. RB, K, team DEF and IDP ride the shared game factor
+only; an RB-to-own-offence channel was considered and left out to keep the
+model to the two requested channels. Magnitudes swap in cleanly once fitted,
 exactly like the positional residual priors (ADR-0006).
 
 ## Why
@@ -94,15 +102,24 @@ exactly like the positional residual priors (ADR-0006).
 ## Consequences
 
 - Pure-Python `random.Random` sampling of ~10k trials × ~18 players is well
-  under a second; `functools.lru_cache` on the factor streams keeps the
-  optimizer's repeated calls cheap (the opponent and shared game/team streams
-  are computed once).
+  under a second; `functools.lru_cache` on the factor streams makes re-running
+  one matchup cheap.
+- **Common random numbers hold only within a fixed `n_trials`.** A stream is
+  keyed by `(seed, factor, n_trials)`, so a 2,000-trial Lineup-Lab preview and
+  the 10,000-trial snapshot sim share nothing and their `P(win)` values can
+  differ by sampling noise. Callers that need them to agree must run the same
+  trial count.
+- **The `lru_cache` is sized for one matchup, not a whole enumeration.** The
+  issue #11 optimizer runs many candidate lineups against one opponent; it
+  should hoist that opponent's `sample_lineup_totals` result and reuse it,
+  rather than rely on a 256-entry cache to hold the shared streams across
+  hundreds of candidates.
 - The correlation magnitudes are not empirical. Anything reading a *coupling*
   strength as calibrated should wait for a fit; `P(win)`'s ordering and the
   monotonicity guarantee do not depend on the magnitudes.
-- `cornish_fisher_unit` is now public API of the projection package. Its
-  behaviour is unchanged and still covered by the projection regression
-  fixture.
+- `cornish_fisher_unit` and `sample_quantile` are now public API of the
+  projection package. Their behaviour is unchanged and still covered by the
+  projection regression fixture.
 - Gap-driver decomposition and swing-player variance ranking (issue #11) are
   *not* here — this ADR is the sim only. They will consume `sample_lineup_totals`
   output.

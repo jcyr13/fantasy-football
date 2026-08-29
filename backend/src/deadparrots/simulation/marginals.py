@@ -57,14 +57,14 @@ def sim_player_from_projection(
     ``residual_volume_floor`` the projection ran with if it was overridden from
     the methodology default.
     """
-    c = projection.components
-    sigma = c.residual_cv * max(c.mean_final, residual_volume_floor)
+    comp = projection.components
+    sigma = comp.residual_cv * max(comp.mean_final, residual_volume_floor)
     return SimPlayer(
         player_id=projection.player_id,
         position=projection.position,
-        mean=c.mean_final,
+        mean=comp.mean_final,
         sigma=sigma,
-        skew=c.residual_skew,
+        skew=comp.residual_skew,
         nfl_team=nfl_team,
         game_id=game_id,
     )
