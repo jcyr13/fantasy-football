@@ -2,7 +2,12 @@ from __future__ import annotations
 
 import pytest
 
-from deadparrots.lineup import RIP_TIDE_SLOTS, assign_slots, is_legal_lineup
+from deadparrots.lineup import (
+    RIP_TIDE_SLOTS,
+    assign_slots,
+    can_field_legal_lineup,
+    is_legal_lineup,
+)
 from lineup_helpers import rp
 
 # The RIP TIDE starting slots: QB, 2×RB, 2×WR, TE, W/R/T flex, K, DEF, D.
@@ -90,3 +95,21 @@ def test_too_many_of_one_role_beyond_any_distribution_is_illegal():
         rp("def", "DEF", mean=7),
     ]
     assert not is_legal_lineup(lineup, RIP_TIDE_SLOTS)
+
+
+def test_can_field_legal_lineup_selects_from_a_larger_pool():
+    # 12 players, two spare WRs: a legal ten can still be drawn out.
+    pool = [*_legal_ten(), rp("wr3", "WR", mean=10), rp("wr4", "WR", mean=9)]
+    assert can_field_legal_lineup(pool, RIP_TIDE_SLOTS)
+
+
+def test_can_field_legal_lineup_false_when_a_role_is_unreachable():
+    # No individual defender anywhere in the pool -> the D slot can never fill.
+    pool = [p for p in _legal_ten() if p.position != "IDP"]
+    pool.append(rp("def2", "DEF", mean=5))
+    pool.append(rp("wr3", "WR", mean=10))
+    assert not can_field_legal_lineup(pool, RIP_TIDE_SLOTS)
+
+
+def test_can_field_legal_lineup_false_when_the_pool_is_too_small():
+    assert not can_field_legal_lineup(_legal_ten()[:9], RIP_TIDE_SLOTS)
