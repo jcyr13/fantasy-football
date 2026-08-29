@@ -1,0 +1,175 @@
+[
+  {
+    "name": "veteran_wr_rising_usage_tough_matchup",
+    "expected": {
+      "floor": 10.58,
+      "projection": 18.82,
+      "ceiling": 27.51,
+      "low_confidence": false,
+      "reasons": [],
+      "components": {
+        "source": "player-history",
+        "current_season_games": 7,
+        "mean_base": 15.5,
+        "opportunity_trend_slope": 0.015427121747839357,
+        "opportunity_trend_multiplier": 1.0154271217478394,
+        "matchup_factor": 1.2,
+        "matchup_factor_raw": 1.32,
+        "mean_final": 18.886944464509813,
+        "shape_own_weight": 1.0,
+        "residual_cv": 0.3483955917552549,
+        "residual_skew": 0.09756571431948309
+      }
+    }
+  },
+  {
+    "name": "thin_history_rb_two_games_blended",
+    "expected": {
+      "floor": 5.49,
+      "projection": 13.25,
+      "ceiling": 21.4,
+      "low_confidence": true,
+      "reasons": [
+        "only-2-current-season-games"
+      ],
+      "components": {
+        "source": "player-history",
+        "current_season_games": 2,
+        "mean_base": 12.5,
+        "opportunity_trend_slope": 0.12,
+        "opportunity_trend_multiplier": 1.12,
+        "matchup_factor": 0.95,
+        "matchup_factor_raw": 0.95,
+        "mean_final": 13.3,
+        "shape_own_weight": 0.5,
+        "residual_cv": 0.46468253867012366,
+        "residual_skew": 0.08824815526970657
+      }
+    }
+  },
+  {
+    "name": "rookie_wr_consensus_fallback",
+    "expected": {
+      "floor": 3.34,
+      "projection": 8.67,
+      "ceiling": 15.5,
+      "low_confidence": true,
+      "reasons": [
+        "only-0-current-season-games",
+        "rookie",
+        "consensus-fallback"
+      ],
+      "components": {
+        "source": "consensus-fallback",
+        "current_season_games": 0,
+        "mean_base": 8.4,
+        "opportunity_trend_slope": 0.0,
+        "opportunity_trend_multiplier": 1.0,
+        "matchup_factor": 1.08,
+        "matchup_factor_raw": 1.08,
+        "mean_final": 9.072000000000001,
+        "shape_own_weight": 0.0,
+        "residual_cv": 0.52,
+        "residual_skew": 0.55
+      }
+    }
+  },
+  {
+    "name": "role_change_te_full_history_still_fallback",
+    "expected": {
+      "floor": 2.23,
+      "projection": 7.09,
+      "ceiling": 13.45,
+      "low_confidence": true,
+      "reasons": [
+        "role-change",
+        "consensus-fallback"
+      ],
+      "components": {
+        "source": "consensus-fallback",
+        "current_season_games": 9,
+        "mean_base": 7.5,
+        "opportunity_trend_slope": 0.0,
+        "opportunity_trend_multiplier": 1.0,
+        "matchup_factor": 1.0,
+        "matchup_factor_raw": 1.0,
+        "mean_final": 7.5,
+        "shape_own_weight": 0.0,
+        "residual_cv": 0.58,
+        "residual_skew": 0.6
+      }
+    }
+  },
+  {
+    "name": "week2_early_season_prior_driven",
+    "expected": {
+      "floor": 13.62,
+      "projection": 19.74,
+      "ceiling": 26.23,
+      "low_confidence": true,
+      "reasons": [
+        "weeks-1-3-prior-driven",
+        "only-1-current-season-games"
+      ],
+      "components": {
+        "source": "player-history",
+        "current_season_games": 1,
+        "mean_base": 22.0,
+        "opportunity_trend_slope": 0.0,
+        "opportunity_trend_multiplier": 1.0,
+        "matchup_factor": 0.9,
+        "matchup_factor_raw": 0.9,
+        "mean_final": 19.8,
+        "shape_own_weight": 0.25,
+        "residual_cv": 0.2475,
+        "residual_skew": 0.11249999999999999
+      }
+    }
+  },
+  {
+    "name": "matchup_cap_clamped_shutout_defense",
+    "expected": {
+      "floor": 6.16,
+      "projection": 10.13,
+      "ceiling": 15.12,
+      "low_confidence": false,
+      "reasons": [],
+      "components": {
+        "source": "player-history",
+        "current_season_games": 8,
+        "mean_base": 13.0,
+        "opportunity_trend_slope": 0.0,
+        "opportunity_trend_multiplier": 1.0,
+        "matchup_factor": 0.8,
+        "matchup_factor_raw": 0.3,
+        "mean_final": 10.4,
+        "shape_own_weight": 1.0,
+        "residual_cv": 0.3343317628823573,
+        "residual_skew": 0.5127142808430042
+      }
+    }
+  },
+  {
+    "name": "idp_linebacker_full_history",
+    "expected": {
+      "floor": 9.23,
+      "projection": 13.35,
+      "ceiling": 18.4,
+      "low_confidence": false,
+      "reasons": [],
+      "components": {
+        "source": "player-history",
+        "current_season_games": 10,
+        "mean_base": 11.5,
+        "opportunity_trend_slope": 0.0,
+        "opportunity_trend_multiplier": 1.0,
+        "matchup_factor": 1.1818181818181819,
+        "matchup_factor_raw": 1.1818181818181819,
+        "mean_final": 13.590909090909092,
+        "shape_own_weight": 1.0,
+        "residual_cv": 0.2618008801253477,
+        "residual_skew": 0.4518609510143228
+      }
+    }
+  }
+]
