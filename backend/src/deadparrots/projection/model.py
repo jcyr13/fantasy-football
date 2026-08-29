@@ -295,9 +295,9 @@ def _distribution_quantiles(
     ]
     samples.sort()
 
-    floor = round_points(_quantile(samples, params.floor_quantile))
-    projection = round_points(_quantile(samples, params.projection_quantile))
-    ceiling = round_points(_quantile(samples, params.ceiling_quantile))
+    floor = round_points(sample_quantile(samples, params.floor_quantile))
+    projection = round_points(sample_quantile(samples, params.projection_quantile))
+    ceiling = round_points(sample_quantile(samples, params.ceiling_quantile))
 
     gap = params.min_quantile_gap
     projection = max(projection, floor + gap)
@@ -305,20 +305,33 @@ def _distribution_quantiles(
     return floor, projection, ceiling
 
 
-def _skewed_unit(rng: random.Random, skew: float) -> float:
-    """A mean-0, ~unit-variance draw with Fisher skewness ≈ ``skew``.
+def cornish_fisher_unit(z: float, skew: float) -> float:
+    """Map a standard-normal draw ``z`` to a mean-0, ~unit-variance draw with
+    Fisher skewness ≈ ``skew``.
 
     First-order Cornish-Fisher expansion of a standard normal: monotonic in
     ``z`` down to ``z = -3 / skew`` (below the reported P10 for the
     ``|skew| <= 1`` the model allows), so the sampled quantiles keep their
-    order.
+    order. Split out from :func:`_skewed_unit` so the head-to-head simulation
+    (issue #10) samples the *identical* marginal shape this model reports rather
+    than re-deriving one — see ADR-0006.
     """
-    z = rng.gauss(0.0, 1.0)
     return z + (skew / 6.0) * (z * z - 1.0)
 
 
-def _quantile(sorted_values: Sequence[float], p: float) -> float:
-    """Linear-interpolation quantile (the ``numpy.quantile`` default method)."""
+def _skewed_unit(rng: random.Random, skew: float) -> float:
+    """A mean-0, ~unit-variance draw with Fisher skewness ≈ ``skew`` from
+    ``rng`` (a single :func:`cornish_fisher_unit` draw)."""
+    return cornish_fisher_unit(rng.gauss(0.0, 1.0), skew)
+
+
+def sample_quantile(sorted_values: Sequence[float], p: float) -> float:
+    """Linear-interpolation quantile (the ``numpy.quantile`` default method).
+
+    Public so the head-to-head simulation reads its P10/P50/P90 the same way
+    this model does — one quantile method, like the one Cornish-Fisher sampler
+    (ADR-0006, ADR-0007). ``sorted_values`` must already be ascending.
+    """
     n = len(sorted_values)
     if n == 0:
         raise ValueError("cannot take a quantile of an empty sample")

@@ -49,6 +49,12 @@ The per-roster-slot decomposition of the difference in expected points between t
 **Swing player**:
 An opponent's starter contributing an outsized share of the *variance* in the matchup outcome, i.e. the player most able to change the result.
 
+**Common random numbers**:
+The head-to-head simulation draws each player's trial outcomes from factor streams keyed only by the RNG seed and stable IDs (player, NFL team, NFL game), never by lineup composition. So every candidate lineup and both sides share the same underlying randomness, and a lineup-vs-lineup win-probability gap reflects the lineup change, not sampling noise. See `docs/adr/0007`.
+
+**Head-to-head Monte Carlo**:
+`(dead_parrots_lineup, opponent_lineup, correlation_spec, rng_seed) → P(win) + summary stats`, over 10,000 correlated trials. Consumes per-player marginal distributions (the same shape the projection model reports) and a factor-model joint covering QB-to-pass-catcher stacks and game script. The seed is derived from the weekly snapshot ID, so a snapshot's numbers are stable across reloads.
+
 ### Lineup construction
 
 **Projection**:

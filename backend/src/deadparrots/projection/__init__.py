@@ -35,7 +35,9 @@ from .model import (
     PlayerProjection,
     ProjectionComponents,
     ProjectionSource,
+    cornish_fisher_unit,
     project,
+    sample_quantile,
 )
 from .params import DEFAULT_PARAMS, ProjectionParams
 from .residuals import (
@@ -61,11 +63,13 @@ __all__ = [
     "ResidualPrior",
     "UnknownPositionError",
     "UsageSnapshot",
+    "cornish_fisher_unit",
     "decay_weights",
     "own_residual_shape",
     "per_game_decay",
     "prior_for_position",
     "project",
+    "sample_quantile",
     "weighted_mean",
     "weighted_skew",
     "weighted_slope",
