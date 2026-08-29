@@ -1,5 +1,381 @@
 [
   {
+    "entity_id": "Bobby Okereke",
+    "label": "Bobby Okereke",
+    "season": 2025,
+    "unit": "individual_defense",
+    "week": 5,
+    "yahoo_points": 7.5
+  },
+  {
+    "entity_id": "Bobby Okereke",
+    "label": "Bobby Okereke",
+    "season": 2025,
+    "unit": "individual_defense",
+    "week": 9,
+    "yahoo_points": 11.5
+  },
+  {
+    "entity_id": "Bobby Okereke",
+    "label": "Bobby Okereke",
+    "season": 2025,
+    "unit": "individual_defense",
+    "week": 13,
+    "yahoo_points": 6.0
+  },
+  {
+    "entity_id": "Bobby Wagner",
+    "label": "Bobby Wagner",
+    "season": 2025,
+    "unit": "individual_defense",
+    "week": 5,
+    "yahoo_points": 11.0
+  },
+  {
+    "entity_id": "Bobby Wagner",
+    "label": "Bobby Wagner",
+    "season": 2025,
+    "unit": "individual_defense",
+    "week": 9,
+    "yahoo_points": 6.0
+  },
+  {
+    "entity_id": "Bobby Wagner",
+    "label": "Bobby Wagner",
+    "season": 2025,
+    "unit": "individual_defense",
+    "week": 13,
+    "yahoo_points": 8.74
+  },
+  {
+    "entity_id": "Brian Branch",
+    "label": "Brian Branch",
+    "season": 2025,
+    "unit": "individual_defense",
+    "week": 1,
+    "yahoo_points": 5.5
+  },
+  {
+    "entity_id": "Brian Branch",
+    "label": "Brian Branch",
+    "season": 2025,
+    "unit": "individual_defense",
+    "week": 5,
+    "yahoo_points": 2.5
+  },
+  {
+    "entity_id": "Brian Branch",
+    "label": "Brian Branch",
+    "season": 2025,
+    "unit": "individual_defense",
+    "week": 9,
+    "yahoo_points": 5.0
+  },
+  {
+    "entity_id": "Brian Branch",
+    "label": "Brian Branch",
+    "season": 2025,
+    "unit": "individual_defense",
+    "week": 13,
+    "yahoo_points": 10.5
+  },
+  {
+    "entity_id": "Daiyan Henley",
+    "label": "Daiyan Henley",
+    "season": 2025,
+    "unit": "individual_defense",
+    "week": 1,
+    "yahoo_points": 8.5
+  },
+  {
+    "entity_id": "Edgerrin Cooper",
+    "label": "Edgerrin Cooper",
+    "season": 2025,
+    "unit": "individual_defense",
+    "week": 1,
+    "yahoo_points": 10.0
+  },
+  {
+    "entity_id": "Edgerrin Cooper",
+    "label": "Edgerrin Cooper",
+    "season": 2025,
+    "unit": "individual_defense",
+    "week": 9,
+    "yahoo_points": 5.5
+  },
+  {
+    "entity_id": "Edgerrin Cooper",
+    "label": "Edgerrin Cooper",
+    "season": 2025,
+    "unit": "individual_defense",
+    "week": 13,
+    "yahoo_points": 5.0
+  },
+  {
+    "entity_id": "Ernest Jones IV",
+    "label": "Ernest Jones IV",
+    "season": 2025,
+    "unit": "individual_defense",
+    "week": 9,
+    "yahoo_points": 3.5
+  },
+  {
+    "entity_id": "Fred Warner",
+    "label": "Fred Warner",
+    "season": 2025,
+    "unit": "individual_defense",
+    "week": 1,
+    "yahoo_points": 7.0
+  },
+  {
+    "entity_id": "Fred Warner",
+    "label": "Fred Warner",
+    "season": 2025,
+    "unit": "individual_defense",
+    "week": 5,
+    "yahoo_points": 9.5
+  },
+  {
+    "entity_id": "Jack Campbell",
+    "label": "Jack Campbell",
+    "season": 2025,
+    "unit": "individual_defense",
+    "week": 5,
+    "yahoo_points": 9.0
+  },
+  {
+    "entity_id": "Jack Campbell",
+    "label": "Jack Campbell",
+    "season": 2025,
+    "unit": "individual_defense",
+    "week": 9,
+    "yahoo_points": 10.5
+  },
+  {
+    "entity_id": "Jack Campbell",
+    "label": "Jack Campbell",
+    "season": 2025,
+    "unit": "individual_defense",
+    "week": 13,
+    "yahoo_points": 7.0
+  },
+  {
+    "entity_id": "Jordyn Brooks",
+    "label": "Jordyn Brooks",
+    "season": 2025,
+    "unit": "individual_defense",
+    "week": 1,
+    "yahoo_points": 10.5
+  },
+  {
+    "entity_id": "Jordyn Brooks",
+    "label": "Jordyn Brooks",
+    "season": 2025,
+    "unit": "individual_defense",
+    "week": 5,
+    "yahoo_points": 9.5
+  },
+  {
+    "entity_id": "Jordyn Brooks",
+    "label": "Jordyn Brooks",
+    "season": 2025,
+    "unit": "individual_defense",
+    "week": 9,
+    "yahoo_points": 5.0
+  },
+  {
+    "entity_id": "Jordyn Brooks",
+    "label": "Jordyn Brooks",
+    "season": 2025,
+    "unit": "individual_defense",
+    "week": 13,
+    "yahoo_points": 10.0
+  },
+  {
+    "entity_id": "Justin Strnad",
+    "label": "Justin Strnad",
+    "season": 2025,
+    "unit": "individual_defense",
+    "week": 5,
+    "yahoo_points": 0.5
+  },
+  {
+    "entity_id": "Kaden Elliss",
+    "label": "Kaden Elliss",
+    "season": 2025,
+    "unit": "individual_defense",
+    "week": 1,
+    "yahoo_points": 5.0
+  },
+  {
+    "entity_id": "Nate Landman",
+    "label": "Nate Landman",
+    "season": 2025,
+    "unit": "individual_defense",
+    "week": 9,
+    "yahoo_points": 3.5
+  },
+  {
+    "entity_id": "Nate Landman",
+    "label": "Nate Landman",
+    "season": 2025,
+    "unit": "individual_defense",
+    "week": 13,
+    "yahoo_points": 5.5
+  },
+  {
+    "entity_id": "Nick Bolton",
+    "label": "Nick Bolton",
+    "season": 2025,
+    "unit": "individual_defense",
+    "week": 9,
+    "yahoo_points": 10.5
+  },
+  {
+    "entity_id": "Nick Bolton",
+    "label": "Nick Bolton",
+    "season": 2025,
+    "unit": "individual_defense",
+    "week": 13,
+    "yahoo_points": 10.5
+  },
+  {
+    "entity_id": "Nick Cross",
+    "label": "Nick Cross",
+    "season": 2025,
+    "unit": "individual_defense",
+    "week": 9,
+    "yahoo_points": 4.5
+  },
+  {
+    "entity_id": "Quay Walker",
+    "label": "Quay Walker",
+    "season": 2025,
+    "unit": "individual_defense",
+    "week": 9,
+    "yahoo_points": 4.5
+  },
+  {
+    "entity_id": "Robert Spillane",
+    "label": "Robert Spillane",
+    "season": 2025,
+    "unit": "individual_defense",
+    "week": 1,
+    "yahoo_points": 3.0
+  },
+  {
+    "entity_id": "Robert Spillane",
+    "label": "Robert Spillane",
+    "season": 2025,
+    "unit": "individual_defense",
+    "week": 13,
+    "yahoo_points": 2.0
+  },
+  {
+    "entity_id": "Roquan Smith",
+    "label": "Roquan Smith",
+    "season": 2025,
+    "unit": "individual_defense",
+    "week": 1,
+    "yahoo_points": 9.0
+  },
+  {
+    "entity_id": "Roquan Smith",
+    "label": "Roquan Smith",
+    "season": 2025,
+    "unit": "individual_defense",
+    "week": 9,
+    "yahoo_points": 11.5
+  },
+  {
+    "entity_id": "Roquan Smith",
+    "label": "Roquan Smith",
+    "season": 2025,
+    "unit": "individual_defense",
+    "week": 13,
+    "yahoo_points": 7.0
+  },
+  {
+    "entity_id": "T.J. Edwards",
+    "label": "T.J. Edwards",
+    "season": 2025,
+    "unit": "individual_defense",
+    "week": 9,
+    "yahoo_points": 4.0
+  },
+  {
+    "entity_id": "Tykee Smith",
+    "label": "Tykee Smith",
+    "season": 2025,
+    "unit": "individual_defense",
+    "week": 13,
+    "yahoo_points": 2.5
+  },
+  {
+    "entity_id": "Tyrel Dodson",
+    "label": "Tyrel Dodson",
+    "season": 2025,
+    "unit": "individual_defense",
+    "week": 5,
+    "yahoo_points": 2.5
+  },
+  {
+    "entity_id": "Zack Baun",
+    "label": "Zack Baun",
+    "season": 2025,
+    "unit": "individual_defense",
+    "week": 1,
+    "yahoo_points": 9.5
+  },
+  {
+    "entity_id": "Zack Baun",
+    "label": "Zack Baun",
+    "season": 2025,
+    "unit": "individual_defense",
+    "week": 5,
+    "yahoo_points": 12.5
+  },
+  {
+    "entity_id": "Zack Baun",
+    "label": "Zack Baun",
+    "season": 2025,
+    "unit": "individual_defense",
+    "week": 13,
+    "yahoo_points": 5.5
+  },
+  {
+    "entity_id": "Zaire Franklin",
+    "label": "Zaire Franklin",
+    "season": 2025,
+    "unit": "individual_defense",
+    "week": 1,
+    "yahoo_points": 3.0
+  },
+  {
+    "entity_id": "Zaire Franklin",
+    "label": "Zaire Franklin",
+    "season": 2025,
+    "unit": "individual_defense",
+    "week": 5,
+    "yahoo_points": 7.5
+  },
+  {
+    "entity_id": "Zaire Franklin",
+    "label": "Zaire Franklin",
+    "season": 2025,
+    "unit": "individual_defense",
+    "week": 9,
+    "yahoo_points": 5.0
+  },
+  {
+    "entity_id": "Zaire Franklin",
+    "label": "Zaire Franklin",
+    "season": 2025,
+    "unit": "individual_defense",
+    "week": 13,
+    "yahoo_points": 9.0
+  },
+  {
     "entity_id": "Andy Borregales",
     "label": "Andy Borregales",
     "season": 2025,

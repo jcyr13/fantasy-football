@@ -21,7 +21,7 @@ _Avoid_: owner, player (a player is an NFL athlete).
 ### Scoring
 
 **Scoring engine**:
-The one pure function `(stat rows, league ruleset) → points per player-week`. No I/O. Covers offense, kicker, and team **DEF**; the **IDP / D slot** as its own rostered surface is a separate ticket, though RIP TIDE scores individual defensive plays (tackles, passes defended) for *any* player who records them. Fractional and negative points are on — nothing is rounded to an integer or floored at zero.
+The one pure function `(stat rows, league ruleset) → points per player-week`. No I/O. Covers offense, kicker, team **DEF**, and the **IDP / D slot** as its own `ScoringUnit` distinct from team DEF. RIP TIDE also scores individual defensive plays (tackles, passes defended) for *any* player who records them, using the same shared values. Fractional and negative points are on — nothing is rounded to an integer or floored at zero.
 
 **League ruleset**:
 The RIP TIDE scoring values (`RIP_TIDE_RULESET`) transcribed field-for-field from the league settings and reconciled against Yahoo's own 2025 box scores: 25/10/10 offensive yards-per-point, return yards at 1 per 25, 6-point TDs, distance-tiered field goals, shared individual-defense values, the team-DEF points-allowed schedule, and so on.
@@ -30,7 +30,7 @@ The RIP TIDE scoring values (`RIP_TIDE_RULESET`) transcribed field-for-field fro
 Real 2025 Yahoo per-player weekly fantasy points for the archived RIP TIDE league (2025 id `195010`), scraped from Yahoo's own weekly box scores (the Fantasy API is not reachable for this account) and frozen as golden fixtures. Sample: weeks 1 / 5 / 9 / 13, all 12 teams. The ground truth the engine is checked against.
 
 **Validation gate**:
-The hard requirement that the engine reproduce the scoring oracle *exactly* (0.00) for every offense/kicker/DEF player-week before anything is built on it. The highest-weight test in the repo, run as its own CI step (`pytest -m gate`).
+The hard requirement that the engine reproduce the scoring oracle *exactly* (0.00) for every offense/kicker/DEF player-week before anything is built on it. The highest-weight test in the repo, run as its own CI step (`pytest -m gate`). The **IDP gate** is the parallel check for the D slot, held to ±1.0 with every out-of-tolerance player-week listed in a committed **outlier catalogue** (`yahoo_2025_idp_outliers.json`) with a stated cause — never silently accepted.
 
 ### Matchup & win probability
 

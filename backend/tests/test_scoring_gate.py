@@ -27,18 +27,20 @@ from deadparrots.scoring.oracle import (
 # the matching stat lines the engine scores. Both are regenerated from
 # ``yahoo_2025_box_scores.raw.json`` by ``python -m deadparrots.scoring.oracle
 # build`` (see docs/scoring-oracle-capture.md).
+#
+# Individual defenders (the "D" slot) are in the same fixtures but held to a
+# ±1.0 tolerance with an explicit outlier catalogue — that is a separate gate,
+# ``test_scoring_idp_gate.py`` (ticket #5). This test skips them.
 
 pytestmark = pytest.mark.gate
 
-# Offense, kicker, and team defense must match to the cent. Pure individual
-# defenders (the D slot) are not in the fixture — that surface, with its ±1.0
-# tolerance and outlier catalogue, is a separate ticket.
+# Offense, kicker, and team defense must match to the cent.
 _EXACT_UNITS = {ScoringUnit.OFFENSE, ScoringUnit.KICKER, ScoringUnit.TEAM_DEFENSE}
 
 
 def test_engine_reproduces_2025_yahoo_actuals_exactly():
     stat_rows = load_stat_rows_fixture()
-    oracle = load_oracle_fixture()
+    oracle = [r for r in load_oracle_fixture() if r.unit in _EXACT_UNITS]
     assert oracle, "oracle fixture is empty"
 
     scored = score_player_weeks(stat_rows, RIP_TIDE_RULESET)
@@ -47,7 +49,6 @@ def test_engine_reproduces_2025_yahoo_actuals_exactly():
     mismatches: list[str] = []
     checked = 0
     for record in oracle:
-        assert record.unit in _EXACT_UNITS, f"unexpected unit in oracle: {record.unit}"
         result = scored.get(record.key)
         who = record.label or record.entity_id
         if result is None:

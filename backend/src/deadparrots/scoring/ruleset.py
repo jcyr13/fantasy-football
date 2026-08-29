@@ -7,9 +7,10 @@ from dataclasses import dataclass
 # meant to be diffable against that prose by a reviewer, so the rules are plain
 # named floats rather than an opaque coefficient table.
 #
-# Scope of this module (ticket #4): offense, kicker, and team defense/special
-# teams. The individual-defender ("D") slot is a separate scoring surface and
-# lands in its own ticket; it is deliberately absent here.
+# Scope of this module: offense, kicker, team defense/special teams (ticket #4),
+# and the individual-defender ("D") slot (ticket #5). The D slot is its own
+# scoring surface — see ``IndividualDefenseRules`` and ``ScoringUnit`` — modelled
+# separately from team DEF even though several event values coincide.
 #
 # Fractional points and negative points are both ON for this league: the engine
 # never rounds a component to an integer and never floors a total at zero.
@@ -17,18 +18,34 @@ from dataclasses import dataclass
 
 @dataclass(frozen=True)
 class IndividualDefenseRules:
-    """Individual defensive plays, scored for whoever records them.
+    """The individual-defender scoring schedule.
 
-    RIP TIDE credits these to *any* player — a WR who makes a tackle after his
-    QB is intercepted gets the solo-tackle point. The full individual-defender
-    ("D" slot) surface, with its own tolerance and outlier catalogue, is a
-    separate ticket; this covers only the stats that show up on offensive and
-    kicking box scores.
+    RIP TIDE credits individual defensive plays to *any* player — a WR who makes
+    a tackle after his QB is intercepted gets the solo-tackle point — so the
+    offense and kicker rules borrow the ``solo_tackle`` / ``assisted_tackle`` /
+    ``pass_defended`` values from here. The full schedule (sacks, takeaways,
+    scores, turnover-return yardage) is what the "D" slot is scored on, as its
+    own surface distinct from team DEF (spec issue #1, "IDP / D slot"; ticket
+    #5). The D-slot values that also appear on ``TeamDefenseRules`` — sack, INT,
+    fumble recovery, TD, safety, blocked kick, TFL — happen to match team DEF
+    today but are kept as their own knobs so the two surfaces can diverge.
     """
 
     solo_tackle: float
     assisted_tackle: float
     pass_defended: float
+    sack: float
+    interception: float
+    forced_fumble: float
+    fumble_recovery: float
+    touchdown: float
+    safety: float
+    blocked_kick: float
+    tackle_for_loss: float
+    # Interception- and fumble-return yardage the defender accrues, at 1 point
+    # per 25 yards (Yahoo 2025 box scores show IDP "Turnover Return Yards" at
+    # this rate, the same as offensive return yards).
+    turnover_return_yards_per_point: float
 
 
 @dataclass(frozen=True)
@@ -125,18 +142,34 @@ class TeamDefenseRules:
 
 @dataclass(frozen=True)
 class LeagueRuleset:
-    """The full scoring ruleset handed to the engine as its second argument."""
+    """The full scoring ruleset handed to the engine as its second argument.
+
+    ``individual_defense`` is the D-slot surface. It is the same object the
+    offense and kicker rules carry (they only read its shared tackle / pass-
+    defended values); the engine reads the whole schedule when scoring a
+    ``ScoringUnit.INDIVIDUAL_DEFENSE`` row.
+    """
 
     name: str
     offense: OffenseRules
     kicker: KickerRules
     team_defense: TeamDefenseRules
+    individual_defense: IndividualDefenseRules
 
 
 _RIP_TIDE_IDP = IndividualDefenseRules(
     solo_tackle=1.0,
     assisted_tackle=0.5,
     pass_defended=1.0,
+    sack=2.0,
+    interception=2.0,
+    forced_fumble=1.0,
+    fumble_recovery=1.0,
+    touchdown=6.0,
+    safety=2.0,
+    blocked_kick=2.0,
+    tackle_for_loss=1.0,
+    turnover_return_yards_per_point=25.0,
 )
 
 RIP_TIDE_RULESET = LeagueRuleset(
@@ -185,4 +218,5 @@ RIP_TIDE_RULESET = LeagueRuleset(
             PointsAllowedTier(upper_bound=None, points=-4.0),
         ),
     ),
+    individual_defense=_RIP_TIDE_IDP,
 )
