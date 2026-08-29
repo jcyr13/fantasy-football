@@ -19,6 +19,11 @@ class Settings(BaseSettings):
     # container sets it to ``/data``.
     data_dir: Path = Path("data")
 
+    # The NFL season the dashboard is modelling. Used by the assembled weekly
+    # view (issue #16) when a request does not pin one; the current week comes
+    # from the latest Yahoo matchup pull.
+    season: int = 2026
+
     # nflverse ingestion (ticket #3). ``None`` lets nflreadpy default to the
     # current season; a list pins the seasons pulled. The cron fires the
     # unattended weekly refresh — Tuesday morning, after Monday-night stat

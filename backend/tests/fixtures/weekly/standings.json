@@ -1,0 +1,148 @@
+{
+  "rows": [
+    {
+      "rank": 1,
+      "team_name": "Norwegian Blues",
+      "manager": "Norwegian",
+      "division": "RIP",
+      "wins": 3,
+      "losses": 0,
+      "ties": 0,
+      "points_for": 372.4,
+      "points_against": 362.4,
+      "waiver_priority": 12
+    },
+    {
+      "rank": 2,
+      "team_name": "Dead Parrots",
+      "manager": "Dead",
+      "division": "RIP",
+      "wins": 2,
+      "losses": 1,
+      "ties": 0,
+      "points_for": 351.1,
+      "points_against": 341.1,
+      "waiver_priority": 11
+    },
+    {
+      "rank": 3,
+      "team_name": "Spanish Inquisition",
+      "manager": "Spanish",
+      "division": "TIDE",
+      "wins": 2,
+      "losses": 1,
+      "ties": 0,
+      "points_for": 344.7,
+      "points_against": 334.7,
+      "waiver_priority": 10
+    },
+    {
+      "rank": 4,
+      "team_name": "Lumberjacks",
+      "manager": "Lumberjacks",
+      "division": "TIDE",
+      "wins": 2,
+      "losses": 1,
+      "ties": 0,
+      "points_for": 339.2,
+      "points_against": 329.2,
+      "waiver_priority": 9
+    },
+    {
+      "rank": 5,
+      "team_name": "Ministry of Walks",
+      "manager": "Ministry",
+      "division": "RIP",
+      "wins": 2,
+      "losses": 1,
+      "ties": 0,
+      "points_for": 333.9,
+      "points_against": 323.9,
+      "waiver_priority": 8
+    },
+    {
+      "rank": 6,
+      "team_name": "Killer Rabbits",
+      "manager": "Killer",
+      "division": "TIDE",
+      "wins": 1,
+      "losses": 2,
+      "ties": 0,
+      "points_for": 328.0,
+      "points_against": 318.0,
+      "waiver_priority": 7
+    },
+    {
+      "rank": 7,
+      "team_name": "Spam Vikings",
+      "manager": "Spam",
+      "division": "RIP",
+      "wins": 1,
+      "losses": 2,
+      "ties": 0,
+      "points_for": 322.5,
+      "points_against": 312.5,
+      "waiver_priority": 6
+    },
+    {
+      "rank": 8,
+      "team_name": "Ex-Parrot XI",
+      "manager": "Ex-Parrot",
+      "division": "TIDE",
+      "wins": 1,
+      "losses": 2,
+      "ties": 0,
+      "points_for": 318.1,
+      "points_against": 308.1,
+      "waiver_priority": 5
+    },
+    {
+      "rank": 9,
+      "team_name": "Larch Society",
+      "manager": "Larch",
+      "division": "RIP",
+      "wins": 1,
+      "losses": 2,
+      "ties": 0,
+      "points_for": 311.7,
+      "points_against": 301.7,
+      "waiver_priority": 4
+    },
+    {
+      "rank": 10,
+      "team_name": "Fjord Owners",
+      "manager": "Fjord",
+      "division": "TIDE",
+      "wins": 1,
+      "losses": 2,
+      "ties": 0,
+      "points_for": 305.0,
+      "points_against": 295.0,
+      "waiver_priority": 3
+    },
+    {
+      "rank": 11,
+      "team_name": "Argument Clinic",
+      "manager": "Argument",
+      "division": "RIP",
+      "wins": 0,
+      "losses": 3,
+      "ties": 0,
+      "points_for": 288.3,
+      "points_against": 278.3,
+      "waiver_priority": 2
+    },
+    {
+      "rank": 12,
+      "team_name": "Cheese Shop",
+      "manager": "Cheese",
+      "division": "TIDE",
+      "wins": 0,
+      "losses": 3,
+      "ties": 0,
+      "points_for": 271.9,
+      "points_against": 261.9,
+      "waiver_priority": 1
+    }
+  ]
+}

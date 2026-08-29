@@ -1,0 +1,332 @@
+[
+  {
+    "season": 2026,
+    "team": "BUF",
+    "position": "QB",
+    "full_name": "Jed Signal",
+    "gsis_id": "00-1000001",
+    "yahoo_id": "90000",
+    "birth_date": "1996-01-01",
+    "week": 3
+  },
+  {
+    "season": 2026,
+    "team": "KC",
+    "position": "QB",
+    "full_name": "Cal Backup",
+    "gsis_id": "00-1000002",
+    "yahoo_id": "90001",
+    "birth_date": "1997-02-02",
+    "week": 3
+  },
+  {
+    "season": 2026,
+    "team": "MIA",
+    "position": "RB",
+    "full_name": "Ray Carrier",
+    "gsis_id": "00-1000003",
+    "yahoo_id": "90002",
+    "birth_date": "1998-03-03",
+    "week": 3
+  },
+  {
+    "season": 2026,
+    "team": "SF",
+    "position": "RB",
+    "full_name": "Dom Burst",
+    "gsis_id": "00-1000004",
+    "yahoo_id": "90003",
+    "birth_date": "1999-04-04",
+    "week": 3
+  },
+  {
+    "season": 2026,
+    "team": "PHI",
+    "position": "RB",
+    "full_name": "Ken Spell",
+    "gsis_id": "00-1000005",
+    "yahoo_id": "90004",
+    "birth_date": "2000-05-05",
+    "week": 3
+  },
+  {
+    "season": 2026,
+    "team": "KC",
+    "position": "WR",
+    "full_name": "Sam Deep",
+    "gsis_id": "00-1000006",
+    "yahoo_id": "90005",
+    "birth_date": "2001-06-06",
+    "week": 3
+  },
+  {
+    "season": 2026,
+    "team": "DAL",
+    "position": "WR",
+    "full_name": "Vic Slant",
+    "gsis_id": "00-1000007",
+    "yahoo_id": "90006",
+    "birth_date": "1996-07-07",
+    "week": 3
+  },
+  {
+    "season": 2026,
+    "team": "CIN",
+    "position": "WR",
+    "full_name": "Ned Flat",
+    "gsis_id": "00-1000008",
+    "yahoo_id": "90007",
+    "birth_date": "1997-08-08",
+    "week": 3
+  },
+  {
+    "season": 2026,
+    "team": "BAL",
+    "position": "WR",
+    "full_name": "Om Bench",
+    "gsis_id": "00-1000009",
+    "yahoo_id": "90008",
+    "birth_date": "1998-09-09",
+    "week": 3
+  },
+  {
+    "season": 2026,
+    "team": "SF",
+    "position": "TE",
+    "full_name": "Gus Seam",
+    "gsis_id": "00-1000010",
+    "yahoo_id": "90009",
+    "birth_date": "1999-10-10",
+    "week": 3
+  },
+  {
+    "season": 2026,
+    "team": "BUF",
+    "position": "TE",
+    "full_name": "Hal Block",
+    "gsis_id": "00-1000011",
+    "yahoo_id": "90010",
+    "birth_date": "2000-11-11",
+    "week": 3
+  },
+  {
+    "season": 2026,
+    "team": "PHI",
+    "position": "K",
+    "full_name": "Poe Boot",
+    "gsis_id": "00-1000012",
+    "yahoo_id": "90011",
+    "birth_date": "2001-12-12",
+    "week": 3
+  },
+  {
+    "season": 2026,
+    "team": "BAL",
+    "position": "LB",
+    "full_name": "Rex Hunt",
+    "gsis_id": "00-1000013",
+    "yahoo_id": "90013",
+    "birth_date": "1997-02-14",
+    "week": 3
+  },
+  {
+    "season": 2026,
+    "team": "KC",
+    "position": "QB",
+    "full_name": "Otis Arm",
+    "gsis_id": "00-1000021",
+    "yahoo_id": "90014",
+    "birth_date": "1998-03-15",
+    "week": 3
+  },
+  {
+    "season": 2026,
+    "team": "BUF",
+    "position": "QB",
+    "full_name": "Bud Hold",
+    "gsis_id": "00-1000022",
+    "yahoo_id": "90015",
+    "birth_date": "1999-04-16",
+    "week": 3
+  },
+  {
+    "season": 2026,
+    "team": "SF",
+    "position": "RB",
+    "full_name": "Alan Dash",
+    "gsis_id": "00-1000023",
+    "yahoo_id": "90016",
+    "birth_date": "2000-05-17",
+    "week": 3
+  },
+  {
+    "season": 2026,
+    "team": "DAL",
+    "position": "RB",
+    "full_name": "Moe Churn",
+    "gsis_id": "00-1000024",
+    "yahoo_id": "90017",
+    "birth_date": "2001-06-18",
+    "week": 3
+  },
+  {
+    "season": 2026,
+    "team": "MIA",
+    "position": "RB",
+    "full_name": "Sy Depth",
+    "gsis_id": "00-1000025",
+    "yahoo_id": "90018",
+    "birth_date": "1996-07-19",
+    "week": 3
+  },
+  {
+    "season": 2026,
+    "team": "CIN",
+    "position": "WR",
+    "full_name": "Lee Streak",
+    "gsis_id": "00-1000026",
+    "yahoo_id": "90019",
+    "birth_date": "1997-08-20",
+    "week": 3
+  },
+  {
+    "season": 2026,
+    "team": "BAL",
+    "position": "WR",
+    "full_name": "Art Post",
+    "gsis_id": "00-1000027",
+    "yahoo_id": "90020",
+    "birth_date": "1998-09-21",
+    "week": 3
+  },
+  {
+    "season": 2026,
+    "team": "PHI",
+    "position": "WR",
+    "full_name": "Ty Wheel",
+    "gsis_id": "00-1000028",
+    "yahoo_id": "90021",
+    "birth_date": "1999-10-22",
+    "week": 3
+  },
+  {
+    "season": 2026,
+    "team": "BUF",
+    "position": "WR",
+    "full_name": "Cy Pine",
+    "gsis_id": "00-1000029",
+    "yahoo_id": "90022",
+    "birth_date": "2000-11-23",
+    "week": 3
+  },
+  {
+    "season": 2026,
+    "team": "KC",
+    "position": "TE",
+    "full_name": "Rod Hook",
+    "gsis_id": "00-1000030",
+    "yahoo_id": "90023",
+    "birth_date": "2001-12-24",
+    "week": 3
+  },
+  {
+    "season": 2026,
+    "team": "SF",
+    "position": "TE",
+    "full_name": "Van Chip",
+    "gsis_id": "00-1000031",
+    "yahoo_id": "90024",
+    "birth_date": "1996-01-25",
+    "week": 3
+  },
+  {
+    "season": 2026,
+    "team": "DAL",
+    "position": "K",
+    "full_name": "Wes Toe",
+    "gsis_id": "00-1000032",
+    "yahoo_id": "90025",
+    "birth_date": "1997-02-26",
+    "week": 3
+  },
+  {
+    "season": 2026,
+    "team": "CIN",
+    "position": "S",
+    "full_name": "Cliff Snap",
+    "gsis_id": "00-1000033",
+    "yahoo_id": "90027",
+    "birth_date": "1999-04-01",
+    "week": 3
+  },
+  {
+    "season": 2026,
+    "team": "MIA",
+    "position": "WR",
+    "full_name": "Free Waddle",
+    "gsis_id": "00-1000041",
+    "yahoo_id": "90028",
+    "birth_date": "2000-05-02",
+    "week": 3
+  },
+  {
+    "season": 2026,
+    "team": "CIN",
+    "position": "RB",
+    "full_name": "Wire Runner",
+    "gsis_id": "00-1000042",
+    "yahoo_id": "90029",
+    "birth_date": "2001-06-03",
+    "week": 3
+  },
+  {
+    "season": 2026,
+    "team": "BAL",
+    "position": "TE",
+    "full_name": "Spare End",
+    "gsis_id": "00-1000043",
+    "yahoo_id": "90030",
+    "birth_date": "1996-07-04",
+    "week": 3
+  },
+  {
+    "season": 2026,
+    "team": "KC",
+    "position": "K",
+    "full_name": "Loose Kick",
+    "gsis_id": "00-1000044",
+    "yahoo_id": "90031",
+    "birth_date": "1997-08-05",
+    "week": 3
+  },
+  {
+    "season": 2026,
+    "team": "DAL",
+    "position": "LB",
+    "full_name": "Bench Backer",
+    "gsis_id": "00-1000045",
+    "yahoo_id": "90032",
+    "birth_date": "1998-09-06",
+    "week": 3
+  },
+  {
+    "season": 2026,
+    "team": "PHI",
+    "position": "QB",
+    "full_name": "Pocket Free",
+    "gsis_id": "00-1000046",
+    "yahoo_id": "90033",
+    "birth_date": "1999-10-07",
+    "week": 3
+  },
+  {
+    "season": 2026,
+    "team": "DAL",
+    "position": "WR",
+    "full_name": "Deep Reserve",
+    "gsis_id": "00-1000047",
+    "yahoo_id": "90034",
+    "birth_date": "2000-11-08",
+    "week": 3
+  }
+]

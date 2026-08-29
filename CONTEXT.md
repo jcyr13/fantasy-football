@@ -141,6 +141,10 @@ The way Yahoo data is retrieved in v1: John signs into Yahoo in the browser, the
 **News ticker**:
 The top-pinned horizontal scrolling strip of NFL news items from the last 48 hours that mention a Dead Parrots player, a current opponent's player, or a free-agent shortlist player. Sourced from free feeds, tagged by name match, labelled by bucket. Ephemeral — not part of a weekly snapshot.
 
+**Assembled weekly view**:
+The one reconciled per-week state (`weekly.AssembledWeek`) that `assemble_week` builds from the raw pulls — resolved rosters with projections and marginals, the opponent's likely lineup inputs, and the three strategic-layer states — so the optimizer and every layer read one object with one player-identity map. It is the seam the API's read endpoints compose over; where v1's pulls are too thin for a layer's real input the assembly approximates and lists each approximation in `caveats`. See `docs/adr/0013`.
+_Avoid_: calling it "the snapshot" — a **Weekly snapshot** is the immutable persisted record (issue #17), this is assembled fresh per request.
+
 **Weekly snapshot**:
 An immutable per-week record of projections, lineups, recommendations, and — backfilled after games — the actual outcome. Retained for the whole season for "what did the model say, and what happened?".
 
