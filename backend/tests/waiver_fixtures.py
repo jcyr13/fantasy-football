@@ -41,6 +41,7 @@ def rostered(
     bye_week: int | None = None,
     is_starter: bool = True,
     available: bool = True,
+    out_this_week: bool = False,
     name: str | None = None,
 ) -> RosteredPlayer:
     return RosteredPlayer(
@@ -50,6 +51,7 @@ def rostered(
         bye_week=bye_week,
         is_starter=is_starter,
         available=available,
+        out_this_week=out_this_week,
     )
 
 
@@ -65,14 +67,18 @@ def full_roster(
     byes: dict[str, int] | None = None,
     bench: set[str] | None = None,
     unavailable: set[str] | None = None,
+    out_this_week: set[str] | None = None,
 ) -> tuple[RosteredPlayer, ...]:
     """A Dead Parrots roster with the given per-position counts, deep enough at
     every position to cover the fixed slots. ``byes`` maps a ``player_id``
     (``"rb1"``, ``"k1"``, …) to an NFL bye week; ``bench`` marks ids as
-    non-starters; ``unavailable`` marks ids ruled out for the season."""
+    non-starters; ``unavailable`` marks ids ruled out for the season;
+    ``out_this_week`` marks ids as a week-to-week injury out for the upcoming
+    week only."""
     byes = byes or {}
     bench = bench or set()
     unavailable = unavailable or set()
+    out_this_week = out_this_week or set()
     out: list[RosteredPlayer] = []
     for position, count in (
         ("QB", qb),
@@ -92,6 +98,7 @@ def full_roster(
                     bye_week=byes.get(pid),
                     is_starter=pid not in bench,
                     available=pid not in unavailable,
+                    out_this_week=pid in out_this_week,
                 )
             )
     return tuple(out)

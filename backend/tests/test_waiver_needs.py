@@ -45,6 +45,18 @@ def test_season_ending_injury_also_leaves_a_hole():
     assert fit.healthy_this_week == 0
 
 
+def test_week_to_week_injury_leaves_a_hole_this_week():
+    # lone IDP starter ruled OUT for the upcoming week (not season-ending)
+    state = a_state(roster=full_roster(idp=1, out_this_week={"idp1"}), current_week=8)
+    fit = bench_need_fit(state, "IDP")
+
+    assert fit.has_current_hole is True
+    assert fit.depth == "hole"
+    assert fit.healthy_this_week == 0
+    # the player is still counted as roster depth (they return next week)
+    assert fit.rostered_depth == 1
+
+
 def test_bye_crunch_weeks_flag_future_thinning():
     # two of three RB starters share a Week 11 bye
     roster = full_roster(rb=4, byes={"rb1": 11, "rb2": 11})

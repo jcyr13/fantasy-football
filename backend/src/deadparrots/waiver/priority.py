@@ -49,9 +49,7 @@ class WaiverPriorityVerdict:
     rationale: str
 
 
-def waiver_priority_standing(
-    state: WaiverState, params: WaiverParams = DEFAULT_WAIVER_PARAMS
-) -> WaiverPriorityStanding:
+def waiver_priority_standing(state: WaiverState) -> WaiverPriorityStanding:
     """Surface the current waiver priority (methodology §4.12)."""
     is_last = state.waiver_priority >= state.team_count
     if is_last:
@@ -85,7 +83,9 @@ def priority_verdict(
     priority = state.waiver_priority
     drops_to = state.team_count
     already_last = priority >= state.team_count
-    vor = round(value_over_replacement, 2)
+    # The gain is already rounded by the caller; keep it as-is so the value
+    # stored here matches ``FreeAgentValue.value_over_replacement`` exactly.
+    vor = value_over_replacement
 
     if value_over_replacement <= 0.0:
         verdict: WaiverVerdict = "hold-priority"

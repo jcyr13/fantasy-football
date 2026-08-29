@@ -21,7 +21,12 @@ from .priority import WaiverPriorityVerdict, priority_verdict
 # A role with a single free agent has no alternative: replacement is that
 # player's own number and the value over replacement is 0. See ADR-0011.
 
-__all__ = ["FreeAgentValue", "ReplacementLevel", "rest_of_season_value"]
+__all__ = [
+    "FreeAgentValue",
+    "ReplacementLevel",
+    "replacement_level_for",
+    "rest_of_season_value",
+]
 
 
 @dataclass(frozen=True)
@@ -62,58 +67,33 @@ class FreeAgentValue:
     reasons: tuple[str, ...]
 
 
-def _replacement_levels(state: WaiverState) -> dict[str, ReplacementLevel]:
-    """Per role, the best free agent's rest-of-season points — the baseline the
-    *other* free agents at the role are measured against."""
-    best: dict[str, tuple[float, str, str]] = {}
-    for fa in state.free_agents:
-        cur = best.get(fa.role)
-        cand = (fa.ros_projected_points, fa.player_id, fa.name)
-        if cur is None or cand[0] > cur[0]:
-            best[fa.role] = cand
-    return {
-        role: ReplacementLevel(
-            role=role, points=pts, from_player_id=pid, from_name=name
-        )
-        for role, (pts, pid, name) in best.items()
-    }
-
-
-def _replacement_for(
-    state: WaiverState,
-    player_id: str,
-    role: str,
-    role_best: dict[str, ReplacementLevel],
+def replacement_level_for(
+    state: WaiverState, player_id: str, role: str
 ) -> ReplacementLevel:
-    """The replacement level for one free agent — the role's best, unless that
-    *is* this player, in which case the best of the others (or the player
-    themselves when they are the only free agent at the role)."""
-    best = role_best[role]
-    if best.from_player_id != player_id:
-        return best
+    """The freely-available replacement one free agent's value is measured
+    against — the best *other* free agent at ``role`` (methodology §4.10 read
+    self-excluded, so the best available player is measured against the next
+    best; see ADR-0011). A role with a single free agent has no alternative:
+    the replacement is that player themselves and the value over replacement
+    is 0."""
     others = [
         fa
         for fa in state.free_agents
         if fa.role == role and fa.player_id != player_id
     ]
-    if not others:
-        return ReplacementLevel(
-            role=role,
-            points=best.points,
-            from_player_id=player_id,
-            from_name=best.from_name,
-        )
-    runner_up = max(others, key=lambda fa: fa.ros_projected_points)
+    pool = others or [fa for fa in state.free_agents if fa.player_id == player_id]
+    best = max(pool, key=lambda fa: (fa.ros_projected_points, fa.player_id))
     return ReplacementLevel(
         role=role,
-        points=runner_up.ros_projected_points,
-        from_player_id=runner_up.player_id,
-        from_name=runner_up.name,
+        points=best.ros_projected_points,
+        from_player_id=best.player_id,
+        from_name=best.name,
     )
 
 
 def _reasons(
-    fa_name: str,
+    *,
+    solo: bool,
     role: str,
     vor: float,
     replacement: ReplacementLevel,
@@ -121,7 +101,7 @@ def _reasons(
     own_bye: OwnByeNote,
     verdict: WaiverPriorityVerdict,
 ) -> tuple[str, ...]:
-    if replacement.from_player_id is None or replacement.from_name == fa_name:
+    if solo:
         repl_line = (
             f"Only free agent at {role} — value over replacement is 0 by "
             f"definition."
@@ -143,12 +123,12 @@ def rest_of_season_value(
     (methodology §4.10). Sorted by descending value over replacement, then
     descending projected points, then ``player_id``."""
     fits = dict(need_fits) if need_fits is not None else bench_need_fits(state, params)
-    role_best = _replacement_levels(state)
 
     rows: list[FreeAgentValue] = []
     for fa in state.free_agents:
         fit = fits.get(fa.role) or bench_need_fit(state, fa.role, params)
-        replacement = _replacement_for(state, fa.player_id, fa.role, role_best)
+        replacement = replacement_level_for(state, fa.player_id, fa.role)
+        solo = replacement.from_player_id == fa.player_id
         vor = round(fa.ros_projected_points - replacement.points, 4)
         own_bye = own_bye_note(fa, state, fit)
         verdict = priority_verdict(vor, state, params)
@@ -167,7 +147,13 @@ def rest_of_season_value(
                 own_bye=own_bye,
                 priority_verdict=verdict,
                 reasons=_reasons(
-                    fa.name, fa.role, vor, replacement, fit, own_bye, verdict
+                    solo=solo,
+                    role=fa.role,
+                    vor=vor,
+                    replacement=replacement,
+                    need_fit=fit,
+                    own_bye=own_bye,
+                    verdict=verdict,
                 ),
             )
         )

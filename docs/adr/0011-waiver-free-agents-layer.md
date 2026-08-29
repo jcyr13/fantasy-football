@@ -43,11 +43,22 @@ replacement is 0. The list is sorted by descending value over replacement, then
 descending projected points, then `player_id`; `positional_rank` is the order
 within the role.
 
+The signed-off `docs/methodology.md` §4.10 wording is **not** amended — this
+ADR is the concrete definition, the same way ADR-0010 pinned §4.8's
+"one positional tier" without editing the doc. A consequence worth stating: only
+a position-leader can post a positive value over replacement, so the §4.12
+verdict reads `hold-priority` for every non-leader free agent. That is the
+correct answer — you never burn a no-FAAB waiver claim on the third-best kicker
+on the wire — but it does mean the verdict only discriminates among the
+one-per-position leaders.
+
 **3. The streamer list reuses the annotations and is scoped by an actual
 hole.** "Positions with a current bye/injury hole" (§4.11) is derived: a role
-has a hole in `current_week` when its healthy rostered count (available, not on
-bye that week) is below the number of **non-flex** starting slots that must be
-that role (QB 1, RB 2, WR 2, TE 1, K 1, DEF 1, IDP 1 under `RIP_TIDE_SLOTS`).
+has a hole in `current_week` when its healthy rostered count — available for the
+season, not on bye that week, and not ruled out by a week-to-week injury
+(`RosteredPlayer.out_this_week`) — is below the number of **non-flex** starting
+slots that must be that role (QB 1, RB 2, WR 2, TE 1, K 1, DEF 1, IDP 1 under
+`RIP_TIDE_SLOTS`).
 The flex is excluded from the need count — a role is thin when its own fixed
 slots are uncovered, and the flex only makes that worse. K / DEF / IDP dominate
 in practice because those slots are rostered one deep. `WaiverState.hole_roles`

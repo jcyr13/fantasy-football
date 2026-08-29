@@ -8,7 +8,7 @@ from .needs import BenchNeedFit, bench_need_fit, bench_need_fits
 from .own_bye import OwnByeNote, own_bye_note
 from .params import DEFAULT_WAIVER_PARAMS, WaiverParams
 from .priority import WaiverPriorityVerdict, priority_verdict
-from .replacement import FreeAgentValue
+from .replacement import FreeAgentValue, replacement_level_for
 
 # The this-week streamer list (methodology §4.11): a separate free-agent list
 # for a *current* bye/injury hole, sorted by next-week ceiling (P90) rather than
@@ -71,7 +71,7 @@ def streamer_options(
     """The streamer list for ``state`` (methodology §4.11).
 
     Scoped to ``state.hole_roles_resolved()`` and sorted by descending
-    next-week ceiling, then descending rest-of-season points, then
+    next-week ceiling, then descending projected points, then
     ``player_id``. ``ros_values`` may be passed to reuse the value-over-
     replacement numbers already computed for the rest-of-season list.
     """
@@ -91,7 +91,11 @@ def streamer_options(
         vor = (
             known.value_over_replacement
             if known is not None
-            else _vor(state, fa.player_id, fa.role, fa.ros_projected_points)
+            else round(
+                fa.ros_projected_points
+                - replacement_level_for(state, fa.player_id, fa.role).points,
+                4,
+            )
         )
         verdict = (
             known.priority_verdict
@@ -118,17 +122,3 @@ def streamer_options(
             )
         )
     return tuple(out)
-
-
-def _vor(
-    state: WaiverState, player_id: str, role: str, ros_points: float
-) -> float:
-    """Value over replacement for a streamer not present in the rest-of-season
-    map — the best *other* free agent at the role."""
-    others = [
-        fa.ros_projected_points
-        for fa in state.free_agents
-        if fa.role == role and fa.player_id != player_id
-    ]
-    baseline = max(others) if others else ros_points
-    return round(ros_points - baseline, 4)

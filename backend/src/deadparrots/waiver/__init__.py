@@ -35,7 +35,12 @@ from .priority import (
     priority_verdict,
     waiver_priority_standing,
 )
-from .replacement import FreeAgentValue, ReplacementLevel, rest_of_season_value
+from .replacement import (
+    FreeAgentValue,
+    ReplacementLevel,
+    replacement_level_for,
+    rest_of_season_value,
+)
 from .streamers import StreamerOption, streamer_options
 from .window import WaiverWindowFlag, roster_cutdown_window
 from .wire import WaiverWire, waiver_wire
@@ -62,6 +67,7 @@ __all__ = [
     "last_tuesday_of_august",
     "own_bye_note",
     "priority_verdict",
+    "replacement_level_for",
     "rest_of_season_value",
     "roster_cutdown_window",
     "streamer_options",

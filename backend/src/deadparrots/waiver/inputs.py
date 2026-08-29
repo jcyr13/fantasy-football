@@ -71,9 +71,11 @@ class RosteredPlayer:
     ``bye_week`` is the player's NFL bye (``None`` once it has passed or is
     unknown). ``is_starter`` marks a normal starter at the position — only
     starters on bye are counted toward a role's bye-crunch weeks. ``available``
-    is ``False`` for a player ruled out for the rest of the season (a
-    week-to-week injury stays ``True``); an unavailable player is not counted as
-    healthy depth.
+    is ``False`` for a player ruled out for the rest of the season;
+    ``out_this_week`` is ``True`` for a week-to-week injury that rules the
+    player out of ``current_week`` only. Neither an unavailable nor an
+    out-this-week player counts as healthy depth — either can open a hole
+    (methodology §4.11, "a current bye/injury hole").
     """
 
     player_id: str
@@ -82,6 +84,7 @@ class RosteredPlayer:
     bye_week: int | None = None
     is_starter: bool = True
     available: bool = True
+    out_this_week: bool = False
 
     @property
     def role(self) -> str:
@@ -146,18 +149,35 @@ class WaiverState:
         return needs
 
     def healthy_at_role(self, role: str, week: int) -> int:
-        """Rostered players of ``role`` who are available and not on bye in
-        ``week``."""
+        """Rostered players of ``role`` who can start in ``week`` — available for
+        the season, not on bye that week, and (for ``current_week``) not ruled
+        out by a week-to-week injury."""
         return sum(
             1
             for p in self.dead_parrots_roster
-            if p.role == role and p.available and p.bye_week != week
+            if p.role == role
+            and p.available
+            and p.bye_week != week
+            and not (p.out_this_week and week == self.current_week)
+        )
+
+    def starters_on_bye_at(self, role: str, week: int) -> int:
+        """Available *starters* of ``role`` whose NFL bye falls in ``week`` — the
+        per-role §4.4 warn count."""
+        return sum(
+            1
+            for p in self.dead_parrots_roster
+            if p.role == role
+            and p.is_starter
+            and p.available
+            and p.bye_week == week
         )
 
     def hole_roles_resolved(self) -> frozenset[str]:
         """Roles with a current bye/injury hole in ``current_week`` — the
         explicit ``hole_roles`` override if given, else every role whose healthy
-        rostered count this week is below its fixed slot need."""
+        rostered count this week (byes and injuries removed) is below its fixed
+        slot need."""
         if self.hole_roles is not None:
             return self.hole_roles
         return frozenset(

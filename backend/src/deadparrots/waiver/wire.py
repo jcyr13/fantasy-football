@@ -50,7 +50,7 @@ def waiver_wire(
         week=state.current_week,
         rest_of_season=ros,
         streamers=streamers,
-        waiver_priority=waiver_priority_standing(state, params),
+        waiver_priority=waiver_priority_standing(state),
         window=roster_cutdown_window(state, params),
         need_fits=tuple(fits[role] for role in sorted(fits)),
         hole_roles=tuple(sorted(state.hole_roles_resolved())),

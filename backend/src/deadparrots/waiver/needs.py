@@ -43,19 +43,11 @@ def _bye_crunch_weeks(
 ) -> tuple[int, ...]:
     """Upcoming weeks with at least ``warn_count`` available *starters* at
     ``role`` on bye — the §4.4 warn condition, per role."""
-    out: list[int] = []
-    for week in state.upcoming_weeks():
-        on_bye = sum(
-            1
-            for p in state.dead_parrots_roster
-            if p.role == role
-            and p.is_starter
-            and p.available
-            and p.bye_week == week
-        )
-        if on_bye >= warn_count:
-            out.append(week)
-    return tuple(out)
+    return tuple(
+        week
+        for week in state.upcoming_weeks()
+        if state.starters_on_bye_at(role, week) >= warn_count
+    )
 
 
 def _depth(has_hole: bool, rostered_depth: int, fixed_slots: int) -> RoleDepth:

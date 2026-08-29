@@ -43,6 +43,18 @@ def test_ordered_by_next_week_ceiling_not_ros_value():
     assert streamers[0].next_week_ceiling == pytest.approx(17.0)
 
 
+def test_week_to_week_injury_opens_the_streamer_scope():
+    # lone DEF ruled OUT this week (week-to-week, not season-ending)
+    state = a_state(
+        free_agents=[fa("def-a", "DEF", ros=70.0, ceiling=8.0)],
+        roster=full_roster(def_=1, out_this_week={"def1"}),
+        current_week=8,
+    )
+    streamers = streamer_options(state)
+    assert [s.player_id for s in streamers] == ["def-a"]
+    assert streamers[0].role == "DEF"
+
+
 def test_empty_when_no_current_hole():
     state = a_state(
         free_agents=[fa("k-a", "K", ros=60.0)],
