@@ -75,7 +75,8 @@ A player's role-and-usage signal from nflverse (snap share, target share, route 
 A defense's matchup strength, measured as the fantasy points (RIP TIDE scoring) it has surrendered to a given position, decay-weighted. The input to the capped matchup adjustment.
 
 **Consensus feed**:
-An external weekly projection source (`ffanalytics`, scored to RIP TIDE rules) used as a cross-check and as the fallback projection when a player has too little current-season history.
+An external weekly projection source used as a cross-check against the model's number and as the fallback projection when a player has too little current-season history. `ffanalytics` runs in the one-shot `rsidecar` and emits raw stat projections; the backend re-scores them with `RIP_TIDE_RULESET` through the same scoring engine the model uses (never a second implementation — ADR-0005). The Sleeper public API is the Week-1 stopgap and the automatic fallback when the sidecar has no fresh drop.
+_Avoid_: treating the consensus number as independently RIP-TIDE-scored, or as the source of a player's floor/ceiling shape (that is the model's positional residuals).
 
 ### Strategic layers
 

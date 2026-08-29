@@ -1,12 +1,8 @@
 #!/bin/sh
-# Stub sidecar. The consensus projection feed (ffanalytics scored to RIP TIDE
-# rules; see ticket #8 and docs/adr/0003) is not implemented yet. Until then
-# this container just idles with a heartbeat so `docker compose up` shows all
-# three services running.
+# One-shot: run the ffanalytics consensus scrape once and exit (spec issue #8;
+# docs/adr/0005). This container is NOT a long-lived service — a host timer
+# invokes it weekly with `docker compose run --rm rsidecar`, and the api's
+# APScheduler job consumes whatever it dropped into <data>/consensus/rsidecar/.
 set -eu
 
-echo "rsidecar stub: consensus feed lands in ticket #8"
-while true; do
-  echo "rsidecar heartbeat $(date -u +%Y-%m-%dT%H:%M:%SZ)"
-  sleep 3600
-done
+exec Rscript /app/run.R

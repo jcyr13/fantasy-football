@@ -7,6 +7,7 @@ from fastapi import FastAPI
 from deadparrots.api.health import router as health_router
 from deadparrots.api.yahoo import router as yahoo_router
 from deadparrots.config import Settings, get_settings
+from deadparrots.consensus.schedule import register_weekly_consensus_pull
 from deadparrots.db import connect_duckdb, init_sqlite
 from deadparrots.ingest.cache import NflverseParquetCache, register_nflverse_views
 from deadparrots.ingest.schedule import register_weekly_nflverse_pull
@@ -30,6 +31,11 @@ async def lifespan(app: FastAPI):
         settings=settings,
         sqlite_conn=app.state.sqlite,
         duckdb_conn=app.state.duckdb,
+    )
+    register_weekly_consensus_pull(
+        scheduler,
+        settings=settings,
+        sqlite_conn=app.state.sqlite,
     )
 
     try:

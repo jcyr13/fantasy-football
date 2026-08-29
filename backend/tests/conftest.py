@@ -12,6 +12,7 @@ from fastapi.testclient import TestClient
 
 from deadparrots.app import create_app
 from deadparrots.config import Settings
+from deadparrots.consensus.raw import ConsensusRawStore, RawConsensusPayload
 from deadparrots.db import init_sqlite
 from deadparrots.ingest.datasets import DatasetSpec
 from deadparrots.yahoo.pages import YahooPage
@@ -19,6 +20,7 @@ from deadparrots.yahoo.raw import RawYahooPayload, YahooRawStore
 
 FIXTURE_DIR = Path(__file__).parent / "fixtures" / "nflverse"
 YAHOO_FIXTURE_DIR = Path(__file__).parent / "fixtures" / "yahoo"
+CONSENSUS_FIXTURE_DIR = Path(__file__).parent / "fixtures" / "consensus"
 
 
 @pytest.fixture
@@ -176,3 +178,71 @@ def make_fake_yahoo_source():
 @pytest.fixture
 def yahoo_raw_store(tmp_path) -> YahooRawStore:
     return YahooRawStore(tmp_path / "data")
+
+
+# --- consensus feed sidecar (issue #8) -------------------------------------
+
+
+def load_consensus_payload(name: str) -> RawConsensusPayload:
+    """A recorded consensus payload (an ``ffanalytics`` sidecar drop or a
+    Sleeper stopgap response), wrapped exactly as a source would return it.
+    """
+    body = (CONSENSUS_FIXTURE_DIR / f"{name}.json").read_text(encoding="utf-8")
+    data = json.loads(body)
+    return RawConsensusPayload(
+        source=str(data["source"]),
+        season=int(data["season"]),
+        week=int(data["week"]),
+        fetched_at=datetime(2026, 9, 9, 12, 0, 0, tzinfo=UTC),
+        url=f"https://example.test/consensus/{name}",
+        body=body,
+    )
+
+
+@pytest.fixture
+def consensus_payload():
+    """Factory: ``consensus_payload("ffanalytics_week1")`` -> ``RawConsensusPayload``."""
+    return load_consensus_payload
+
+
+class FakeConsensusSource:
+    """A source backed by a recorded consensus fixture; ``fail_with`` raises."""
+
+    def __init__(
+        self, name: str = "ffanalytics_week1", *, fail_with: Exception | None = None
+    ) -> None:
+        self._name = name
+        self._fail_with = fail_with
+        self.calls: list[tuple[int, int]] = []
+
+    @property
+    def source_label(self) -> str:
+        return "consensus-fake"
+
+    def fetch(self, season: int, week: int) -> RawConsensusPayload:
+        self.calls.append((season, week))
+        if self._fail_with is not None:
+            raise self._fail_with
+        return load_consensus_payload(self._name)
+
+
+@pytest.fixture
+def make_fake_consensus_source():
+    """Factory: ``make_fake_consensus_source("sleeper_week1", fail_with=...)``."""
+
+    def _make(
+        name: str = "ffanalytics_week1", *, fail_with: Exception | None = None
+    ) -> FakeConsensusSource:
+        return FakeConsensusSource(name, fail_with=fail_with)
+
+    return _make
+
+
+@pytest.fixture
+def fake_consensus_source() -> FakeConsensusSource:
+    return FakeConsensusSource()
+
+
+@pytest.fixture
+def consensus_raw_store(tmp_path) -> ConsensusRawStore:
+    return ConsensusRawStore(tmp_path / "data")

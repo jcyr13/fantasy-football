@@ -1,0 +1,61 @@
+{
+  "source": "sleeper",
+  "payload_version": 1,
+  "season": 2026,
+  "week": 1,
+  "generated_at": "2026-09-09T09:30:00Z",
+  "players": [
+    {
+      "name": "Jalen Hurts",
+      "team": "PHI",
+      "position": "QB",
+      "sleeper_id": "6904",
+      "source_points": 22.0,
+      "stats": {
+        "pass_yd": 230,
+        "pass_td": 1.5,
+        "pass_int": 0.5,
+        "pass_sack": 1.8,
+        "rush_yd": 45,
+        "rush_td": 0.7,
+        "rush_2pt": 0.1,
+        "fum_lost": 0.4,
+        "rec": 0,
+        "pts_std": 22.0,
+        "pts_half_ppr": 22.0
+      }
+    },
+    {
+      "name": "Saquon Barkley",
+      "team": "PHI",
+      "position": "RB",
+      "sleeper_id": "4866",
+      "source_points": 16.4,
+      "stats": {
+        "rush_yd": 96,
+        "rush_td": 0.7,
+        "rec_yd": 22,
+        "rec_td": 0.12,
+        "rec": 2.6,
+        "fum_lost": 0.15
+      }
+    },
+    {
+      "name": "Dallas Cowboys",
+      "team": "DAL",
+      "position": "DEF",
+      "sleeper_id": "DAL",
+      "source_points": 7.0,
+      "stats": {
+        "sack": 3.0,
+        "int": 1.0,
+        "fum_rec": 0.7,
+        "def_td": 0.2,
+        "safe": 0.05,
+        "blk_kick": 0.05,
+        "def_tfl": 4.0,
+        "pts_allow": 24.0
+      }
+    }
+  ]
+}

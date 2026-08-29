@@ -1,7 +1,10 @@
 # Two deployables + the consensus sidecar, per docs/adr/0003.
 #   api      FastAPI backend, owns all numeric logic; hosts the scheduler.
 #   web      nginx serving the built SPA and proxying /api to api.
-#   rsidecar consensus projection feed (stub until ticket #8).
+#   rsidecar ffanalytics consensus feed — a one-shot, not a service (issue #8,
+#            docs/adr/0005). A host timer runs `docker compose run --rm rsidecar`
+#            weekly; the api's APScheduler job re-scores whatever it drops into
+#            ./data/consensus/rsidecar/ (falling back to the Sleeper API).
 
 services:
   api:
@@ -22,4 +25,11 @@ services:
 
   rsidecar:
     build: ./rsidecar
-    restart: unless-stopped
+    environment:
+      DEADPARROTS_DATA_DIR: /data
+    volumes:
+      - ./data:/data
+    # One-shot: it scrapes ffanalytics once and exits. No restart — it is
+    # invoked on a schedule from the host, not kept running.
+    restart: "no"
+    profiles: ["sidecar"]
