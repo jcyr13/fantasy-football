@@ -1,8 +1,15 @@
 from __future__ import annotations
 
-from collections.abc import Mapping
+from collections.abc import Iterable, Mapping
 
 from .rows import ScoringUnit, StatRow
+
+# Offensive positions nflverse tags in ``player_stats.position``. Team defense is
+# not a row in that table, so ``stat_rows_from_player_stats`` covers offense and
+# kickers only; the DEF rows are assembled separately (see
+# ``team_defense_stat_row`` and docs/scoring-oracle-capture.md).
+_OFFENSE_POSITIONS = frozenset({"QB", "RB", "WR", "TE", "FB", "HB"})
+_KICKER_POSITIONS = frozenset({"K", "PK"})
 
 # Pure translators from nflverse's wide stat tables into the engine's canonical
 # ``StatRow`` vocabulary. These live next to the engine because the 2025
@@ -94,6 +101,24 @@ def kicker_stat_row(record: Mapping[str, object]) -> StatRow:
         stats=stats,
         label=label,
     )
+
+
+def stat_rows_from_player_stats(records: Iterable[Mapping[str, object]]) -> list[StatRow]:
+    """Route an nflverse ``player_stats`` weekly dump into offense / kicker rows.
+
+    One row per input record whose ``position`` is an offensive or kicking one;
+    every other record (defenders, long snappers, punters, ``None``) is skipped.
+    Order is preserved. This is the offense+kicker half of the golden stat-row
+    fixture; team defense is added on top by the caller.
+    """
+    rows: list[StatRow] = []
+    for record in records:
+        position = str(record.get("position") or "").upper()
+        if position in _KICKER_POSITIONS:
+            rows.append(kicker_stat_row(record))
+        elif position in _OFFENSE_POSITIONS:
+            rows.append(offense_stat_row(record))
+    return rows
 
 
 def team_defense_stat_row(

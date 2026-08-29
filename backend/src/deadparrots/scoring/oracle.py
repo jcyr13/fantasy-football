@@ -47,99 +47,117 @@ class OracleRecord:
 
 # --------------------------------------------------------------------------- #
 # Fixture (de)serialisation — pure, no I/O beyond the passed path.
+#
+# Both fixture files are a JSON list of records sharing the identity quartet
+# (entity_id, season, week, unit) plus a label; only the payload field differs
+# (``yahoo_points`` vs ``stats``). One read/write pair handles both, given a
+# per-type row<->dict converter.
 # --------------------------------------------------------------------------- #
 
-
-def oracle_records_to_json(records: Iterable[OracleRecord]) -> list[dict[str, object]]:
-    return [
-        {
-            "entity_id": r.entity_id,
-            "season": r.season,
-            "week": r.week,
-            "unit": r.unit.value,
-            "yahoo_points": r.yahoo_points,
-            "label": r.label,
-        }
-        for r in records
-    ]
+Jsonable = dict[str, object]
 
 
-def oracle_records_from_json(data: Sequence[dict[str, object]]) -> list[OracleRecord]:
-    return [
-        OracleRecord(
-            entity_id=str(d["entity_id"]),
-            season=int(d["season"]),  # type: ignore[arg-type]
-            week=int(d["week"]),  # type: ignore[arg-type]
-            unit=ScoringUnit(str(d["unit"])),
-            yahoo_points=float(d["yahoo_points"]),  # type: ignore[arg-type]
-            label=(str(d["label"]) if d.get("label") is not None else None),
-        )
-        for d in data
-    ]
-
-
-def stat_rows_to_json(rows: Iterable[StatRow]) -> list[dict[str, object]]:
-    return [
-        {
-            "entity_id": row.entity_id,
-            "season": row.season,
-            "week": row.week,
-            "unit": row.unit.value,
-            "stats": {k: float(v) for k, v in row.stats.items()},
-            "label": row.label,
-        }
-        for row in rows
-    ]
-
-
-def stat_rows_from_json(data: Sequence[dict[str, object]]) -> list[StatRow]:
-    rows: list[StatRow] = []
-    for d in data:
-        unit = ScoringUnit(str(d["unit"]))
-        allowed = STATS_BY_UNIT[unit]
-        raw_stats = d.get("stats") or {}
-        stats = {k: float(v) for k, v in dict(raw_stats).items() if k in allowed}
-        rows.append(
-            StatRow(
-                entity_id=str(d["entity_id"]),
-                season=int(d["season"]),  # type: ignore[arg-type]
-                week=int(d["week"]),  # type: ignore[arg-type]
-                unit=unit,
-                stats=stats,
-                label=(str(d["label"]) if d.get("label") is not None else None),
-            )
-        )
-    return rows
-
-
-def write_oracle_fixture(records: Iterable[OracleRecord], path: Path = ORACLE_FIXTURE_PATH) -> Path:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    payload = sorted(
-        oracle_records_to_json(records),
-        key=lambda d: (d["unit"], d["entity_id"], d["week"]),
+def _identity(d: Jsonable) -> tuple[str, int, int, ScoringUnit, str | None]:
+    return (
+        str(d["entity_id"]),
+        int(d["season"]),  # type: ignore[arg-type]
+        int(d["week"]),  # type: ignore[arg-type]
+        ScoringUnit(str(d["unit"])),
+        (str(d["label"]) if d.get("label") is not None else None),
     )
+
+
+def _sort_key(d: Jsonable) -> tuple[object, object, object]:
+    return (d["unit"], d["entity_id"], d["week"])
+
+
+def _write_fixture(items: Iterable[object], path: Path, to_json) -> Path:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    payload = sorted((to_json(it) for it in items), key=_sort_key)
     path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n")
     return path
+
+
+def _load_fixture(path: Path, from_json):
+    return [from_json(d) for d in json.loads(path.read_text())]
+
+
+def _oracle_to_json(r: OracleRecord) -> Jsonable:
+    return {
+        "entity_id": r.entity_id,
+        "season": r.season,
+        "week": r.week,
+        "unit": r.unit.value,
+        "yahoo_points": r.yahoo_points,
+        "label": r.label,
+    }
+
+
+def _oracle_from_json(d: Jsonable) -> OracleRecord:
+    entity_id, season, week, unit, label = _identity(d)
+    return OracleRecord(
+        entity_id=entity_id,
+        season=season,
+        week=week,
+        unit=unit,
+        yahoo_points=float(d["yahoo_points"]),  # type: ignore[arg-type]
+        label=label,
+    )
+
+
+def _stat_row_to_json(row: StatRow) -> Jsonable:
+    return {
+        "entity_id": row.entity_id,
+        "season": row.season,
+        "week": row.week,
+        "unit": row.unit.value,
+        "stats": {k: float(v) for k, v in row.stats.items()},
+        "label": row.label,
+    }
+
+
+def _stat_row_from_json(d: Jsonable) -> StatRow:
+    entity_id, season, week, unit, label = _identity(d)
+    allowed = STATS_BY_UNIT[unit]
+    raw_stats = dict(d.get("stats") or {})  # type: ignore[arg-type]
+    stats = {k: float(v) for k, v in raw_stats.items() if k in allowed}
+    return StatRow(
+        entity_id=entity_id, season=season, week=week, unit=unit, stats=stats, label=label
+    )
+
+
+def oracle_records_to_json(records: Iterable[OracleRecord]) -> list[Jsonable]:
+    return [_oracle_to_json(r) for r in records]
+
+
+def oracle_records_from_json(data: Sequence[Jsonable]) -> list[OracleRecord]:
+    return [_oracle_from_json(d) for d in data]
+
+
+def stat_rows_to_json(rows: Iterable[StatRow]) -> list[Jsonable]:
+    return [_stat_row_to_json(row) for row in rows]
+
+
+def stat_rows_from_json(data: Sequence[Jsonable]) -> list[StatRow]:
+    return [_stat_row_from_json(d) for d in data]
+
+
+def write_oracle_fixture(
+    records: Iterable[OracleRecord], path: Path = ORACLE_FIXTURE_PATH
+) -> Path:
+    return _write_fixture(records, path, _oracle_to_json)
 
 
 def load_oracle_fixture(path: Path = ORACLE_FIXTURE_PATH) -> list[OracleRecord]:
-    return oracle_records_from_json(json.loads(path.read_text()))
+    return _load_fixture(path, _oracle_from_json)
 
 
-def write_stat_rows_fixture(
-    rows: Iterable[StatRow], path: Path = STAT_ROWS_FIXTURE_PATH
-) -> Path:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    payload = sorted(
-        stat_rows_to_json(rows),
-        key=lambda d: (d["unit"], d["entity_id"], d["week"]),
-    )
-    path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n")
-    return path
+def write_stat_rows_fixture(rows: Iterable[StatRow], path: Path = STAT_ROWS_FIXTURE_PATH) -> Path:
+    return _write_fixture(rows, path, _stat_row_to_json)
 
 
 def load_stat_rows_fixture(path: Path = STAT_ROWS_FIXTURE_PATH) -> list[StatRow]:
-    return stat_rows_from_json(json.loads(path.read_text()))
+    return _load_fixture(path, _stat_row_from_json)
 
 
 # --------------------------------------------------------------------------- #
@@ -232,49 +250,95 @@ def _yahoo_entity_id(player: object, unit: ScoringUnit) -> str:
     return str(getattr(player, "player_id", "") or getattr(player, "player_key", ""))
 
 
+def build_offense_kicker_stat_rows(
+    parquet_path: Path, *, season: int = ORACLE_SEASON
+) -> list[StatRow]:
+    """Read an nflverse ``player_stats`` parquet and return offense + kicker rows.
+
+    This is the mechanical half of the stat-row fixture. Team-defense rows are
+    rolled up from play-by-play separately and appended by the capture operator
+    (docs/scoring-oracle-capture.md); ``entity_id`` here is the nflverse
+    ``player_id``, which the operator must reconcile with the Yahoo-keyed oracle.
+    """
+    import polars as pl
+
+    from .adapters import stat_rows_from_player_stats
+
+    frame = pl.read_parquet(parquet_path)
+    if "season" in frame.columns:
+        frame = frame.filter(pl.col("season") == season)
+    return stat_rows_from_player_stats(frame.iter_rows(named=True))
+
+
+def _summarise(rows: Sequence[object], path: Path, kind: str) -> None:
+    by_unit: dict[str, int] = {}
+    for row in rows:
+        unit = row.unit.value  # type: ignore[attr-defined]
+        by_unit[unit] = by_unit.get(unit, 0) + 1
+    print(f"wrote {len(rows)} {kind} to {path}")
+    for unit, count in sorted(by_unit.items()):
+        print(f"  {unit}: {count}")
+
+
 def _build_arg_parser():
     import argparse
 
     parser = argparse.ArgumentParser(
         prog="python -m deadparrots.scoring.oracle",
-        description="Capture 2025 Yahoo per-player weekly fantasy points as golden fixtures.",
+        description="Build the 2025 scoring golden fixtures (spec issue #1 validation gate).",
     )
-    parser.add_argument("--league-id", type=int, default=RIP_TIDE_LEAGUE_ID)
-    parser.add_argument("--season", type=int, default=ORACLE_SEASON)
-    parser.add_argument(
+    sub = parser.add_subparsers(dest="command", required=True)
+
+    cap = sub.add_parser("capture", help="pull the Yahoo oracle (needs yfpy + OAuth)")
+    cap.add_argument("--league-id", type=int, default=RIP_TIDE_LEAGUE_ID)
+    cap.add_argument("--season", type=int, default=ORACLE_SEASON)
+    cap.add_argument(
         "--auth-dir",
         type=Path,
         default=Path.cwd(),
         help="Directory holding the yfpy .env / token file (default: cwd).",
     )
-    parser.add_argument(
-        "--out",
-        type=Path,
-        default=ORACLE_FIXTURE_PATH,
-        help=f"Oracle fixture output path (default: {ORACLE_FIXTURE_PATH}).",
+    cap.add_argument("--out", type=Path, default=ORACLE_FIXTURE_PATH)
+
+    rows = sub.add_parser(
+        "build-rows",
+        help="build the offense+kicker stat rows from a cached nflverse player_stats parquet",
     )
+    rows.add_argument("parquet", type=Path, help="path to a player_stats.parquet in the cache")
+    rows.add_argument("--season", type=int, default=ORACLE_SEASON)
+    rows.add_argument("--out", type=Path, default=STAT_ROWS_FIXTURE_PATH)
+
     return parser
 
 
 def main(argv: Sequence[str] | None = None) -> int:
     args = _build_arg_parser().parse_args(argv)
-    records = capture_oracle_records(
-        league_id=args.league_id,
-        season=args.season,
-        auth_dir=args.auth_dir,
-    )
-    path = write_oracle_fixture(records, args.out)
-    by_unit: dict[str, int] = {}
-    for r in records:
-        by_unit[r.unit.value] = by_unit.get(r.unit.value, 0) + 1
-    print(f"wrote {len(records)} oracle records to {path}")
-    for unit, count in sorted(by_unit.items()):
-        print(f"  {unit}: {count}")
-    print(
-        "\nNext: build the matching nflverse stat-row fixture "
-        f"({STAT_ROWS_FIXTURE_PATH.name}) — see docs/scoring-oracle-capture.md."
-    )
-    return 0
+
+    if args.command == "capture":
+        records = capture_oracle_records(
+            league_id=args.league_id,
+            season=args.season,
+            auth_dir=args.auth_dir,
+        )
+        path = write_oracle_fixture(records, args.out)
+        _summarise(records, path, "oracle records")
+        print(
+            "\nNext: `build-rows` for the offense+kicker stat rows, then append the "
+            "team-defense roll-up — see docs/scoring-oracle-capture.md."
+        )
+        return 0
+
+    if args.command == "build-rows":
+        rows = build_offense_kicker_stat_rows(args.parquet, season=args.season)
+        path = write_stat_rows_fixture(rows, args.out)
+        _summarise(rows, path, "stat rows")
+        print(
+            "\nThis is offense + kicker only. Append the team-defense rows "
+            "(deadparrots.scoring.adapters.team_defense_stat_row) before running the gate."
+        )
+        return 0
+
+    return 2  # pragma: no cover — argparse rejects an unknown command first
 
 
 if __name__ == "__main__":  # pragma: no cover

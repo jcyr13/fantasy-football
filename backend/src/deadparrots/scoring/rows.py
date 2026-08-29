@@ -4,7 +4,8 @@ from collections.abc import Mapping
 from dataclasses import dataclass, field
 from enum import StrEnum
 
-# The engine's input and output vocabulary. ``StatRow`` is the one shape the
+# The scoring engine's input and output vocabulary (spec issue #1, "Scoring
+# engine"; ticket #4). ``StatRow`` is the one shape the
 # scoring function consumes: a player-week (or team-week, for DEF) tagged with
 # the scoring unit it belongs to and a flat mapping of canonical stat keys to
 # counts. Anything that can be turned into ``StatRow`` objects can be scored,

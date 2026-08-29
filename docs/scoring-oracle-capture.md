@@ -48,7 +48,7 @@ of git — `data/` or a scratch dir is a good home for it.
 
 ```bash
 cd backend
-uv run python -m deadparrots.scoring.oracle \
+uv run python -m deadparrots.scoring.oracle capture \
     --season 2025 \
     --auth-dir ../data \
     --out tests/fixtures/scoring/yahoo_2025_oracle.json
@@ -77,17 +77,33 @@ must join through `nflverse_rosters.yahoo_id`:
    DEADPARROTS_NFLVERSE_SEASONS='[2025]' uv run python -m deadparrots.ingest
    ```
 
-2. Build the rows from the parquet cache (offense + kicker straight from
-   `nflverse_player_stats` via `deadparrots.scoring.adapters`; team defense
-   rolled up from `nflverse_pbp` — sacks/INTs/fumble recoveries/defensive TDs/
-   safeties/blocked kicks/TFL by `defteam`, and points allowed from the
-   schedule). Write the result with
-   `deadparrots.scoring.oracle.write_stat_rows_fixture(...)`.
+2. Build the **offense + kicker** rows straight from the cached
+   `player_stats.parquet` (routes by `position` through
+   `deadparrots.scoring.adapters`):
 
-   Team-defense roll-up from play-by-play is the part most likely to need
-   iteration against real column names; a first capture may legitimately land
-   `offense` + `kicker` only and add `team_defense` in a follow-up — the gate
-   checks whatever units are present and fails only on a mismatch.
+   ```bash
+   uv run python -m deadparrots.scoring.oracle build-rows \
+       ../data/nflverse/<pull-id>/player_stats.parquet --season 2025
+   ```
+
+3. **Append the team-defense rows.** Team defense is not in `player_stats`; roll
+   it up from `nflverse_pbp` — sacks / INTs / fumble recoveries / defensive TDs /
+   safeties / blocked kicks / TFL by `defteam`, and points allowed from the
+   schedule — build each with
+   `deadparrots.scoring.adapters.team_defense_stat_row(...)`, concatenate with
+   the rows from step 2, and re-write with
+   `deadparrots.scoring.oracle.write_stat_rows_fixture(all_rows)`.
+
+   This roll-up is the part most likely to need iteration against real column
+   names; a first pass may legitimately land `offense` + `kicker` only and add
+   `team_defense` in a follow-up — the gate checks whatever units are present
+   and fails only on a mismatch.
+
+4. **Reconcile the ids.** The oracle is keyed by Yahoo `player_id` (and team
+   abbreviation for DEF); the stat rows from step 2 are keyed by nflverse
+   `player_id`. Re-key one side to the other through `nflverse_rosters.yahoo_id`
+   before the gate can line them up. (Team-DEF entity ids — the abbreviation —
+   must match between the two files too.)
 
 ## Step 4 — run the gate
 
@@ -111,6 +127,11 @@ Known candidates:
 - **Offensive fumble lost.** The PRD scoring list does not mention one, so
   `OffenseRules.fumble_lost` defaults to `0.0`. If kept players with lost
   fumbles read exactly `2 * fumbles` low, set it to `-2.0`.
+- **Points-allowed tier edges.** The PRD gives only the seven bonus values
+  (`10/7/4/1/0/-1/-4`); `RIP_TIDE_RULESET` assumes the standard Yahoo bucket
+  edges (0 / 1-6 / 7-13 / 14-20 / 21-27 / 28-34 / 35+). Confirm these against
+  John's league settings PDF — a whole defense's bonus off by one tier points
+  straight here.
 - **Field-goal band edges / missed-FG rules** beyond the 0–19 penalty.
 - **Points-allowed** definition for team defense (does Yahoo include
   defensive/special-teams TDs the offense allowed, pick-sixes, etc.).

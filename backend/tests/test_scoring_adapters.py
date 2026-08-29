@@ -4,6 +4,7 @@ from deadparrots.scoring import RIP_TIDE_RULESET, ScoringUnit, score_row
 from deadparrots.scoring.adapters import (
     kicker_stat_row,
     offense_stat_row,
+    stat_rows_from_player_stats,
     team_defense_stat_row,
 )
 
@@ -69,6 +70,33 @@ def test_kicker_adapter_folds_50_59_and_60_plus_into_one_band():
     assert row.stat("fg_made_50_plus") == 2.0
     # 6 + 10 + 4
     assert score_row(row, RULES).points == 20.0
+
+
+def test_stat_rows_from_player_stats_routes_by_position_and_skips_non_scorers():
+    records = [
+        {"player_id": "qb1", "position": "QB", "season": 2025, "week": 1, "passing_yards": 250},
+        {"player_id": "k1", "position": "K", "season": 2025, "week": 1, "pat_made": 3},
+        {"player_id": "wr1", "position": "WR", "season": 2025, "week": 1, "receiving_yards": 40},
+        {"player_id": "lb1", "position": "LB", "season": 2025, "week": 1, "def_tackles_solo": 9},
+        {"player_id": "p1", "position": None, "season": 2025, "week": 1},
+    ]
+    rows = stat_rows_from_player_stats(records)
+    assert [(r.entity_id, r.unit) for r in rows] == [
+        ("qb1", ScoringUnit.OFFENSE),
+        ("k1", ScoringUnit.KICKER),
+        ("wr1", ScoringUnit.OFFENSE),
+    ]
+
+
+def test_stat_rows_from_player_stats_reads_the_recorded_nflverse_fixture(raw_nflverse):
+    rows = stat_rows_from_player_stats(raw_nflverse("player_stats").iter_rows(named=True))
+    # The fixture holds 2 QB + 2 K rows and nothing else scorable here.
+    assert sorted(r.unit for r in rows) == sorted(
+        [ScoringUnit.OFFENSE, ScoringUnit.OFFENSE, ScoringUnit.KICKER, ScoringUnit.KICKER]
+    )
+    scored = {r.entity_id: score_row(r, RULES).points for r in rows}
+    # QB 00-0023459 in the fixture: 244 pass yds, 4 pass TD, 0 INT, -1 rush yds.
+    assert scored["00-0023459"] == 33.66
 
 
 def test_team_defense_helper_builds_a_scorable_row():
