@@ -45,6 +45,7 @@ from .slots import (
     LineupSlots,
     SlotRule,
     assign_slots,
+    can_field_legal_lineup,
     is_legal_lineup,
     role_of,
 )
@@ -72,6 +73,7 @@ __all__ = [
     "ThresholdRuleRecommendation",
     "assign_slots",
     "build_opponent_lineup",
+    "can_field_legal_lineup",
     "enumerate_lineups",
     "evaluate_lineups",
     "gap_drivers",

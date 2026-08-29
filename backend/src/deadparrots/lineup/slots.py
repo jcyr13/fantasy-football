@@ -23,6 +23,7 @@ __all__ = [
     "LineupSlots",
     "SlotRule",
     "assign_slots",
+    "can_field_legal_lineup",
     "is_legal_lineup",
     "role_of",
 ]
@@ -185,3 +186,31 @@ def is_legal_lineup(
 ) -> bool:
     """True iff ``players`` can fill every slot in ``slots`` one-to-one."""
     return assign_slots(players, slots) is not None
+
+
+def can_field_legal_lineup(
+    players: Sequence[HasPosition],
+    slots: LineupSlots = RIP_TIDE_SLOTS,
+) -> bool:
+    """True iff *some* ``slots.size`` subset of ``players`` is a legal lineup.
+
+    Unlike :func:`is_legal_lineup` (which needs exactly ``slots.size`` players),
+    this asks whether a legal lineup can be *selected* from a larger pool — the
+    question the bye-week crunch map asks each upcoming week once players on bye
+    and unavailable players are removed (methodology §4.4, "any week a legal
+    healthy lineup cannot be fielded").
+
+    Each :meth:`LineupSlots.role_count_distributions` entry is a concrete
+    per-role requirement summing to ``slots.size`` that already accounts for the
+    flex. A player has exactly one role, so a distribution is fillable iff the
+    pool holds at least its required count in every role; the pool can field a
+    lineup iff any distribution is fillable.
+    """
+    counts: dict[str, int] = {}
+    for player in players:
+        role = role_of(player.position)
+        counts[role] = counts.get(role, 0) + 1
+    return any(
+        all(counts.get(role, 0) >= needed for role, needed in distribution.items())
+        for distribution in slots.role_count_distributions()
+    )
