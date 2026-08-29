@@ -1,8 +1,7 @@
 # RIP TIDE Projection & Strategy Methodology
 
-**Status: DRAFT — awaiting John's sign-off.** No recommendation logic (ticket #8
-onward) is wired until the sign-off block at the end of this document is filled
-in. See issue #6.
+**Status: APPROVED — signed off by John on 2026-08-29 (see §7).** Recommendation
+logic (ticket #8 onward) may now proceed on this model. See issue #6.
 
 This document is the written, reviewable definition of two things:
 
@@ -375,12 +374,14 @@ the team's current queue position.
 
 ## 7. Sign-off
 
-Per issue #6 and the v1 spec build sequencing, **no recommendation logic
-(ticket #8 onward) begins until this block is filled in.**
+Per issue #6 and the v1 spec build sequencing, no recommendation logic
+(ticket #8 onward) begins until this block is filled in.
 
-- **Reviewed by:** _(John)_
-- **Date:** _pending_
-- **Decision:** _pending — approve as written / approve with the changes noted
-  below_
+- **Reviewed by:** John
+- **Date:** 2026-08-29
+- **Decision:** Approved as written. All defaults in §5 and all answers to the
+  §6 open questions are accepted as documented; no changes requested.
 - **Changes agreed during review:**
-  - _(none yet)_
+  - None. The parameter table in §5 stands as the starting values; each row's
+    "how to revisit" column is the agreed path for tuning it later against
+    backtests, not a blocker for the v1 build.
