@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from collections.abc import Sequence
+from collections.abc import Callable, Sequence
 from dataclasses import dataclass
 from typing import Literal
 
@@ -13,7 +13,7 @@ from ..simulation import (
 )
 from .evaluate import LineupEvaluation, evaluate_lineups
 from .gap_drivers import GapDriver, gap_drivers
-from .opponent import OpponentLineup
+from .opponent import OpponentAssumption, OpponentLineup
 from .roster import Lineup, RosterPlayer, enumerate_lineups
 from .slots import RIP_TIDE_SLOTS, LineupSlots
 from .swing import SwingPlayer, swing_players
@@ -29,22 +29,26 @@ from .swing import SwingPlayer, swing_players
 #   * floor      — the lineup with the best P10.
 #   * ceiling    — the lineup with the best P90.
 #   * threshold_rule — the alternative recommendation from the simpler
-#                  favored→floor / underdog→ceiling rule, offered as a toggle,
-#                  never the default (ADR-0002 "Considered Options").
+#                  favored→floor / underdog→ceiling rule. Offered as a toggle
+#                  (``recommendation_engine="threshold-rule"``), never the
+#                  default (ADR-0002 "Considered Options").
 #
-# plus the gap-driver decomposition and swing-player ranking for the primary
-# recommendation versus the opponent.
+# plus the gap-driver decomposition and swing-player ranking for whichever
+# lineup is the active recommendation, versus the opponent.
 
 __all__ = [
     "DEFAULT_FAVORED_THRESHOLD",
     "DEFAULT_UNDERDOG_THRESHOLD",
     "OptimizerResult",
+    "RecommendationEngine",
     "ThresholdRuleRecommendation",
     "optimize_lineups",
 ]
 
 DEFAULT_FAVORED_THRESHOLD = 0.65
 DEFAULT_UNDERDOG_THRESHOLD = 0.40
+
+RecommendationEngine = Literal["max-p-win", "threshold-rule"]
 
 ThresholdBranch = Literal[
     "favored-optimize-floor",
@@ -59,8 +63,9 @@ class ThresholdRuleRecommendation:
 
     ``situation_p_win`` is the max-P(win) lineup's win probability — the read of
     how favored Dead Parrots are — compared against the two thresholds to pick
-    ``branch``. ``evaluation`` is the lineup that branch points at (the floor,
-    ceiling, or median lineup already computed in the sweep).
+    ``branch``. ``evaluation`` is the lineup that branch points at: the floor
+    lineup when favored, the ceiling lineup when underdog, or the best-P50
+    lineup in the coin-flip band.
     """
 
     branch: ThresholdBranch
@@ -72,17 +77,24 @@ class ThresholdRuleRecommendation:
 
 @dataclass(frozen=True)
 class OptimizerResult:
-    """Everything issue #11 reports for one matchup."""
+    """Everything issue #11 reports for one matchup.
+
+    The four named lineups (``max_p_win``, ``max_ev``, ``floor``, ``ceiling``)
+    are always reported. ``recommendation`` is the active one:
+    ``max_p_win`` unless ``recommendation_engine == "threshold-rule"``, in which
+    case it is ``threshold_rule.evaluation``. ``gap_drivers``, ``swing_players``
+    and ``head_to_head`` are computed for ``recommendation``.
+    """
 
     max_p_win: LineupEvaluation
     max_ev: LineupEvaluation
     floor: LineupEvaluation
     ceiling: LineupEvaluation
-    median: LineupEvaluation
     threshold_rule: ThresholdRuleRecommendation
+    recommendation_engine: RecommendationEngine
     gap_drivers: tuple[GapDriver, ...]
     swing_players: tuple[SwingPlayer, ...]
-    opponent_assumption: str
+    opponent_assumption: OpponentAssumption | Literal["provided"]
     opponent_notes: tuple[str, ...]
     head_to_head: HeadToHeadResult
     evaluations: tuple[LineupEvaluation, ...]
@@ -94,16 +106,18 @@ class OptimizerResult:
 
     @property
     def recommendation(self) -> LineupEvaluation:
-        """The primary recommendation: the max-P(win) lineup."""
+        """The active recommendation for the selected engine."""
+        if self.recommendation_engine == "threshold-rule":
+            return self.threshold_rule.evaluation
         return self.max_p_win
 
 
 def _argmax(
     evaluations: Sequence[LineupEvaluation],
-    key,
+    key: Callable[[LineupEvaluation], float],
 ) -> LineupEvaluation:
-    """Highest ``key``, ties broken by the lineup's sorted player ids so the
-    pick is deterministic across runs."""
+    """Highest ``key``; ties broken by the lineup's sorted player ids so the
+    pick is deterministic across runs (it takes the lexicographically last)."""
     return max(
         evaluations,
         key=lambda ev: (key(ev), tuple(sorted(ev.lineup.player_ids))),
@@ -118,6 +132,7 @@ def optimize_lineups(
     slots: LineupSlots = RIP_TIDE_SLOTS,
     correlation: CorrelationSpec = DEFAULT_CORRELATION,
     n_trials: int = DEFAULT_TRIALS,
+    recommendation_engine: RecommendationEngine = "max-p-win",
     favored_threshold: float = DEFAULT_FAVORED_THRESHOLD,
     underdog_threshold: float = DEFAULT_UNDERDOG_THRESHOLD,
 ) -> OptimizerResult:
@@ -126,11 +141,14 @@ def optimize_lineups(
     ``roster`` is the Dead Parrots non-IR roster (IR filtered out by the
     caller). ``opponent`` is either an :class:`OpponentLineup` from
     :func:`build_opponent_lineup` (its assumption is carried onto the result) or
-    a bare sequence of the opponent's ten starters.
+    a bare sequence of the opponent's ten starters. ``recommendation_engine``
+    selects which recommendation is the active one: ``"max-p-win"`` (default,
+    ADR-0002) or ``"threshold-rule"`` (the favored→floor / underdog→ceiling
+    toggle).
     """
     if isinstance(opponent, OpponentLineup):
         opponent_players: Sequence[RosterPlayer] = opponent.players
-        assumption = opponent.assumption
+        assumption: OpponentAssumption | Literal["provided"] = opponent.assumption
         opponent_notes = opponent.notes
     else:
         opponent_players = tuple(opponent)
@@ -166,7 +184,17 @@ def optimize_lineups(
         underdog_threshold=underdog_threshold,
     )
 
-    recommended: Lineup = max_p_win.lineup
+    active = (
+        threshold_rule.evaluation
+        if recommendation_engine == "threshold-rule"
+        else max_p_win
+    )
+    recommended: Lineup = active.lineup
+
+    # Re-run the sim on the one recommended lineup to get the *full* two-sided
+    # HeadToHeadResult — opponent SideSummary, p_tie, mean_margin, stdev — that
+    # evaluate_lineups does not retain. Same seed and trial count, so its p_win
+    # and Dead Parrots summary equal ``active``'s to the cent (ADR-0008 §3).
     head_to_head = simulate_head_to_head(
         recommended.sims,
         opponent_sims,
@@ -180,8 +208,8 @@ def optimize_lineups(
         max_ev=max_ev,
         floor=floor,
         ceiling=ceiling,
-        median=median,
         threshold_rule=threshold_rule,
+        recommendation_engine=recommendation_engine,
         gap_drivers=gap_drivers(recommended, opponent_players, slots=slots),
         swing_players=swing_players(
             recommended,

@@ -13,18 +13,26 @@ from .slots import RIP_TIDE_SLOTS, LineupSlots, is_legal_lineup
 #   1. "yahoo-set"          — the lineup Yahoo already shows the opponent
 #                             starting, when it is complete, legal, and healthy.
 #   2. "prior-week-heuristic" — last week's starters, minus anyone unavailable
-#                             (injured out / bye) and with obvious bench
-#                             upgrades applied. NEVER their optimal lineup.
-#   3. "projection-heuristic" — no set lineup and no prior week to lean on: the
-#                             opponent is *assumed* to start their
-#                             highest-projected legal lineup from available
-#                             players. A stated fallback, not a claim they play
-#                             optimally.
+#                             (injured out / bye), holes filled by projection,
+#                             then a bounded pass of *obvious* bench upgrades.
+#                             Not a rebuild toward their optimal lineup — the
+#                             upgrade bar and the cap keep it near last week's.
+#   3. "projection-heuristic" — no set lineup and no prior week to lean on
+#                             (realistically only Week 1): the opponent is
+#                             *assumed* to start their highest-projected legal
+#                             lineup from available players. This is optimal by
+#                             projection — the one case the spec's "never assume
+#                             their optimal lineup" cannot be honoured, because
+#                             there is no set or prior lineup to anchor to — so
+#                             it is labelled loudly and every consumer surfaces
+#                             the assumption (ADR-0008 §8).
 #
 # Whichever is used is surfaced on the result, with notes recording every
 # substitution the heuristic made.
 
 __all__ = [
+    "DEFAULT_MAX_OBVIOUS_UPGRADES",
+    "DEFAULT_UPGRADE_MARGIN",
     "OpponentAssumption",
     "OpponentLineup",
     "build_opponent_lineup",
@@ -39,6 +47,11 @@ OpponentAssumption = Literal[
 # weekly scoring — pinned by behaviour, not calibration, like the sim's
 # correlation shares (ADR-0007).
 DEFAULT_UPGRADE_MARGIN = 3.0
+
+# At most this many obvious upgrades are applied to a prior-week lineup, so the
+# heuristic stays "last week's starters, lightly corrected" rather than drifting
+# into a full re-optimization (ADR-0008 §8).
+DEFAULT_MAX_OBVIOUS_UPGRADES = 3
 
 
 @dataclass(frozen=True)
@@ -130,9 +143,13 @@ def _apply_obvious_upgrades(
     roster: Sequence[RosterPlayer],
     slots: LineupSlots,
     upgrade_margin: float,
+    max_upgrades: int,
     notes: list[str],
 ) -> list[RosterPlayer]:
-    while True:
+    """Swap in a bench player wherever one out-projects a starter by at least
+    ``upgrade_margin``, biggest gain first, at most ``max_upgrades`` times. The
+    cap keeps this a light correction of last week's lineup, not a rebuild."""
+    for _ in range(max_upgrades):
         starting_ids = {p.player_id for p in lineup}
         bench = [
             p
@@ -154,7 +171,7 @@ def _apply_obvious_upgrades(
                 if best_swap is None or gain > best_swap[0]:
                     best_swap = (gain, incoming, outgoing)
         if best_swap is None:
-            return lineup
+            break
         gain, incoming, outgoing = best_swap
         lineup = [p for p in lineup if p.player_id != outgoing.player_id]
         lineup.append(incoming)
@@ -162,6 +179,7 @@ def _apply_obvious_upgrades(
             f"Obvious upgrade: started {incoming.name} over {outgoing.name} "
             f"(+{gain:.1f} projected)."
         )
+    return lineup
 
 
 def _canonical(players: Sequence[RosterPlayer]) -> tuple[RosterPlayer, ...]:
@@ -175,12 +193,15 @@ def build_opponent_lineup(
     prior_week_starters: Sequence[str] | None = None,
     slots: LineupSlots = RIP_TIDE_SLOTS,
     upgrade_margin: float = DEFAULT_UPGRADE_MARGIN,
+    max_obvious_upgrades: int = DEFAULT_MAX_OBVIOUS_UPGRADES,
 ) -> OpponentLineup:
     """Assemble the opponent's likely lineup and say which assumption was used.
 
     ``roster`` is the opponent's full non-IR roster (starters and bench).
     ``yahoo_starters`` / ``prior_week_starters`` are ``player_id`` sequences from
     the assisted pull and the prior weekly snapshot; either may be ``None``.
+    ``upgrade_margin`` / ``max_obvious_upgrades`` bound the prior-week
+    heuristic's bench-upgrade pass.
     """
     by_id = {player.player_id: player for player in roster}
     notes: list[str] = []
@@ -226,7 +247,7 @@ def build_opponent_lineup(
         filled = _fill_to_legal(kept, bench, slots, notes)
         if filled is not None:
             upgraded = _apply_obvious_upgrades(
-                filled, roster, slots, upgrade_margin, notes
+                filled, roster, slots, upgrade_margin, max_obvious_upgrades, notes
             )
             return OpponentLineup(
                 players=_canonical(upgraded),

@@ -1,8 +1,9 @@
 from __future__ import annotations
 
-from collections.abc import Callable, Sequence
+from collections.abc import Sequence
 from dataclasses import dataclass
 from itertools import combinations_with_replacement, product
+from typing import Protocol
 
 from ..simulation import role_of
 
@@ -18,12 +19,22 @@ from ..simulation import role_of
 
 __all__ = [
     "RIP_TIDE_SLOTS",
+    "HasPosition",
     "LineupSlots",
     "SlotRule",
     "assign_slots",
     "is_legal_lineup",
     "role_of",
 ]
+
+
+class HasPosition(Protocol):
+    """Anything the legality primitives can slot — a ``RosterPlayer`` or a
+    ``SimPlayer``; both carry a ``position`` string that :func:`role_of` maps to
+    a canonical role."""
+
+    @property
+    def position(self) -> str: ...
 
 
 @dataclass(frozen=True)
@@ -119,17 +130,9 @@ RIP_TIDE_SLOTS = LineupSlots(
 """RIP TIDE's ten starting slots: QB, 2×RB, 2×WR, TE, W/R/T flex, K, DEF, D."""
 
 
-def _default_role_key(player: object) -> str:
-    """Role of anything carrying a ``.position`` string (``RosterPlayer``,
-    ``SimPlayer``, a Yahoo ``RosterEntry``)."""
-    return role_of(player.position)  # type: ignore[attr-defined]
-
-
-def assign_slots[T](
+def assign_slots[T: HasPosition](
     players: Sequence[T],
     slots: LineupSlots = RIP_TIDE_SLOTS,
-    *,
-    role_key: Callable[[T], str] = _default_role_key,
 ) -> tuple[tuple[str, T], ...] | None:
     """Match ``players`` onto ``slots`` one-to-one, or return ``None`` if no such
     assignment exists.
@@ -146,7 +149,7 @@ def assign_slots[T](
     if len(players) != len(instances):
         return None
 
-    roles = [role_key(p) for p in players]
+    roles = [role_of(p.position) for p in players]
     eligible: list[list[int]] = [
         [pi for pi, role in enumerate(roles) if role in slot_roles]
         for _, slot_roles in instances
@@ -176,11 +179,9 @@ def assign_slots[T](
     )
 
 
-def is_legal_lineup[T](
-    players: Sequence[T],
+def is_legal_lineup(
+    players: Sequence[HasPosition],
     slots: LineupSlots = RIP_TIDE_SLOTS,
-    *,
-    role_key: Callable[[T], str] = _default_role_key,
 ) -> bool:
     """True iff ``players`` can fill every slot in ``slots`` one-to-one."""
-    return assign_slots(players, slots, role_key=role_key) is not None
+    return assign_slots(players, slots) is not None

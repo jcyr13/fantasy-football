@@ -36,8 +36,26 @@ def test_reports_all_four_named_lineups_each_the_argmax_of_its_metric():
     assert result.max_ev.expected_points == max(e.expected_points for e in evals)
     assert result.floor.p10 == max(e.p10 for e in evals)
     assert result.ceiling.p90 == max(e.p90 for e in evals)
-    assert result.median.p50 == max(e.p50 for e in evals)
+    # max-p-win is the default active recommendation
+    assert result.recommendation_engine == "max-p-win"
     assert result.recommendation is result.max_p_win
+
+
+def test_toggling_to_the_threshold_rule_switches_the_active_recommendation():
+    default = optimize_lineups(
+        _roster(), _opponent(), rng_seed=SEED, n_trials=TRIALS
+    )
+    toggled = optimize_lineups(
+        _roster(),
+        _opponent(),
+        rng_seed=SEED,
+        n_trials=TRIALS,
+        recommendation_engine="threshold-rule",
+    )
+    assert default.recommendation is default.max_p_win
+    assert toggled.recommendation is toggled.threshold_rule.evaluation
+    # gap drivers / head-to-head follow the active recommendation
+    assert toggled.head_to_head.p_win == toggled.threshold_rule.evaluation.p_win
 
 
 def test_head_to_head_matches_the_recommended_lineup():
@@ -113,7 +131,10 @@ def test_threshold_rule_recommends_the_median_lineup_in_the_coin_flip_band():
         underdog_threshold=0.0,  # force the middle band
     )
     assert result.threshold_rule.branch == "coin-flip-optimize-median"
-    assert result.threshold_rule.evaluation is result.median
+    # the coin-flip branch points at the best-P50 lineup
+    assert result.threshold_rule.evaluation.p50 == max(
+        e.p50 for e in result.evaluations
+    )
 
 
 def test_threshold_rule_reads_the_situation_from_the_max_p_win_lineup():

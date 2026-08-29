@@ -81,6 +81,20 @@ def test_prior_week_heuristic_applies_an_obvious_bench_upgrade():
     assert any("Obvious upgrade" in n for n in result.notes)
 
 
+def test_obvious_upgrade_pass_is_capped():
+    # last week started four punt-level players; the bench is stacked. Without a
+    # cap the heuristic would rebuild the whole lineup; it must stop at the cap.
+    prior = [
+        "o-qb2", "o-rb3", "o-rb4", "o-wr3", "o-wr4", "o-te2",
+        "o-te1", "o-k1", "o-def1", "o-d2",
+    ]
+    result = build_opponent_lineup(
+        _opp_roster(), prior_week_starters=prior, max_obvious_upgrades=1
+    )
+    assert result.assumption == "prior-week-heuristic"
+    assert sum("Obvious upgrade" in n for n in result.notes) == 1
+
+
 def test_projection_heuristic_when_there_is_no_set_or_prior_lineup():
     result = build_opponent_lineup(_opp_roster())
     assert result.assumption == "projection-heuristic"

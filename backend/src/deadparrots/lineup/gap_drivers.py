@@ -4,7 +4,6 @@ import math
 from collections.abc import Sequence
 from dataclasses import dataclass
 
-from ..scoring import round_points
 from .roster import Lineup, RosterPlayer
 from .slots import RIP_TIDE_SLOTS, LineupSlots, assign_slots
 
@@ -26,9 +25,10 @@ __all__ = [
 class GapDriver:
     """One slot's share of the expected-points gap.
 
-    ``contribution`` is ``dead_parrots_mean − opponent_mean`` for this slot,
-    carried unrounded so the drivers sum cleanly; ``*_rounded`` fields are for
-    display. A positive value is a slot Dead Parrots win on projection.
+    All three point figures are carried unrounded so the drivers sum cleanly to
+    the total; round at the display edge with ``scoring.round_points``.
+    ``contribution`` is ``dead_parrots_mean − opponent_mean`` — positive on a
+    slot Dead Parrots win on projection.
     """
 
     slot: str
@@ -37,18 +37,6 @@ class GapDriver:
     dead_parrots_mean: float
     opponent_mean: float
     contribution: float
-
-    @property
-    def dead_parrots_mean_rounded(self) -> float:
-        return round_points(self.dead_parrots_mean)
-
-    @property
-    def opponent_mean_rounded(self) -> float:
-        return round_points(self.opponent_mean)
-
-    @property
-    def contribution_rounded(self) -> float:
-        return round_points(self.contribution)
 
 
 def _slotted(

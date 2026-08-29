@@ -184,8 +184,8 @@ def simulate_head_to_head(
     wins = sum(1 for dp, opp in zip(dp_totals, opp_totals) if dp > opp)
     ties = sum(1 for dp, opp in zip(dp_totals, opp_totals) if dp == opp)
 
-    dead_parrots = _summarise(dp_totals)
-    opponent = _summarise(opp_totals)
+    dead_parrots = summarise_side(dp_totals)
+    opponent = summarise_side(opp_totals)
     return HeadToHeadResult(
         p_win=wins / n_trials,
         p_tie=ties / n_trials,
@@ -202,7 +202,14 @@ def simulate_head_to_head(
 # --- summary stats ------------------------------------------------------
 
 
-def _summarise(totals: Sequence[float]) -> SideSummary:
+def summarise_side(totals: Sequence[float]) -> SideSummary:
+    """One side's per-trial totals reduced to a rounded :class:`SideSummary`.
+
+    Public so the issue #11 optimizer scores candidate lineups with the *same*
+    reduction ``simulate_head_to_head`` uses — one sort, ``math.fsum`` mean,
+    linear-interpolation quantiles, ``round_points`` throughout — rather than a
+    second copy that could drift (ADR-0008 §3).
+    """
     ordered = sorted(totals)
     mean = math.fsum(ordered) / len(ordered)
     variance = math.fsum((x - mean) ** 2 for x in ordered) / len(ordered)

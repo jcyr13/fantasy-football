@@ -4,12 +4,8 @@ import math
 from collections.abc import Sequence
 from dataclasses import dataclass
 
-from ..simulation import (
-    DEFAULT_CORRELATION,
-    DEFAULT_TRIALS,
-    CorrelationSpec,
-    sample_lineup_totals,
-)
+from ..simulation import DEFAULT_CORRELATION, DEFAULT_TRIALS, CorrelationSpec
+from .evaluate import ContributionSampler
 from .roster import Lineup, RosterPlayer
 
 # Swing players (CONTEXT.md): the opponent's starters ranked by how much of the
@@ -68,24 +64,17 @@ def swing_players(
     if not opponent:
         raise ValueError("opponent lineup has no players")
 
-    def contribution_of(player_sim) -> list[float]:
-        return sample_lineup_totals(
-            [player_sim],
-            rng_seed=rng_seed,
-            correlation=correlation,
-            n_trials=n_trials,
-        )
-
-    dp_contribs = [contribution_of(sim) for sim in dead_parrots.sims]
-    opp_contribs = [contribution_of(player.sim) for player in opponent]
-
-    dp_totals = [math.fsum(col) for col in zip(*dp_contribs)]
-    opp_totals = [math.fsum(col) for col in zip(*opp_contribs)]
+    sampler = ContributionSampler(
+        rng_seed=rng_seed, correlation=correlation, n_trials=n_trials
+    )
+    opp_contributions = [sampler.of(player.sim) for player in opponent]
+    dp_totals = sampler.totals_for(dead_parrots.sims)
+    opp_totals = sampler.totals_for([player.sim for player in opponent])
     margin = [dp - opp for dp, opp in zip(dp_totals, opp_totals)]
     var_margin = _pvariance(margin)
 
     scored: list[tuple[float, RosterPlayer]] = []
-    for player, contribution in zip(opponent, opp_contribs):
+    for player, contribution in zip(opponent, opp_contributions):
         player_mean = math.fsum(contribution) / n_trials
         # Pin this starter to its mean: the opponent total loses (c_t − mean),
         # so the margin gains it back. Var of that pinned margin, differenced

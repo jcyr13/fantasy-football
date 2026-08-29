@@ -52,10 +52,15 @@ rule. Ties break on the lineup's sorted `player_id`s so a pick is deterministic
 across runs.
 
 **5. The favored→floor / underdog→ceiling threshold rule is a toggle, never the
-default** (ADR-0002 "Considered Options"). It reads the situation from the
-max-P(win) lineup's `p_win`: `> 0.65` → recommend the floor lineup, `< 0.40` →
-the ceiling lineup, else the median (best-P50) lineup. Both thresholds are
-parameters.
+default** (ADR-0002 "Considered Options"). `optimize_lineups` takes
+`recommendation_engine="max-p-win"` (default) or `"threshold-rule"`;
+`OptimizerResult.recommendation` returns the active one, and the gap drivers,
+swing ranking, and full head-to-head are all computed for whichever that is.
+The threshold rule reads the situation from the max-P(win) lineup's `p_win`:
+`> 0.65` → the floor lineup, `< 0.40` → the ceiling lineup, else the best-P50
+lineup. Both thresholds are parameters. The best-P50 lineup is not one of the
+four named lineups — it is reachable only through `threshold_rule.evaluation`
+in the coin-flip band.
 
 **6. Gap drivers are an analytic per-slot mean difference.** Expected weekly
 points are additive across a lineup and untouched by the correlation model, so
@@ -74,14 +79,27 @@ matchup. A negative value — a starter that dampens outcome variance — is
 reported as such; ranking is by the signed value, biggest first.
 
 **8. The opponent lineup is built from the least-assumption source available,
-and the source is surfaced.** Order: `yahoo-set` (the lineup Yahoo already
-shows, when complete, legal, and healthy) → `prior-week-heuristic` (last week's
-starters minus the unavailable, holes filled by best available projection, then
-*obvious* bench upgrades — a bench player out-projecting a starter by ≥ 3.0
-points) → `projection-heuristic` (no set or prior lineup: assume the
-highest-projected legal lineup from available players). Never "their optimal
-lineup" as an assumption. Every substitution is recorded in `notes`; the
-assumption label rides on the result.
+and the source is surfaced.** Order:
+
+- `yahoo-set` — the lineup Yahoo already shows, when complete, legal, and
+  healthy. No assumption.
+- `prior-week-heuristic` — last week's starters, minus anyone unavailable, holes
+  filled by best available projection, then a **bounded** pass of *obvious*
+  bench upgrades: a bench player must out-project the starter by ≥ 3.0 points
+  and at most 3 such swaps are applied, so the result stays "last week's lineup,
+  lightly corrected" rather than a rebuild. Every drop, fill, and swap is a
+  `notes` line.
+- `projection-heuristic` — no set or prior lineup exists (realistically only
+  Week 1). The opponent is assumed to start their highest-projected legal
+  lineup, which *is* optimal by projection. This is the one case the spec's
+  "never assume their optimal lineup" cannot be honoured — there is nothing to
+  anchor to — so it is labelled loudly, `notes` states it is a fallback and not
+  a claim they play optimally, and every consumer (`OptimizerResult`) carries
+  the assumption. The alternative, raising, was rejected as worse UX for a
+  Week-1 matchup.
+
+The assumption label rides on the result; a bare opponent sequence passed
+straight to `optimize_lineups` is labelled `provided`.
 
 ## Why
 
@@ -134,5 +152,12 @@ assumption label rides on the result.
   Reusing `sample_lineup_totals` is exact and already fast.
 - **Shapley variance shares for swing players.** Rejected for v1 as `2^10` per
   starter for a number that reads the same as the drop-to-mean delta.
-- **Assuming the opponent's optimal lineup.** Rejected outright — CONTEXT.md
-  ("Never assumed optimal") and spec story 3.
+- **Assuming the opponent's optimal lineup as the primary path.** Rejected —
+  CONTEXT.md ("Never assumed optimal") and spec story 3. It survives only as the
+  labelled `projection-heuristic` fallback for the Week-1 no-history case (§8),
+  where the alternative is to refuse to produce a matchup at all.
+- **Summing the Monte-Carlo `E[points]` fields for the gap-driver total instead
+  of the analytic means.** Rejected: the analytic `Σμ` identity is exact and
+  needs no trials, so the decomposition sums to the cent; the MC means only
+  estimate the same quantity and would leave a residual. `head_to_head.mean_margin`
+  is the MC estimate of that same total, shown alongside.
