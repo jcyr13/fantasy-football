@@ -1,0 +1,550 @@
+/* Dead Parrots Dashboard — dense, dark-first chrome. Hand-rolled; no UI kit. */
+
+:root {
+  --bg: #0b0d12;
+  --bg-raise: #141821;
+  --bg-raise-2: #1b202b;
+  --border: #2a313f;
+  --text: #d7dce5;
+  --text-dim: #8b93a3;
+  --text-faint: #626a7a;
+  --accent: #4fd1c5;
+  --favored: #43b581;
+  --underdog: #e0a341;
+  --bad: #e5534b;
+  --good: #43b581;
+  --warn: #e0a341;
+  --mono: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
+  --sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0 0 0.4rem;
+  font-weight: 650;
+  letter-spacing: 0.01em;
+}
+h1 {
+  font-size: 15px;
+}
+h2 {
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-dim);
+}
+h3 {
+  font-size: 12px;
+  color: var(--text-dim);
+}
+
+.num {
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+}
+.faint {
+  color: var(--text-faint);
+}
+.mt-6 {
+  margin-top: 6px;
+}
+.mt-8 {
+  margin-top: 8px;
+}
+.mt-12 {
+  margin-top: 12px;
+}
+
+/* --- news ticker ----------------------------------------------------- */
+
+.ticker {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  height: 26px;
+  overflow: hidden;
+  background: var(--bg-raise-2);
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+.ticker--down,
+.ticker--loading {
+  padding: 0 12px;
+  color: var(--text-faint);
+  font-size: 12px;
+}
+.ticker-track {
+  display: flex;
+  flex-shrink: 0;
+  animation: ticker-scroll 90s linear infinite;
+}
+.ticker-seq {
+  display: flex;
+  flex-shrink: 0;
+  gap: 2.5rem;
+  padding-right: 2.5rem;
+}
+.ticker:hover .ticker-track {
+  animation-play-state: paused;
+}
+/* The track holds two identical sequences; -50% brings the second exactly onto
+   where the first began, so the loop has no seam. */
+@keyframes ticker-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+.ticker-item {
+  color: var(--text);
+  font-size: 12px;
+}
+.ticker-item:hover {
+  color: var(--accent);
+  text-decoration: none;
+}
+.ticker-src {
+  margin-left: 0.5rem;
+  color: var(--text-faint);
+}
+.bucket {
+  margin-right: 0.4rem;
+  padding: 0 5px;
+  border-radius: 3px;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: var(--bg-raise);
+  color: var(--text-dim);
+}
+.bucket--dead_parrots {
+  color: var(--favored);
+}
+.bucket--opponent {
+  color: var(--underdog);
+}
+.bucket--free_agent {
+  color: var(--accent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ticker-track {
+    animation: none;
+  }
+}
+
+/* --- freshness header ---------------------------------------------- */
+
+.freshness {
+  position: sticky;
+  top: 26px;
+  z-index: 20;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 10px;
+  padding: 5px 12px;
+  background: var(--bg-raise);
+  border-bottom: 1px solid var(--border);
+  font-size: 11px;
+}
+.freshness-label {
+  color: var(--text-faint);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 1px 7px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--bg-raise-2);
+}
+.chip .dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--text-faint);
+}
+.chip[data-state="ok"] .dot {
+  background: var(--good);
+}
+.chip[data-state="failed"] .dot {
+  background: var(--bad);
+}
+.chip[data-state="never"] .dot {
+  background: var(--text-faint);
+}
+.chip .src {
+  color: var(--text-dim);
+}
+.chip .age,
+.chip .stamp {
+  color: var(--text-faint);
+}
+.chip .stamp {
+  font-family: var(--mono);
+}
+.freshness .reminder {
+  color: var(--warn);
+}
+
+/* --- masthead / nav ---------------------------------------------- */
+
+.masthead {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg);
+}
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+.logo svg {
+  width: 30px;
+  height: 30px;
+  color: var(--accent);
+}
+.logo .wordmark {
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  font-size: 15px;
+  text-transform: uppercase;
+}
+.logo .sub {
+  color: var(--text-faint);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+.tabs {
+  display: flex;
+  gap: 2px;
+}
+.tab {
+  padding: 5px 14px;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  background: none;
+  color: var(--text-dim);
+  font: inherit;
+  cursor: pointer;
+}
+.tab:hover {
+  color: var(--text);
+}
+.tab[aria-current="page"] {
+  background: var(--bg-raise-2);
+  border-color: var(--border);
+  color: var(--text);
+}
+
+/* --- screen layout --------------------------------------------- */
+
+.screen {
+  padding: 16px;
+  max-width: 1200px;
+}
+.panel {
+  margin-bottom: 14px;
+  padding: 12px 14px;
+  background: var(--bg-raise);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+}
+.panel-row {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+.stack > * + * {
+  margin-top: 4px;
+}
+
+.tbl {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+.tbl th,
+.tbl td {
+  padding: 3px 8px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+.tbl th {
+  color: var(--text-faint);
+  font-weight: 500;
+  text-transform: uppercase;
+  font-size: 10px;
+  letter-spacing: 0.06em;
+}
+.tbl td.n,
+.tbl th.n {
+  text-align: right;
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+}
+.tbl tr:hover td {
+  background: var(--bg-raise-2);
+}
+.pos-tag {
+  display: inline-block;
+  min-width: 30px;
+  padding: 0 4px;
+  border-radius: 3px;
+  background: var(--bg-raise-2);
+  color: var(--text-dim);
+  font-size: 10px;
+  text-align: center;
+}
+.lowconf {
+  color: var(--warn);
+  cursor: help;
+}
+.unresolved {
+  color: var(--bad);
+  cursor: help;
+}
+
+.badge {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 4px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  font-size: 12px;
+}
+.badge--favored {
+  background: rgba(67, 181, 129, 0.15);
+  color: var(--favored);
+}
+.badge--underdog {
+  background: rgba(224, 163, 65, 0.15);
+  color: var(--underdog);
+}
+
+.metric {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.metric .k {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-faint);
+}
+.metric .v {
+  font-family: var(--mono);
+  font-size: 15px;
+}
+.metric-row {
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+.fpc {
+  display: inline-flex;
+  gap: 8px;
+  font-family: var(--mono);
+}
+.fpc .floor {
+  color: var(--text-dim);
+}
+.fpc .ceil {
+  color: var(--text-dim);
+}
+.fpc .proj {
+  color: var(--text);
+}
+
+.caveats {
+  margin: 0;
+  padding-left: 18px;
+  color: var(--text-dim);
+  font-size: 11px;
+}
+.caveats li {
+  margin: 2px 0;
+}
+
+.engine-toggle {
+  display: inline-flex;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+}
+.engine-toggle button {
+  padding: 4px 12px;
+  border: 0;
+  background: var(--bg-raise-2);
+  color: var(--text-dim);
+  font: inherit;
+  cursor: pointer;
+}
+.engine-toggle button[aria-pressed="true"] {
+  background: var(--accent);
+  color: #06231f;
+  font-weight: 650;
+}
+
+.state-msg {
+  padding: 10px 12px;
+  color: var(--text-dim);
+}
+.state-msg[role="alert"] {
+  color: var(--bad);
+}
+
+/* --- Lineup Lab ------------------------------------------------- */
+
+.lab-board {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(3, 1fr);
+}
+@media (max-width: 780px) {
+  .lab-board {
+    grid-template-columns: 1fr;
+  }
+}
+.lab-col {
+  min-height: 120px;
+  padding: 8px;
+  background: var(--bg-raise);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+}
+.lab-col.over {
+  border-color: var(--accent);
+}
+.lab-col h3 {
+  display: flex;
+  justify-content: space-between;
+}
+.lab-col ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  min-height: 40px;
+}
+.player-card {
+  display: grid;
+  grid-template-columns: 34px 1fr auto;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 6px;
+  margin: 3px 0;
+  background: var(--bg-raise-2);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  cursor: grab;
+  font-size: 12px;
+}
+.player-card:active {
+  cursor: grabbing;
+}
+.player-card.dragging {
+  opacity: 0.4;
+}
+.player-card .pmean {
+  font-family: var(--mono);
+  color: var(--text-dim);
+}
+
+.lab-result {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 22px;
+  margin-top: 12px;
+  padding: 12px 14px;
+  background: var(--bg-raise);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+}
+.lab-result.illegal {
+  border-color: var(--bad);
+}
+/* While a recompute for the current board is in flight the shown numbers are
+   for the previous board — dim them until the new result lands. */
+.lab-result.stale .metric,
+.lab-result.stale .illegal-banner {
+  opacity: 0.4;
+}
+.illegal-banner {
+  flex-basis: 100%;
+  margin: 0;
+  color: var(--bad);
+  font-weight: 600;
+}
+.computing {
+  color: var(--text-faint);
+  font-size: 11px;
+}
+
+.fills {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: 1fr 1fr;
+  margin-top: 10px;
+}
+@media (max-width: 780px) {
+  .fills {
+    grid-template-columns: 1fr;
+  }
+}
+.fill-col {
+  padding: 8px;
+  background: var(--bg-raise);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+}
+.linkish {
+  padding: 3px 10px;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  background: var(--bg-raise-2);
+  color: var(--text);
+  font: inherit;
+  cursor: pointer;
+}
+.linkish:hover {
+  border-color: var(--accent);
+}
