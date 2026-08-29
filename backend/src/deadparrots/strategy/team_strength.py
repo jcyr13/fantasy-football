@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from typing import NamedTuple
 
 from ..projection import decay_weights, weighted_mean
 from .inputs import LeagueState
@@ -49,6 +50,17 @@ class TeamStrength:
         return next(v.rank for v in self.league if v.is_dead_parrots)
 
 
+class _TeamValue(NamedTuple):
+    """A team's decay-weighted points-for before it is ranked into the league
+    table — read by name, never by position."""
+
+    team_id: str
+    team_name: str
+    is_dead_parrots: bool
+    decay_weighted_points_for: float
+    weeks_counted: int
+
+
 def _decay_weighted_points_for(series: list[float], half_life_weeks: float) -> float:
     """Decay-weighted mean of a team's completed-week points-for (oldest →
     newest). No completed weeks yet ⇒ 0.0 (every team is then equal and the
@@ -75,39 +87,40 @@ def team_strength(
     """Compute Dead Parrots' team strength over ``state`` (methodology §4.1)."""
     half_life = params.team_strength_decay_half_life_weeks
 
-    raw: list[tuple[str, str, bool, float, int]] = []
-    for team in state.teams:
-        series = team.points_for_series()
-        raw.append(
-            (
-                team.team_id,
-                team.team_name,
-                team.is_dead_parrots,
-                _decay_weighted_points_for(series, half_life),
-                len(series),
-            )
+    values = [
+        _TeamValue(
+            team_id=team.team_id,
+            team_name=team.team_name,
+            is_dead_parrots=team.is_dead_parrots,
+            decay_weighted_points_for=_decay_weighted_points_for(
+                team.points_for_series(), half_life
+            ),
+            weeks_counted=len(team.weekly_scores),
         )
+        for team in state.teams
+    ]
 
-    ordered = sorted(raw, key=lambda r: (-r[3], r[0]))
+    ordered = sorted(
+        values, key=lambda v: (-v.decay_weighted_points_for, v.team_id)
+    )
     league = tuple(
         TeamStrengthValue(
-            team_id=tid,
-            team_name=name,
-            is_dead_parrots=is_dp,
-            decay_weighted_points_for=round(dwpf, 2),
-            weeks_counted=weeks,
+            team_id=v.team_id,
+            team_name=v.team_name,
+            is_dead_parrots=v.is_dead_parrots,
+            decay_weighted_points_for=round(v.decay_weighted_points_for, 2),
+            weeks_counted=v.weeks_counted,
             rank=rank,
         )
-        for rank, (tid, name, is_dp, dwpf, weeks) in enumerate(ordered, start=1)
+        for rank, v in enumerate(ordered, start=1)
     )
 
-    dp = next(r for r in raw if r[2])
-    dp_value = dp[3]
-    others = [r[3] for r in raw if not r[2]]
+    dp = next(v for v in values if v.is_dead_parrots)
+    others = [v.decay_weighted_points_for for v in values if not v.is_dead_parrots]
     return TeamStrength(
-        decay_weighted_points_for=round(dp_value, 2),
-        percentile=round(_percentile_rank(dp_value, others), 6),
-        weeks_counted=dp[4],
+        decay_weighted_points_for=round(dp.decay_weighted_points_for, 2),
+        percentile=round(_percentile_rank(dp.decay_weighted_points_for, others), 6),
+        weeks_counted=dp.weeks_counted,
         half_life_weeks=half_life,
         league=league,
     )

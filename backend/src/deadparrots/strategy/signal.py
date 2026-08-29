@@ -17,6 +17,9 @@ __all__ = ["ContendRebuildHold", "StrategicSignal", "contend_rebuild_hold"]
 
 StrategicSignal = Literal["contend", "rebuild", "hold", "too-early"]
 
+# Closes every rationale — the layer is advisory only (methodology §4).
+_ADVISORY_ONLY = "Advisory only — no transaction is recommended."
+
 
 @dataclass(frozen=True)
 class ContendRebuildHold:
@@ -102,7 +105,7 @@ def contend_rebuild_hold(
             f"threshold ({params.contend_points_for_percentile:.0f}).",
             f"Season-rest playoff odds {dp_odds:.0%} are at or above the "
             f"striking-distance floor ({params.striking_distance_playoff_odds:.0%}).",
-            "Advisory only — no transaction is recommended.",
+            _ADVISORY_ONLY,
         )
     elif rebuild_pct and rebuild_odds:
         signal = "rebuild"
@@ -111,7 +114,7 @@ def contend_rebuild_hold(
             f"threshold ({params.rebuild_points_for_percentile:.0f}).",
             f"Season-rest playoff odds {dp_odds:.0%} are at or below the low "
             f"floor ({params.low_playoff_odds:.0%}).",
-            "Advisory only — no transaction is recommended.",
+            _ADVISORY_ONLY,
         )
     else:
         signal = "hold"
@@ -134,7 +137,7 @@ def contend_rebuild_hold(
                 f"({params.rebuild_points_for_percentile:.0f}) and contend "
                 f"({params.contend_points_for_percentile:.0f}) thresholds."
             )
-        bits.append("Advisory only — no transaction is recommended.")
+        bits.append(_ADVISORY_ONLY)
         rationale = tuple(bits)
 
     return ContendRebuildHold(signal=signal, rationale=rationale, **common)

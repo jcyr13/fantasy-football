@@ -5,8 +5,12 @@ producing four advisory reads — team strength, expected wins, a
 contend/rebuild/hold signal from ~Week 5, and a bye-week crunch map — none
 recommending a transaction. `docs/methodology.md` §4.1–§4.4 defines every
 formula and §5 rows 6–10 pin their parameters; the sign-off (§7) accepts them
-"as written" and accepts "all answers to the §6 open questions as documented".
-Two things the methodology names but does not fully pin down are settled here.
+"as written". §6 open question 3 ("what does 'within striking distance of a
+playoff seed' mean concretely — within N games of the 6-seed? A playoff-odds
+floor?") is left genuinely open by the doc — it poses the two options without
+choosing. This ADR makes that choice (decision 5) and settles a second thing
+the methodology names but does not pin down (decision 4, the season-rest sim's
+input shape).
 Vocabulary is CONTEXT.md's ("Team strength", "Expected wins", "Contend /
 Rebuild / Hold signal", "Bye-week crunch").
 
@@ -54,9 +58,11 @@ odds — and therefore its signal — are stable across reloads (ADR-0007).
 
 **5. "Within striking distance of a seed" and "low playoff odds" are floors on
 that sim's odds.** Methodology §6 open question 3 asks whether "striking
-distance" means "within N games of the 6-seed" or "a playoff-odds floor". This
-ADR fixes it as a playoff-odds floor, read straight off the sim the methodology
-already requires for the signal:
+distance" means "within N games of the 6-seed" or "a playoff-odds floor" and
+leaves it unanswered. This ADR is where that decision is made: a playoff-odds
+floor, read straight off the sim the methodology already requires for the
+signal. It is a new call, not a transcription of §5 — flagged as such so a
+later reviewer knows to weigh it:
 
 - **contend** — points-for percentile `≥ 60` **and** playoff odds `≥ 0.25`
   (`striking_distance_playoff_odds`);

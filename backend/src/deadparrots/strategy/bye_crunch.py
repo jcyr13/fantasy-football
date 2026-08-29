@@ -3,7 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Literal
 
-from ..lineup import can_field_legal_lineup, role_of
+from ..lineup import LineupSlots, can_field_legal_lineup, role_of
 from .inputs import ByePlayer, LeagueState
 from .params import DEFAULT_STRATEGY_PARAMS, StrategyParams
 
@@ -80,7 +80,7 @@ def _on_bye(player: ByePlayer, week: int) -> bool:
 def _grade_week(
     week: int,
     roster: tuple[ByePlayer, ...],
-    state: LeagueState,
+    slots: LineupSlots,
     params: StrategyParams,
 ) -> WeekByeCrunch:
     by_role: dict[str, list[str]] = {}
@@ -101,7 +101,7 @@ def _grade_week(
     available_pool = [
         p for p in roster if p.available and not _on_bye(p, week)
     ]
-    can_field = can_field_legal_lineup(available_pool, state.lineup_slots)
+    can_field = can_field_legal_lineup(available_pool, slots)
 
     reasons: list[str] = []
     grade: ByeCrunchGrade
@@ -150,7 +150,7 @@ def bye_crunch_map(
     ``ok``.
     """
     weeks = tuple(
-        _grade_week(week, state.dead_parrots_roster, state, params)
+        _grade_week(week, state.dead_parrots_roster, state.lineup_slots, params)
         for week in range(state.current_week, state.regular_season_weeks + 1)
     )
     return ByeCrunchMap(weeks=weeks)
