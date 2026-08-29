@@ -305,16 +305,24 @@ def _distribution_quantiles(
     return floor, projection, ceiling
 
 
-def _skewed_unit(rng: random.Random, skew: float) -> float:
-    """A mean-0, ~unit-variance draw with Fisher skewness ≈ ``skew``.
+def cornish_fisher_unit(z: float, skew: float) -> float:
+    """Map a standard-normal draw ``z`` to a mean-0, ~unit-variance draw with
+    Fisher skewness ≈ ``skew``.
 
     First-order Cornish-Fisher expansion of a standard normal: monotonic in
     ``z`` down to ``z = -3 / skew`` (below the reported P10 for the
     ``|skew| <= 1`` the model allows), so the sampled quantiles keep their
-    order.
+    order. Split out from :func:`_skewed_unit` so the head-to-head simulation
+    (issue #10) samples the *identical* marginal shape this model reports rather
+    than re-deriving one — see ADR-0006.
     """
-    z = rng.gauss(0.0, 1.0)
     return z + (skew / 6.0) * (z * z - 1.0)
+
+
+def _skewed_unit(rng: random.Random, skew: float) -> float:
+    """A mean-0, ~unit-variance draw with Fisher skewness ≈ ``skew`` from
+    ``rng`` (a single :func:`cornish_fisher_unit` draw)."""
+    return cornish_fisher_unit(rng.gauss(0.0, 1.0), skew)
 
 
 def _quantile(sorted_values: Sequence[float], p: float) -> float:

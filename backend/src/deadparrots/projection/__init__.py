@@ -35,6 +35,7 @@ from .model import (
     PlayerProjection,
     ProjectionComponents,
     ProjectionSource,
+    cornish_fisher_unit,
     project,
 )
 from .params import DEFAULT_PARAMS, ProjectionParams
@@ -61,6 +62,7 @@ __all__ = [
     "ResidualPrior",
     "UnknownPositionError",
     "UsageSnapshot",
+    "cornish_fisher_unit",
     "decay_weights",
     "own_residual_shape",
     "per_game_decay",
