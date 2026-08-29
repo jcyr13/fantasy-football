@@ -83,10 +83,6 @@ class NewsItem:
                 seen.append(tag.bucket)
         return tuple(sorted(seen, key=lambda b: b.precedence))
 
-    @property
-    def tagged_players(self) -> tuple[str, ...]:
-        return tuple(t.player_name for t in self.tags)
-
 
 @dataclass(frozen=True)
 class NewsFeed:

@@ -4,11 +4,29 @@ from datetime import UTC, datetime, timedelta
 
 from deadparrots.news.cache import load_cached_news
 from deadparrots.news.params import NewsParams
+from deadparrots.news.raw import NewsPayloadFormat, RawNewsPayload
 from deadparrots.news.runner import run_news_pull
 from deadparrots.news.status import latest_pull_all_failed
 from deadparrots.news.tagging import NewsTargets
 
 NOW = datetime(2026, 9, 23, 12, 0, tzinfo=UTC)
+
+
+class _EmptyEspnSource:
+    """A feed that fetches fine but currently carries no articles."""
+
+    source_label = "espn-api"
+
+    def fetch(self) -> list[RawNewsPayload]:
+        return [
+            RawNewsPayload(
+                source="espn-api",
+                fmt=NewsPayloadFormat.ESPN_API_JSON,
+                fetched_at=NOW,
+                url="https://example.test/news/empty",
+                body='{"articles": []}',
+            )
+        ]
 
 
 def _sources(make_fake_news_source, *names, fail=()):
@@ -172,6 +190,47 @@ def test_a_total_failure_does_not_arm_the_throttle(
         **kw,
     )
     assert retry.skipped is False
+
+
+def test_still_fresh_cached_items_are_carried_forward_when_a_feed_goes_quiet(
+    make_fake_news_source, news_raw_store, sqlite_conn, news_targets
+):
+    kw = dict(raw_store=news_raw_store, conn=sqlite_conn, targets=news_targets)
+    first = run_news_pull(
+        sources=_sources(make_fake_news_source, "espn_api_news"), now=NOW, **kw
+    )
+    assert {i for i in first.feed.for_player("Josh Allen")}
+    first_titles = {i.title for i in first.feed.items}
+
+    # 31 minutes later the ESPN feed has scrolled and returns nothing new.
+    later = run_news_pull(
+        sources=[_EmptyEspnSource()], now=NOW + timedelta(minutes=31), **kw
+    )
+    assert {i.title for i in later.feed.items} == first_titles
+    assert len(load_cached_news(sqlite_conn, now=NOW + timedelta(minutes=31))) == len(
+        first_titles
+    )
+
+
+def test_a_target_change_drops_now_untagged_cached_items(
+    make_fake_news_source, news_raw_store, sqlite_conn, news_targets
+):
+    kw = dict(raw_store=news_raw_store, conn=sqlite_conn)
+    run_news_pull(
+        sources=_sources(make_fake_news_source, "espn_api_news"),
+        targets=news_targets,
+        now=NOW,
+        **kw,
+    )
+    # Next poll, Josh Allen and Rashee Rice are no longer targets.
+    later = run_news_pull(
+        sources=[_EmptyEspnSource()],
+        targets=NewsTargets(my_roster=("Bijan Robinson",)),
+        now=NOW + timedelta(minutes=31),
+        **kw,
+    )
+    tagged = {t.player_name for i in later.feed.items for t in i.tags}
+    assert tagged == {"Bijan Robinson"}
 
 
 def test_empty_targets_still_archive_and_report_but_retain_nothing(

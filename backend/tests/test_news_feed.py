@@ -101,6 +101,20 @@ def test_empty_targets_yield_an_empty_feed(news_payload):
     assert len(feed) == 0
 
 
+def test_the_same_headline_from_two_different_urls_collapses(news_targets):
+    articles = [
+        _article(title="Bijan Robinson ruled OUT", url="https://espn.com/a/1"),
+        _article(
+            title="bijan robinson ruled out",
+            url="https://sports.yahoo.com/b/2",
+            source="yahoo-rss",
+        ),
+    ]
+    feed = build_news_feed(articles, news_targets, now=NOW)
+    assert len(feed) == 1
+    assert feed.items[0].source == "espn-api+yahoo-rss"
+
+
 def test_items_with_no_url_dedupe_on_normalized_title(news_targets):
     articles = [
         _article(title="Josh Allen (elbow)  LIMITED", url=""),

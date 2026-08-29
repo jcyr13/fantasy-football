@@ -6,6 +6,7 @@ from dataclasses import dataclass
 from datetime import UTC, datetime
 from email.utils import parsedate_to_datetime
 
+from ._time import ensure_utc, parse_utc
 from .raw import NewsPayloadFormat, RawNewsPayload
 
 # recorded-payload-in -> normalized-articles-out (spec issue #15: "Source
@@ -15,12 +16,10 @@ from .raw import NewsPayloadFormat, RawNewsPayload
 # separate seam (``sources.py``) and is not unit-tested — exactly like
 # ``LiveNflverseSource`` / ``BrowserYahooSource`` / ``SleeperConsensusSource``.
 #
-# A ``ParsedArticle`` is the raw material for a ``NewsItem``: it has no player
-# tags and no bucket yet. Tagging (``tagging.py``) and the 48-hour window +
-# dedupe (``feed.py``) run after this.
-
-# Atom / RSS namespaces some feeds decorate their elements with.
-_ATOM_NS = "{http://www.w3.org/2005/Atom}"
+# Two wire formats only: ESPN's keyless news endpoint (JSON) and RSS 2.0 (the
+# ESPN NFL and Yahoo Sports NFL feeds). A ``ParsedArticle`` is the raw material
+# for a ``NewsItem``: it has no player tags and no bucket yet. Tagging
+# (``tagging.py``) and the 48-hour window + dedupe (``feed.py``) run after this.
 
 
 @dataclass(frozen=True)
@@ -134,12 +133,9 @@ def _normalize_rss(payload: RawNewsPayload) -> list[ParsedArticle]:
     channel = root.find("channel")
     items = channel.findall("item") if channel is not None else root.findall("item")
     if channel is None and not items:
-        # An Atom feed uses <entry> under the document root.
-        items = root.findall(f"{_ATOM_NS}entry")
-        if not items:
-            raise NewsNormalizationError(
-                payload.source, "payload has no <channel>/<item> or <entry> elements"
-            )
+        raise NewsNormalizationError(
+            payload.source, "payload has no <channel>/<item> elements"
+        )
 
     out: list[ParsedArticle] = []
     for item in items:
@@ -147,22 +143,14 @@ def _normalize_rss(payload: RawNewsPayload) -> list[ParsedArticle]:
         url = _rss_link(item)
         if not title or not url:
             continue
-        published = _parse_rss_date(
-            _rss_text(item, "pubDate")
-            or _rss_text(item, "published")
-            or _rss_text(item, "updated")
-            or _rss_text(item, f"{_ATOM_NS}updated")
-        )
+        published = _parse_rss_date(_rss_text(item, "pubDate"))
         if published is None:
             continue
-        summary = _clean(
-            _rss_text(item, "description") or _rss_text(item, f"{_ATOM_NS}summary")
-        )
         out.append(
             ParsedArticle(
                 title=title,
                 url=url,
-                summary=summary or None,
+                summary=_clean(_rss_text(item, "description")) or None,
                 source=payload.source,
                 published_at=published,
             )
@@ -179,13 +167,6 @@ def _rss_link(item: ET.Element) -> str:
     link = item.find("link")
     if link is not None and link.text and link.text.strip():
         return link.text.strip()
-    # Atom: <link href="..."/>, preferring rel="alternate".
-    atom_links = item.findall(f"{_ATOM_NS}link")
-    for candidate in atom_links:
-        if candidate.get("rel", "alternate") == "alternate" and candidate.get("href"):
-            return candidate.get("href", "").strip()
-    if atom_links and atom_links[0].get("href"):
-        return atom_links[0].get("href", "").strip()
     guid = item.find("guid")
     if guid is not None and guid.text and guid.text.strip().startswith("http"):
         return guid.text.strip()
@@ -206,10 +187,9 @@ def _parse_iso(value: object) -> datetime | None:
     if not text:
         return None
     try:
-        parsed = datetime.fromisoformat(text.replace("Z", "+00:00"))
+        return parse_utc(text)
     except ValueError:
         return None
-    return parsed.astimezone(UTC) if parsed.tzinfo else parsed.replace(tzinfo=UTC)
 
 
 def _parse_rss_date(value: str) -> datetime | None:
@@ -222,4 +202,4 @@ def _parse_rss_date(value: str) -> datetime | None:
         return _parse_iso(text)
     if parsed is None:
         return None
-    return parsed.astimezone(UTC) if parsed.tzinfo else parsed.replace(tzinfo=UTC)
+    return ensure_utc(parsed).astimezone(UTC)

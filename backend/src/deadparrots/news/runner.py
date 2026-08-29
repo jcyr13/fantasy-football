@@ -7,7 +7,7 @@ from dataclasses import dataclass
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
-from .cache import replace_cached_news
+from .cache import cached_articles, replace_cached_news
 from .feed import build_news_feed
 from .models import NewsFeed
 from .normalize import ParsedArticle, normalize_payloads
@@ -55,7 +55,7 @@ class NewsPullRun:
     (spec issue #15: "at most every ~30 minutes") suppressed the fetch.
     """
 
-    pull_id: str
+    pull_id: str | None
     skipped: bool
     feed: NewsFeed | None
     results: tuple[NewsFeedPullResult, ...]
@@ -105,7 +105,7 @@ def run_news_pull(
                     params.min_poll_interval_minutes,
                 )
                 return NewsPullRun(
-                    pull_id="", skipped=True, feed=None, results=()
+                    pull_id=None, skipped=True, feed=None, results=()
                 )
 
     pulled_at = now
@@ -180,8 +180,18 @@ def run_news_pull(
             ),
         )
 
+    # Carry the still-fresh cached rows back in so a story that has scrolled off
+    # an upstream feed but is still inside the 48-hour window is not lost; the
+    # build re-tags every article against the *current* targets, so a stale tag
+    # cannot survive a roster or shortlist change.
+    carried = cached_articles(
+        conn,
+        now=now,
+        window_hours=params.window_hours,
+        future_skew_minutes=params.future_skew_minutes,
+    )
     feed = build_news_feed(
-        articles, targets, now=now, fetched_at=pulled_at, params=params
+        [*articles, *carried], targets, now=now, fetched_at=pulled_at, params=params
     )
     replace_cached_news(conn, feed)
 

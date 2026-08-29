@@ -12,7 +12,7 @@ from deadparrots.db import connect_duckdb, init_sqlite
 from deadparrots.ingest.cache import NflverseParquetCache, register_nflverse_views
 from deadparrots.ingest.schedule import register_weekly_nflverse_pull
 from deadparrots.news.schedule import register_news_poll
-from deadparrots.news.tagging import NewsTargets
+from deadparrots.news.targets import build_yahoo_targets_provider
 from deadparrots.scheduler import build_scheduler
 from deadparrots.yahoo.source import YahooSource
 
@@ -39,15 +39,16 @@ async def lifespan(app: FastAPI):
         settings=settings,
         sqlite_conn=app.state.sqlite,
     )
-    # The news poll (spec issue #15). The assembled weekly view (issue #16)
-    # replaces the provider with one backed by the latest Yahoo pull's rosters
-    # plus the free-agent shortlist; until then the poll archives payloads and
-    # records feed status but tags — and retains — nothing.
+    # The news poll (spec issue #15). Targets are the Dead Parrots and
+    # current-opponent rosters from the latest Yahoo assisted pull; the
+    # free-agent shortlist is added by the assembled weekly view (issue #16),
+    # which owns free-agent ranking. Before the first Yahoo pull the provider
+    # returns empty targets and the poll retains nothing.
     register_news_poll(
         scheduler,
         settings=settings,
         sqlite_conn=app.state.sqlite,
-        targets_provider=NewsTargets.empty,
+        targets_provider=build_yahoo_targets_provider(settings),
     )
 
     try:

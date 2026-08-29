@@ -7,6 +7,8 @@ from enum import StrEnum
 from pathlib import Path
 from typing import Any
 
+from ._time import parse_utc
+
 # The raw news payload and its on-disk archive (spec issue #15; user story #63:
 # raw source pulls retained as timestamped files so any recommendation is
 # reproducible from source). One pull fans out across several feeds, so a pull
@@ -28,14 +30,6 @@ class NewsPayloadFormat(StrEnum):
     def extension(self) -> str:
         return "json" if self is NewsPayloadFormat.ESPN_API_JSON else "xml"
 
-    @property
-    def content_type(self) -> str:
-        return (
-            "application/json"
-            if self is NewsPayloadFormat.ESPN_API_JSON
-            else "application/rss+xml"
-        )
-
 
 @dataclass(frozen=True)
 class RawNewsPayload:
@@ -52,14 +46,6 @@ class RawNewsPayload:
     fetched_at: datetime
     url: str
     body: str
-
-    @property
-    def content_type(self) -> str:
-        return self.fmt.content_type
-
-    def json(self) -> Any:
-        """The parsed JSON body (ESPN endpoint payloads only)."""
-        return json.loads(self.body)
 
 
 class NewsArtifactExistsError(FileExistsError):
@@ -151,10 +137,11 @@ class NewsRawStore:
 
 
 def _parse_dt(value: Any) -> datetime:
+    """A manifest timestamp, or ``now`` when it is missing or unparseable —
+    provenance only, ``normalize`` never reads it."""
     if not value:
         return datetime.now(UTC)
     try:
-        parsed = datetime.fromisoformat(str(value).replace("Z", "+00:00"))
+        return parse_utc(str(value))
     except ValueError:
         return datetime.now(UTC)
-    return parsed if parsed.tzinfo else parsed.replace(tzinfo=UTC)

@@ -54,7 +54,7 @@ class NewsTargets:
             yield name, NewsBucket.FREE_AGENT
 
 
-@dataclass
+@dataclass(frozen=True)
 class _CompiledTarget:
     canonical_name: str
     bucket: NewsBucket

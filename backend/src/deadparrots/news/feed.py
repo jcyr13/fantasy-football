@@ -72,20 +72,26 @@ def build_news_feed(
 
 
 def _dedupe(articles: Sequence[ParsedArticle]) -> list[tuple[str, list[ParsedArticle]]]:
-    """Group articles by dedupe key, preserving first-seen order of the groups.
+    """Group articles that are the same story, preserving first-seen group order.
 
-    An article's key is its normalized URL, or its normalized title when it has
-    no usable URL. Two feeds carrying the same story (same link, or the same
-    headline with tracking-only URL differences) collapse to one group.
+    Two articles collapse when their normalized URLs match (scheme, ``www.``,
+    query, and fragment stripped) **or** their normalized titles match. The
+    title path catches the same story published by two feeds under different
+    canonical URLs; the URL path catches a shared link whose headline a feed
+    reworded. Spec issue #15: "deduped by title/URL".
     """
     order: list[str] = []
     groups: dict[str, list[ParsedArticle]] = {}
+    by_title: dict[str, str] = {}
     for article in articles:
-        key = _dedupe_key(article)
+        title_key = _normalize_title(article.title)
+        key = by_title.get(title_key) or _dedupe_key(article)
         if key not in groups:
             groups[key] = []
             order.append(key)
         groups[key].append(article)
+        if title_key:
+            by_title.setdefault(title_key, key)
     return [(key, groups[key]) for key in order]
 
 

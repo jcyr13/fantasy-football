@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from .cache import (
+    cached_articles,
     ensure_news_items_table,
     load_cached_news,
     replace_cached_news,
@@ -38,6 +39,7 @@ from .status import (
     record_news_pull_status,
 )
 from .tagging import NewsTargets, compile_targets, tag_text
+from .targets import build_yahoo_targets_provider, targets_from_latest_yahoo_pull
 
 __all__ = [
     "DEFAULT_NEWS_PARAMS",
@@ -63,6 +65,8 @@ __all__ = [
     "StaticNewsSource",
     "build_news_feed",
     "build_news_sources",
+    "build_yahoo_targets_provider",
+    "cached_articles",
     "compile_targets",
     "ensure_news_items_table",
     "ensure_news_pull_status_table",
@@ -76,4 +80,5 @@ __all__ = [
     "replace_cached_news",
     "run_news_pull",
     "tag_text",
+    "targets_from_latest_yahoo_pull",
 ]

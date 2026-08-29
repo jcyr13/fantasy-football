@@ -16,10 +16,12 @@ input — so every numeric knob here is a build choice. Vocabulary is CONTEXT.md
 `deadparrots.news.sources.NewsSource` is the swappable fetch seam, exactly like
 `LiveNflverseSource` / `BrowserYahooSource` / `SleeperConsensusSource`.
 `EspnNewsApiSource` hits the keyless endpoint; `RssNewsSource` fetches one RSS
-2.0 feed; `StaticNewsSource` serves captured bodies for replay and tests. The
-HTTP GET is `# pragma: no cover` and never unit-tested. `normalize_payload` is
-pure — a recorded JSON or XML body in, a list of `ParsedArticle` out — and is
-the seam the recorded-payload test drives (acceptance criterion 5).
+2.0 feed (the ESPN NFL and Yahoo Sports NFL feeds are both RSS 2.0 — the parser
+handles `<channel>/<item>` and nothing else); `StaticNewsSource` serves captured
+bodies for replay and tests. The HTTP GET is `# pragma: no cover` and never
+unit-tested. `normalize_payload` is pure — a recorded JSON or XML body in, a
+list of `ParsedArticle` out — and is the seam the recorded-payload test drives
+(acceptance criterion 5).
 
 **2. A poll fans out per feed; a feed failure is isolated and never emails.**
 The runner iterates the configured feeds, archives each raw payload under
@@ -30,15 +32,18 @@ input, so — like Yahoo and consensus and unlike nflverse — a failure is logg
 surfaces in the data-freshness header, and (when *every* feed fails) hides the
 ticker via `latest_pull_all_failed`. It never sends an alert.
 
-**3. The target lists are an input, not something the module computes.**
-`NewsTargets` carries three name tuples — `my_roster`, `opponent`,
-`free_agents`. Whoever assembles the weekly view (issue #16) turns the latest
-Yahoo pull's rosters and the free-agent shortlist into a `NewsTargets`, the same
-way `WaiverState` is resolved upstream of the waiver layer (ADR-0011). This is a
-deliberate sibling input shape: issue #15 ships independently of #16, which is
-the merge point. Until #16 wires a real provider, `app.py` passes
-`NewsTargets.empty` and the scheduled poll archives payloads and records feed
-status but tags — and therefore retains — nothing.
+**3. The target lists are an input, resolved by a provider the poll calls each
+fire.** `NewsTargets` carries three name tuples — `my_roster`, `opponent`,
+`free_agents` — a deliberate sibling input shape, resolved upstream exactly as
+`WaiverState` is for the waiver layer (ADR-0011). `register_news_poll` takes a
+zero-arg `targets_provider` so a running poll picks up a roster change without a
+restart. The shipped provider (`targets_from_latest_yahoo_pull`) reads the Dead
+Parrots and current-opponent rosters straight off the newest archived Yahoo
+matchup payload; the **free-agent shortlist stays empty until issue #16**, which
+owns free-agent ranking and is where the shortlist is a computed subset rather
+than a raw page. Before the first Yahoo pull the provider returns empty targets
+and the poll archives payloads and records feed status but tags — and therefore
+retains — nothing.
 
 **4. Name matching is normalize-both-sides, word-boundary, suffix-insensitive.**
 Both the target name and the article's title + summary are casefolded, stripped
@@ -57,19 +62,22 @@ also on the shortlist) is claimed by the highest-precedence bucket only. An item
 that matches players in several buckets carries one `PlayerTag` per distinct
 player and reports `buckets` in precedence order (user story #38).
 
-**6. Dedupe by normalized URL, falling back to normalized title.** URL
+**6. Dedupe by normalized URL *or* normalized title.** Two articles collapse
+when their normalized URLs match **or** their normalized titles match. URL
 normalization drops the scheme, `www.`, the query string, the fragment, and a
 trailing slash — feeds differ on `http`/`https` and append per-feed tracking
-params to the same canonical article. When an item has no usable URL its key is
-its title reduced to alphanumeric tokens. Within a dedupe group the kept item
-takes the earliest `published_at`, the first non-empty summary, and a
-`+`-joined sorted `source` label (`"espn-api+espn-rss"`).
+params to the same canonical article. The title path (title reduced to
+alphanumeric tokens) additionally catches the same story published by two feeds
+under different canonical URLs — the reading "deduped by title/URL" (acceptance
+criterion 1) wants. Within a dedupe group the kept item takes the earliest
+`published_at`, the first non-empty summary, and a `+`-joined sorted `source`
+label (`"espn-api+espn-rss"`).
 
 **7. Retention: `[now − 48h, now + 60m]`.** The upper bound tolerates a small
 clock skew between a feed's timestamps and ours before an item is treated as
-bogus and dropped; `future_skew_minutes` (60) is the tolerance. The window is
-applied on ingest (`build_news_feed`) and again on read (`load_cached_news`),
-and `replace_cached_news` prunes rows below the lower bound every poll.
+bogus and dropped; `future_skew_minutes` (60) is the tolerance. The identical
+bounds are applied on ingest (`build_news_feed`) and on read
+(`load_cached_news` / `cached_articles`).
 
 **8. Untagged items are dropped, not stored.** Acceptance criterion 3 —
 "Each retained item is tagged to a player and labelled with its bucket" — is
@@ -84,11 +92,19 @@ misfire, or a manual "refresh now" all still respect the cap. A poll where every
 feed failed writes no `ok` row, so the next attempt is not throttled and retries
 promptly.
 
-**10. Ephemeral SQLite, never a snapshot.** `news_items` is application state
-keyed by dedupe key with the poll's `fetched_at` on every row (acceptance
-criterion 4). It is replaced each poll and is explicitly excluded from
+**10. Ephemeral SQLite, fully rebuilt each poll, never a snapshot.**
+`news_items` is application state keyed by dedupe key with the poll's
+`fetched_at` on every row (acceptance criterion 4). `replace_cached_news` clears
+the table and writes the current feed in one transaction — a true rebuild, so an
+item the feeds stopped carrying or one whose player left every target list does
+not linger. Because upstream feeds only expose their latest headlines, the poll
+first carries the still-fresh cached rows back in as untagged `ParsedArticle`
+(`cached_articles`) and lets `build_news_feed` re-tag every article against the
+*current* targets — so a story that scrolled off a feed but is still inside 48
+hours survives, while a stale tag cannot. `news_items` is never read into a
 `WeeklySnapshot` (acceptance criterion 6; CONTEXT.md "News ticker": "Ephemeral —
-not part of a weekly snapshot").
+not part of a weekly snapshot"); the exclusion is structural — no snapshot code
+references this module.
 
 ## Why
 
@@ -116,7 +132,14 @@ not part of a weekly snapshot").
   carrying player IDs through feeds that publish only prose.
 - Every knob (`window_hours` 48, `min_poll_interval_minutes` 30,
   `future_skew_minutes` 60) lives in `NewsParams`, pinned by
-  `test_news_params.py`, tunable without a code change.
+  `test_news_params.py`, tunable without a code change. `__main__` and
+  `register_news_poll` both build `NewsParams` from `Settings`.
+- The carry-forward means the cache size is bounded by the 48-hour window across
+  *all* feeds' tagged output, not by one feed's page size — a story stays until
+  it ages out, not until it scrolls off upstream.
+- One `news/_time.py` holds the "make it aware UTC" helper the package needs in
+  `normalize` / `raw` / `cache`; `news_pull_status` keeps its own `_parse` to
+  stay identical to `consensus/status.py`.
 
 ## Considered alternatives
 
@@ -132,6 +155,15 @@ not part of a weekly snapshot").
 - **One `news_pull_status` row per poll instead of per feed.** Rejected: the
   freshness header and the hide-the-ticker rule both need per-feed state.
 - **Fold news into the weekly snapshot.** Rejected by the spec outright.
-- **Resolve rosters inside the news module from the Yahoo raw store.**
-  Rejected: couples news to Yahoo's storage layout and duplicates the
-  roster-assembly #16 already owns.
+- **Ship with an empty-targets provider and wait for #16 to supply a real
+  one.** Rejected as the default: #15's acceptance criteria (tag, bucket, cache)
+  would then never exercise in the running app. Instead a thin
+  `targets_from_latest_yahoo_pull` reads the two rosters off the newest archived
+  matchup payload — enough to make the ticker real today. It lives in its own
+  `news/targets.py`, not the module core, and `register_news_poll` still takes
+  any `targets_provider`, so #16 swaps in an assembled-view provider (which also
+  contributes the free-agent shortlist) without touching the poll.
+- **Compute the free-agent shortlist here too.** Rejected: the shortlist is a
+  *ranked* subset of the free-agent universe, which is the Waiver / Free Agents
+  layer's and #16's job; duplicating that ranking in the news module would be a
+  second source of truth.

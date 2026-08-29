@@ -8,6 +8,7 @@ from pathlib import Path
 
 from ..config import get_settings
 from ..db import init_sqlite
+from .params import NewsParams
 from .raw import NewsRawStore
 from .runner import run_news_pull
 from .sources import StaticNewsSource, build_news_sources
@@ -61,12 +62,17 @@ def main(argv: list[str] | None = None) -> int:
     else:
         sources = list(build_news_sources(settings))
 
+    params = NewsParams(
+        window_hours=settings.news_window_hours,
+        min_poll_interval_minutes=settings.news_poll_interval_minutes,
+    )
     try:
         run = run_news_pull(
             sources=sources,
             raw_store=raw_store,
             conn=conn,
             targets=_load_targets(args.targets),
+            params=params,
             throttle=not args.no_throttle,
         )
     finally:
