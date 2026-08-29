@@ -1,0 +1,11 @@
+[Unit]
+Description=Weekly trigger for the Dead Parrots consensus feed scrape
+
+[Timer]
+# Wednesday 05:30 America/New_York — ahead of the api's consensus-weekly-pull
+# job (Wednesday 06:00) so a fresh drop is waiting when it re-scores.
+OnCalendar=Wed *-*-* 05:30:00 America/New_York
+Persistent=true
+
+[Install]
+WantedBy=timers.target

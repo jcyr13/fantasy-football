@@ -1,0 +1,65 @@
+{
+  "projections": [
+    {
+      "player_id": "6904",
+      "team": "PHI",
+      "position": "QB",
+      "week": 1,
+      "season": "2026",
+      "stats": {
+        "pass_yd": 230,
+        "pass_td": 1.5,
+        "pass_int": 0.5,
+        "pass_sack": 1.8,
+        "rush_yd": 45,
+        "rush_td": 0.7,
+        "rush_2pt": 0.1,
+        "fum_lost": 0.4,
+        "pts_std": 22.0,
+        "pts_half_ppr": 22.0
+      }
+    },
+    {
+      "player_id": "DAL",
+      "team": "DAL",
+      "position": "DEF",
+      "week": 1,
+      "season": "2026",
+      "stats": {
+        "sack": 3.0,
+        "int": 1.0,
+        "fum_rec": 0.7,
+        "def_td": 0.2,
+        "safe": 0.05,
+        "blk_kick": 0.05,
+        "def_tfl": 4.0,
+        "pts_allow": 24.0,
+        "pts_std": 7.0
+      }
+    },
+    {
+      "player_id": "0000",
+      "team": "FA",
+      "position": "WR",
+      "week": 1,
+      "season": "2026",
+      "stats": {}
+    }
+  ],
+  "players_index": {
+    "6904": {
+      "first_name": "Jalen",
+      "last_name": "Hurts",
+      "full_name": "Jalen Hurts",
+      "position": "QB",
+      "team": "PHI"
+    },
+    "DAL": {
+      "first_name": "Dallas",
+      "last_name": "Cowboys",
+      "full_name": "Dallas Cowboys",
+      "position": "DEF",
+      "team": "DAL"
+    }
+  }
+}

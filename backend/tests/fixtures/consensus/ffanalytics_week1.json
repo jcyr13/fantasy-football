@@ -1,0 +1,111 @@
+{
+  "source": "ffanalytics",
+  "payload_version": 1,
+  "season": 2026,
+  "week": 1,
+  "generated_at": "2026-09-09T11:00:00Z",
+  "scoring_note": "raw consensus stat projections; RIP TIDE scoring is applied downstream by the engine",
+  "players": [
+    {
+      "name": "Josh Allen",
+      "team": "BUF",
+      "position": "QB",
+      "gsis_id": "00-0034857",
+      "source_points": 22.4,
+      "stats": {
+        "pass_yds": 265,
+        "pass_tds": 1.8,
+        "pass_int": 0.6,
+        "sacks": 2.1,
+        "rush_yds": 34,
+        "rush_tds": 0.45,
+        "fumbles_lost": 0.3,
+        "two_pts": 0.1
+      }
+    },
+    {
+      "name": "Bijan Robinson",
+      "team": "ATL",
+      "position": "RB",
+      "gsis_id": "00-0038542",
+      "source_points": 15.9,
+      "stats": {
+        "rush_yds": 92,
+        "rush_tds": 0.62,
+        "rec_yds": 30,
+        "rec_tds": 0.18,
+        "fumbles_lost": 0.2,
+        "rec": 3.4
+      }
+    },
+    {
+      "name": "Ja'Marr Chase",
+      "team": "CIN",
+      "position": "WR",
+      "gsis_id": "00-0036900",
+      "source_points": 13.1,
+      "stats": { "rec_yds": 88, "rec_tds": 0.6, "rush_yds": 4, "rec": 6.1 }
+    },
+    {
+      "name": "Trey McBride",
+      "team": "ARI",
+      "position": "TE",
+      "gsis_id": "00-0037744",
+      "source_points": 9.0,
+      "stats": { "rec_yds": 58, "rec_tds": 0.45, "rec": 5.2 }
+    },
+    {
+      "name": "Harrison Butker",
+      "team": "KC",
+      "position": "K",
+      "gsis_id": "00-0033913",
+      "source_points": 8.8,
+      "stats": {
+        "fg_0019": 0.1,
+        "fg_2029": 0.5,
+        "fg_3039": 0.8,
+        "fg_4049": 0.7,
+        "fg_50": 0.4,
+        "fg_miss_0019": 0.05,
+        "xp": 2.3,
+        "xp_miss": 0.1
+      }
+    },
+    {
+      "name": "San Francisco 49ers",
+      "team": "SF",
+      "position": "DST",
+      "source_points": 7.5,
+      "stats": {
+        "dst_sacks": 2.6,
+        "dst_int": 0.9,
+        "dst_fum_rec": 0.6,
+        "dst_td": 0.15,
+        "dst_safety": 0.05,
+        "dst_blk": 0.1,
+        "dst_tfl": 3.1,
+        "dst_ret_yds": 22,
+        "dst_pts_allowed": 19.4
+      }
+    },
+    {
+      "name": "Fred Warner",
+      "team": "SF",
+      "position": "LB",
+      "gsis_id": "00-0034932",
+      "source_points": 9.8,
+      "stats": {
+        "idp_solo": 6.2,
+        "idp_asst": 2.4,
+        "idp_sack": 0.4,
+        "idp_int": 0.15,
+        "idp_fum_force": 0.1,
+        "idp_fum_rec": 0.1,
+        "idp_pd": 0.7,
+        "idp_tfl": 0.9,
+        "idp_td": 0.02,
+        "idp_ret_yds": 3
+      }
+    }
+  ]
+}

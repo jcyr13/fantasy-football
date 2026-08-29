@@ -1,0 +1,12 @@
+[Unit]
+# Runs the ffanalytics consensus scrape once, then exits (spec issue #8). Paired
+# with consensus-feed.timer. Adjust WorkingDirectory to the checkout on the VPS.
+Description=Dead Parrots consensus feed (ffanalytics) — one-shot scrape
+After=docker.service
+Requires=docker.service
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/fantasy-football
+ExecStart=/usr/bin/docker compose run --rm rsidecar
+TimeoutStartSec=1800
