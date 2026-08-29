@@ -7,6 +7,8 @@ from fastapi import FastAPI
 from deadparrots.api.health import router as health_router
 from deadparrots.config import Settings, get_settings
 from deadparrots.db import connect_duckdb, init_sqlite
+from deadparrots.ingest.cache import NflverseParquetCache, register_nflverse_views
+from deadparrots.ingest.schedule import register_weekly_nflverse_pull
 from deadparrots.scheduler import build_scheduler
 
 
@@ -16,9 +18,17 @@ async def lifespan(app: FastAPI):
 
     app.state.sqlite = init_sqlite(settings.sqlite_path)
     app.state.duckdb = connect_duckdb(settings.duckdb_path)
+    register_nflverse_views(app.state.duckdb, NflverseParquetCache(settings.data_dir))
+
     scheduler = build_scheduler()
     scheduler.start()
     app.state.scheduler = scheduler
+    register_weekly_nflverse_pull(
+        scheduler,
+        settings=settings,
+        sqlite_conn=app.state.sqlite,
+        duckdb_conn=app.state.duckdb,
+    )
 
     try:
         yield

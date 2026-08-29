@@ -9,6 +9,7 @@ dependencies = [
     "apscheduler>=3.10,<4",
     "duckdb>=1.1",
     "pydantic-settings>=2.5",
+    "nflreadpy>=0.1.5",
 ]
 
 [dependency-groups]
