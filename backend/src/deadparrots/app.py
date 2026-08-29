@@ -6,10 +6,11 @@ from fastapi import FastAPI
 
 from deadparrots.api.health import router as health_router
 from deadparrots.api.layers import router as layers_router
+from deadparrots.api.ops import RefreshRunner
 from deadparrots.api.ops import router as ops_router
 from deadparrots.api.refresh_runner import AppRefreshRunner
 from deadparrots.api.weekly import router as weekly_router
-from deadparrots.api.weekly_sources import DefaultWeeklyDataSources
+from deadparrots.api.weekly_sources import DefaultWeeklyDataSources, WeeklyDataSources
 from deadparrots.api.yahoo import router as yahoo_router
 from deadparrots.config import Settings, get_settings
 from deadparrots.consensus.schedule import register_weekly_consensus_pull
@@ -80,8 +81,8 @@ def create_app(
     settings: Settings | None = None,
     *,
     yahoo_source: YahooSource | None = None,
-    weekly_sources=None,
-    refresh_runner=None,
+    weekly_sources: WeeklyDataSources | None = None,
+    refresh_runner: RefreshRunner | None = None,
 ) -> FastAPI:
     app = FastAPI(title="Dead Parrots Dashboard API", lifespan=lifespan)
     app.state.settings = settings or get_settings()

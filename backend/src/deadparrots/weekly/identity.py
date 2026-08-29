@@ -14,9 +14,11 @@ from datetime import date
 # projection for the mean.
 
 __all__ = [
-    "ResolvedPlayer",
     "PlayerResolver",
+    "ResolvedPlayer",
     "normalize_name",
+    "normalize_team",
+    "slugify",
     "synthetic_id",
 ]
 
@@ -73,10 +75,14 @@ def _initial_last(name: str) -> str:
     return f"{parts[0][0]} {parts[-1]}"
 
 
+def slugify(name: str) -> str:
+    """``"Dead Parrots"`` → ``"dead-parrots"`` — a stable hyphen-joined key."""
+    return re.sub(r"\s+", "-", normalize_name(name))
+
+
 def synthetic_id(name: str) -> str:
     """A stable id for a Yahoo player that did not resolve to nflverse."""
-    slug = re.sub(r"\s+", "-", normalize_name(name)) or "unknown"
-    return f"yahoo:{slug}"
+    return f"yahoo:{slugify(name) or 'unknown'}"
 
 
 @dataclass(frozen=True)

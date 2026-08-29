@@ -3,6 +3,7 @@ from __future__ import annotations
 from collections.abc import Iterable, Mapping, Sequence
 
 from ..projection import OpportunityMetrics, PlayerGame, UsageSnapshot, decay_weights
+from ._util import to_float
 from .identity import PlayerResolver, normalize_name, normalize_team
 from .scored_history import ScoredGame
 
@@ -20,13 +21,6 @@ __all__ = [
     "target_week_opportunity",
     "usage_by_player_week",
 ]
-
-
-def _num(value: object) -> float:
-    try:
-        return float(value)  # type: ignore[arg-type]
-    except (TypeError, ValueError):
-        return 0.0
 
 
 def _decay_weighted_mean(values: Sequence[float], half_life: float) -> float:
@@ -53,9 +47,9 @@ def usage_by_player_week(
     team_targets: dict[tuple[str, int], float] = {}
     for row in player_stats_rows:
         team = normalize_team(str(row.get("team") or row.get("recent_team") or "") or None)
-        week = int(_num(row.get("week")))
+        week = int(to_float(row.get("week")))
         if team and week > 0:
-            team_targets[(team, week)] = team_targets.get((team, week), 0.0) + _num(
+            team_targets[(team, week)] = team_targets.get((team, week), 0.0) + to_float(
                 row.get("targets")
             )
 
@@ -63,9 +57,9 @@ def usage_by_player_week(
     for row in snap_rows:
         name = normalize_name(str(row.get("player") or row.get("player_name") or ""))
         team = normalize_team(str(row.get("team") or "") or None)
-        week = int(_num(row.get("week")))
+        week = int(to_float(row.get("week")))
         if name and team and week > 0:
-            snap_pct[(name, team, week)] = _num(row.get("offense_pct"))
+            snap_pct[(name, team, week)] = to_float(row.get("offense_pct"))
 
     out: dict[tuple[str, int], UsageSnapshot] = {}
     for row in player_stats_rows:
@@ -74,14 +68,14 @@ def usage_by_player_week(
             continue
         name = str(row.get("player_display_name") or row.get("player_name") or "")
         team = normalize_team(str(row.get("team") or row.get("recent_team") or "") or None)
-        week = int(_num(row.get("week")))
+        week = int(to_float(row.get("week")))
         if week <= 0:
             continue
         resolved = resolver.resolve(name, team=team, position=str(row.get("position") or ""))
         pid = resolved.player_id if resolved is not None else raw_id
         snap = snap_pct.get((normalize_name(name), team or "", week))
         tt = team_targets.get((team or "", week), 0.0)
-        targets = _num(row.get("targets"))
+        targets = to_float(row.get("targets"))
         target_share = (targets / tt) if tt > 0 else 0.0
         if snap is None and target_share == 0.0:
             continue

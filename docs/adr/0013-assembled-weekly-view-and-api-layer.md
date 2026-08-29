@@ -58,9 +58,10 @@ Normalization casefolds, strips punctuation and generational suffixes
 
 A Yahoo player that does not resolve is **not dropped** — it keeps a synthetic
 `yahoo:<slug>` id, has no scored history, and its projection falls back to the
-Yahoo weekly projection as the mean (the same `CONSENSUS_FALLBACK`-style path
-`project` already supports via `consensus_points`). Unresolved starters are
-listed in `caveats`.
+consensus number, else the Yahoo weekly projection, else a nominal
+`NOMINAL_REPLACEMENT_POINTS` (1.0) mean (the `CONSENSUS_FALLBACK`-style path
+`project` supports via `consensus_points`). Unresolved players, and any player
+that hit the nominal floor, are named in `caveats`.
 
 ### 3. Scored history and the "expected" baseline
 
@@ -85,6 +86,12 @@ swaps `weekly.opportunity` without touching `project` or the layers.
 shares) from `snap_counts` + `player_stats` where the rows are present, `None`
 otherwise — `project` already skips usage-less games in the trend slope.
 
+The **consensus feed** (ADR-0005) is wired: `DefaultWeeklyDataSources` reads the
+newest archived consensus payload matching `(season, week)`, re-scores it
+through `consensus.normalize`, and hands it to `assemble_week`, which looks each
+player up by name for the `consensus_points` fallback. A week with no consensus
+pull is named in `caveats`.
+
 ### 4. League-wide weekly history: approximated from the standings season totals
 
 The strategic layers need each of the 12 teams' RIP TIDE points **per completed
@@ -95,10 +102,10 @@ real weekly snapshot per team, `assemble_week` approximates:
 
 - **`weekly_scores`** — each team's standings `points_for` split evenly across
   the `current_week − 1` completed weeks. Team strength is a decay-weighted
-  points-for **percentile** and expected wins is a rank-order statistic, so a
-  flat split preserves the between-team ordering that drives both; it flattens
-  the within-season *trend* and makes weekly expected-wins degenerate. Named in
-  `caveats`.
+  points-for **percentile**, so a flat split preserves the between-team ordering
+  it needs; but it flattens the within-season *trend*, and **expected wins,
+  luck, and playoff odds are computed on that flat split and are not reliable in
+  v1** — the `caveats` string says so in those words.
 - **`remaining_schedule`** — a divisional-aware round-robin over the remaining
   regular-season weeks, generated deterministically from the standings order.
   It feeds only the playoff-odds season-rest sim.
@@ -124,8 +131,8 @@ Pydantic shape the frontend (issues #18, #19) codes against.
 
 | Method & path | Screen / purpose |
 | --- | --- |
-| `GET /api/weekly` | This Week — opponent, likely lineup + assumption, both totals (floor/proj/ceiling) with the Yahoo cross-check, favored/underdog + win%, gap drivers, swing players, the recommended lineup with floor/ceiling/max-EV alongside, the threshold-rule alternative |
-| `POST /api/weekly/lineup-lab` | Lineup Lab compute — a candidate lineup (start/bench/IR ids) in → total / floor / ceiling / win-prob out; illegal lineups marked with the reason |
+| `GET /api/weekly` | This Week — opponent, likely lineup + assumption, both totals (floor/proj/ceiling) with the Yahoo cross-check, favored/underdog + win%, gap drivers, swing players, the recommended lineup with floor/ceiling/max-EV alongside, the threshold-rule alternative. The Dead Parrots totals / win% are the **recommended** lineup's; `dead_parrots_current_totals` + `current_win_probability` carry the Yahoo-set lineup as it stands (null when it is not a legal 10), and `recommended_lineup_is_current` says whether they are the same ten. `?engine=threshold-rule` switches the active recommendation (user story #11); an unknown value is a 422. |
+| `POST /api/weekly/lineup-lab` | Lineup Lab compute — `starter_ids` (+ optional `ir_ids`) in → total / floor / ceiling / win-prob out; illegal lineups (wrong count, ineligible slot, a starter also on IR) marked with the reason. The numbers are always returned so the Lab stays live mid-drag; `legal` is the gate, and `caveats` rides along. |
 | `GET /api/weekly/lineup-lab/auto` | best-floor and best-ceiling fills, side by side |
 | `GET /api/free-agents` | Waiver / Free Agents — rest-of-season list, streamer list, waiver-priority standing, cutdown window |
 | `GET /api/team-outlook` | Team Outlook — team strength, expected vs actual wins, contend/rebuild/hold + inputs, bye-crunch map |

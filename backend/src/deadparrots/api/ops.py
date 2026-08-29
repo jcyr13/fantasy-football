@@ -101,8 +101,8 @@ def _age(last: datetime | None) -> float | None:
 @router.get("/freshness", response_model=FreshnessResponse)
 def freshness(request: Request) -> FreshnessResponse:
     """Per-source last successful pull, its age, and current state — nflverse,
-    consensus, news, and the four Yahoo pages — plus the Yahoo staleness
-    reminder (a reminder, never a failure alert)."""
+    consensus, news, and Yahoo (one row, aggregated over the four pages) — plus
+    the Yahoo staleness reminder (a reminder, never a failure alert)."""
     conn = request.app.state.sqlite
     settings = request.app.state.settings
     sources: list[SourceFreshnessOut] = []

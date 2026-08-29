@@ -10,6 +10,7 @@ from ..scoring import (
     StatRow,
     score_player_weeks,
 )
+from ._util import to_float
 
 # nflverse ``player_stats`` rows → ``scoring.StatRow`` → the *validated* engine
 # (ADR-0005: never a second scoring implementation). Produces each resolved
@@ -98,13 +99,6 @@ class ScoredGame:
     points: float
 
 
-def _num(value: object) -> float:
-    try:
-        return float(value)  # type: ignore[arg-type]
-    except (TypeError, ValueError):
-        return 0.0
-
-
 def _unit_for_position(position: str) -> ScoringUnit | None:
     pos = (position or "").strip().upper()
     if pos in _OFFENSE_POSITIONS:
@@ -121,7 +115,7 @@ def _mapped_stats(
 ) -> dict[str, float]:
     stats: dict[str, float] = {}
     for canonical, columns in mapping.items():
-        total = sum(_num(row.get(col)) for col in columns)
+        total = sum(to_float(row.get(col)) for col in columns)
         if total:
             stats[canonical] = total
     return stats
@@ -148,8 +142,8 @@ def stat_rows_from_player_stats(
         unit = _unit_for_position(str(row.get("position") or ""))
         if unit is None:
             continue
-        season = int(_num(row.get("season")))
-        week = int(_num(row.get("week")))
+        season = int(to_float(row.get("season")))
+        week = int(to_float(row.get("week")))
         if week <= 0:
             continue
         mapping = {

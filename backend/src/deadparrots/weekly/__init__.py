@@ -24,6 +24,8 @@ from .scored_history import (
     stat_rows_from_player_stats,
 )
 from .view import (
+    AutoFill,
+    CurrentLineupRead,
     LineupLabResult,
     WeeklyView,
     auto_fill_lineups,
@@ -36,6 +38,8 @@ __all__ = [
     "WEEKLY_FORECAST_SIGMA_FRACTION",
     "AssembledPlayer",
     "AssembledWeek",
+    "AutoFill",
+    "CurrentLineupRead",
     "LineupLabResult",
     "PlayerResolver",
     "ResolvedPlayer",

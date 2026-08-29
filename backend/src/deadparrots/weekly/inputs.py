@@ -56,6 +56,7 @@ class AssembledWeek:
     opponent: tuple[AssembledPlayer, ...]
     free_agents: tuple[AssembledPlayer, ...]
 
+    dead_parrots_yahoo_starters: tuple[str, ...]
     opponent_yahoo_starters: tuple[str, ...]
     opponent_prior_starters: tuple[str, ...] | None
 

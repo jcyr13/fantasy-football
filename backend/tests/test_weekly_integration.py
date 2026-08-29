@@ -74,6 +74,18 @@ def test_threshold_rule_toggle_switches_the_recommendation(client: TestClient):
     toggled = client.get("/api/weekly", params={"engine": "threshold-rule"}).json()
     assert default["recommendation_engine"] == "max-p-win"
     assert toggled["recommendation_engine"] == "threshold-rule"
+    assert client.get("/api/weekly", params={"engine": "nonsense"}).status_code == 422
+
+
+def test_current_lineup_totals_are_reported_alongside_the_recommendation(client):
+    body = client.get("/api/weekly").json()
+    # The fixture's Dead Parrots Yahoo-set lineup is a legal 10, so its totals
+    # and win% come back next to the recommended lineup's.
+    cur = body["dead_parrots_current_totals"]
+    assert cur is not None
+    assert cur["floor"] <= cur["projection"] <= cur["ceiling"]
+    assert 0.0 <= body["current_win_probability"] <= 1.0
+    assert isinstance(body["recommended_lineup_is_current"], bool)
 
 
 def test_lineup_lab_compute_and_illegal_marking(client: TestClient):
@@ -89,6 +101,14 @@ def test_lineup_lab_compute_and_illegal_marking(client: TestClient):
     assert ok_body["reason"] is None
     assert ok_body["floor"] <= ok_body["total"] <= ok_body["ceiling"] + 1e-6
     assert 0.0 <= ok_body["win_probability"] <= 1.0
+    assert ok_body["caveats"]  # the numbers rest on the §3 baseline; disclosed
+
+    on_ir = client.post(
+        "/api/weekly/lineup-lab",
+        json={"starter_ids": legal_ids, "ir_ids": [legal_ids[0]]},
+    ).json()
+    assert on_ir["legal"] is False
+    assert "IR" in on_ir["reason"]
 
     bad = client.post(
         "/api/weekly/lineup-lab", json={"starter_ids": legal_ids[:8]}

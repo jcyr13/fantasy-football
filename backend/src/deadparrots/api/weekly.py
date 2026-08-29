@@ -4,7 +4,15 @@ from collections.abc import Sequence
 
 from fastapi import APIRouter, HTTPException, Request
 
-from ..lineup import RIP_TIDE_SLOTS, Lineup, LineupEvaluation, assign_slots
+from ..lineup import (
+    RIP_TIDE_SLOTS,
+    Lineup,
+    LineupEvaluation,
+    RecommendationEngine,
+    RosterPlayer,
+    assign_slots,
+)
+from ..simulation import SideSummary
 from ..weekly import (
     AssembledWeek,
     WeeklyView,
@@ -12,6 +20,7 @@ from ..weekly import (
     build_weekly_view,
     compute_lineup_lab,
 )
+from ._deps import assembled_week
 from .schemas import (
     AutoFillResponse,
     GapDriverOut,
@@ -24,7 +33,6 @@ from .schemas import (
     ThresholdRuleOut,
     WeeklyViewResponse,
 )
-from .weekly_sources import WeeklyDataUnavailable
 
 router = APIRouter(tags=["weekly"], prefix="/weekly")
 
@@ -32,19 +40,25 @@ router = APIRouter(tags=["weekly"], prefix="/weekly")
 # from the latest pulls and compose the pure layers; the JSON is the stable
 # contract the frontend depends on (ADR-0013 §5).
 
+_ENGINES: dict[str, RecommendationEngine] = {
+    "max-p-win": "max-p-win",
+    "threshold-rule": "threshold-rule",
+}
 
-def _assemble(request: Request, *, week: int | None = None) -> AssembledWeek:
-    sources = getattr(request.app.state, "weekly_sources", None)
-    if sources is None:
-        raise HTTPException(503, "No weekly data source is configured for this server.")
+
+def _resolve_engine(engine: str | None) -> RecommendationEngine:
+    if engine is None:
+        return "max-p-win"
     try:
-        return sources.assemble(week=week)
-    except WeeklyDataUnavailable as exc:
-        raise HTTPException(503, str(exc)) from exc
+        return _ENGINES[engine]
+    except KeyError:
+        raise HTTPException(
+            422, f"unknown engine {engine!r}; expected one of {sorted(_ENGINES)}"
+        ) from None
 
 
 def _slot_projections(
-    players: Sequence, assembled: AssembledWeek
+    players: Sequence[RosterPlayer], assembled: AssembledWeek
 ) -> list[LineupSlotProjection]:
     by_id = assembled.by_id()
     assignment = assign_slots(list(players), RIP_TIDE_SLOTS) or tuple(
@@ -104,6 +118,20 @@ def _serialize_view(view: WeeklyView) -> WeeklyViewResponse:
         stdev=h2h.opponent.stdev,
         yahoo_projected_total=a.opponent_yahoo_projected_total,
     )
+    current = view.current_lineup
+    current_totals: SideTotals | None = None
+    current_win: float | None = None
+    if current.legal and current.head_to_head is not None:
+        side: SideSummary = current.head_to_head.dead_parrots
+        current_totals = SideTotals(
+            mean=side.mean,
+            floor=side.p10,
+            projection=side.p50,
+            ceiling=side.p90,
+            stdev=side.stdev,
+            yahoo_projected_total=a.dead_parrots_yahoo_projected_total,
+        )
+        current_win = current.head_to_head.p_win
     return WeeklyViewResponse(
         season=a.season,
         week=a.week,
@@ -115,9 +143,12 @@ def _serialize_view(view: WeeklyView) -> WeeklyViewResponse:
         opponent_notes=list(view.opponent_lineup.notes),
         opponent_likely_lineup=_slot_projections(view.opponent_lineup.players, a),
         dead_parrots_totals=dp_totals,
+        dead_parrots_current_totals=current_totals,
         opponent_totals=opp_totals,
         favored=opt.recommendation.p_win > 0.5,
         win_probability=opt.recommendation.p_win,
+        current_win_probability=current_win,
+        recommended_lineup_is_current=view.recommended_is_current,
         mean_margin=h2h.mean_margin,
         gap_drivers=[
             GapDriverOut(
@@ -165,11 +196,13 @@ def weekly_view(request: Request, engine: str | None = None) -> WeeklyViewRespon
     projected totals (floor/proj/ceiling) with the Yahoo cross-check,
     favored/underdog + win%, gap drivers, swing players, and the recommended
     lineup with the floor/ceiling/max-EV lineups alongside.
+
+    ``engine`` (``max-p-win`` default, or ``threshold-rule``) selects which
+    recommendation is active — the same toggle the optimizer exposes, so the
+    frontend's threshold-rule switch (user story #11) has a backend to call.
     """
-    assembled = _assemble(request)
     view = build_weekly_view(
-        assembled,
-        recommendation_engine="threshold-rule" if engine == "threshold-rule" else "max-p-win",
+        assembled_week(request), recommendation_engine=_resolve_engine(engine)
     )
     return _serialize_view(view)
 
@@ -180,8 +213,9 @@ def lineup_lab(request: Request, body: LineupLabRequest) -> LineupLabResponse:
     ceiling / win-probability out — and mark it illegal with the reason if the
     slot counts or eligibility do not make a legal RIP TIDE lineup.
     """
-    assembled = _assemble(request)
-    result = compute_lineup_lab(assembled, body.starter_ids)
+    result = compute_lineup_lab(
+        assembled_week(request), body.starter_ids, ir_ids=body.ir_ids
+    )
     return LineupLabResponse(
         starter_ids=list(result.starter_ids),
         legal=result.legal,
@@ -190,6 +224,7 @@ def lineup_lab(request: Request, body: LineupLabRequest) -> LineupLabResponse:
         floor=result.floor,
         ceiling=result.ceiling,
         win_probability=result.win_probability,
+        caveats=list(result.caveats),
     )
 
 
@@ -199,15 +234,16 @@ def lineup_lab_auto(request: Request) -> AutoFillResponse:
     player-id lists, and the full roster with per-player projections so the Lab
     can render both side by side (user story #14).
     """
-    assembled = _assemble(request)
+    assembled = assembled_week(request)
     fills = auto_fill_lineups(assembled)
     roster = _slot_projections(
         [p.roster_player for p in assembled.dead_parrots], assembled
     )
     return AutoFillResponse(
-        floor=list(fills["floor"]),
-        ceiling=list(fills["ceiling"]),
-        max_p_win=list(fills["max_p_win"]),
-        max_ev=list(fills["max_ev"]),
+        floor=list(fills.floor),
+        ceiling=list(fills.ceiling),
+        max_p_win=list(fills.max_p_win),
+        max_ev=list(fills.max_ev),
         roster=roster,
+        caveats=list(fills.caveats),
     )

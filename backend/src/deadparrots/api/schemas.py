@@ -75,10 +75,18 @@ class WeeklyViewResponse(BaseModel):
     opponent_assumption: str
     opponent_notes: list[str]
     opponent_likely_lineup: list[LineupSlotProjection]
+    # `dead_parrots_totals` / `favored` / `win_probability` / `mean_margin` are
+    # for the *recommended* lineup. `dead_parrots_current_totals` /
+    # `current_win_probability` are the Yahoo-set lineup as it stands now (null
+    # when it is not a legal 10); `recommended_lineup_is_current` is true when
+    # the two are the same ten players.
     dead_parrots_totals: SideTotals
+    dead_parrots_current_totals: SideTotals | None
     opponent_totals: SideTotals
     favored: bool
     win_probability: float
+    current_win_probability: float | None
+    recommended_lineup_is_current: bool
     mean_margin: float
     gap_drivers: list[GapDriverOut]
     swing_players: list[SwingPlayerOut]
@@ -91,7 +99,10 @@ class WeeklyViewResponse(BaseModel):
 
 class LineupLabRequest(BaseModel):
     starter_ids: list[str]
-    recommendation_engine: str | None = None
+    # Roster ids the scenario has on IR. A starter also listed here is an
+    # illegal placement; bench ids need not be sent (they are the roster
+    # remainder).
+    ir_ids: list[str] = []
 
 
 class LineupLabResponse(BaseModel):
@@ -102,6 +113,7 @@ class LineupLabResponse(BaseModel):
     floor: float
     ceiling: float
     win_probability: float
+    caveats: list[str]
 
 
 class AutoFillResponse(BaseModel):
@@ -110,6 +122,7 @@ class AutoFillResponse(BaseModel):
     max_p_win: list[str]
     max_ev: list[str]
     roster: list[LineupSlotProjection]
+    caveats: list[str]
 
 
 class FreeAgentOut(BaseModel):
@@ -191,12 +204,18 @@ class SignalOut(BaseModel):
     recommends_transaction: bool
 
 
+class ByePositionOut(BaseModel):
+    role: str
+    starters_on_bye: int
+    starter_names: list[str]
+
+
 class ByeCrunchWeekOut(BaseModel):
     week: int
     grade: str
     max_at_one_position: int
     can_field_legal_lineup: bool
-    per_position: list[dict]
+    per_position: list[ByePositionOut]
     reasons: list[str]
 
 

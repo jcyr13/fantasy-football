@@ -1,11 +1,14 @@
 from __future__ import annotations
 
+import logging
 from collections.abc import Sequence
 from datetime import date
 from typing import Protocol
 
 from ..config import Settings
 from ..consensus.models import ConsensusFeed
+from ..consensus.normalize import normalize as normalize_consensus
+from ..consensus.raw import ConsensusRawStore
 from ..weekly import AssembledWeek, assemble_week
 from ..yahoo.models import FreeAgentListing, InjuryReport
 from ..yahoo.normalize import (
@@ -28,6 +31,8 @@ __all__ = [
     "WeeklyDataUnavailable",
 ]
 
+logger = logging.getLogger(__name__)
+
 _NFLVERSE_TABLES = ("player_stats", "snap_counts", "rosters", "schedules")
 
 
@@ -44,10 +49,13 @@ class WeeklyDataSources(Protocol):
 class DefaultWeeklyDataSources:
     """Reads what the app already has on disk into one :class:`AssembledWeek`."""
 
-    def __init__(self, settings: Settings, *, duckdb_conn=None) -> None:
+    def __init__(
+        self, settings: Settings, *, duckdb_conn: object | None = None
+    ) -> None:
         self._settings = settings
         self._duckdb = duckdb_conn
         self._yahoo = YahooRawStore(settings.data_dir)
+        self._consensus_store = ConsensusRawStore(settings.data_dir)
 
     def assemble(
         self, *, season: int | None = None, week: int | None = None
@@ -106,9 +114,21 @@ class DefaultWeeklyDataSources:
                 f'SELECT * FROM "nflverse_{table}"'
             ).pl().to_dicts()
         except Exception:
+            # No parquet cached yet (or the view is empty): the assembly runs on
+            # the Yahoo pull alone and flags the missing history in its caveats.
+            logger.info("nflverse view %r not readable yet; assembling without it", table)
             return []
 
     def _consensus(self, season: int, week: int) -> ConsensusFeed | None:
-        # The consensus feed is an optional cross-check in v1; the projection
-        # baseline caveat already covers its absence (ADR-0013 §3).
+        """The most recent archived consensus payload for this week, re-scored
+        by the engine. ``None`` when no consensus pull has landed for the week
+        (the assembly flags it in ``caveats``)."""
+        for pull_id in reversed(self._consensus_store.pull_ids()):
+            payload = self._consensus_store.load_payload(pull_id)
+            if payload is None or (payload.season, payload.week) != (season, week):
+                continue
+            try:
+                return normalize_consensus(payload)
+            except Exception:
+                logger.warning("consensus pull %s unusable; skipping", pull_id)
         return None

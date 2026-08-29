@@ -1,13 +1,14 @@
 from __future__ import annotations
 
-from fastapi import APIRouter, HTTPException, Request
+from fastapi import APIRouter, Request
 
 from ..strategy import team_outlook
-from ..trade import trade_desk
+from ..trade import TradeCandidate, trade_desk
 from ..waiver import waiver_wire
-from ..weekly import AssembledWeek
+from ._deps import assembled_week
 from .schemas import (
     ByeCrunchWeekOut,
+    ByePositionOut,
     CountdownOut,
     CutdownWindowOut,
     DesperateTeamOut,
@@ -23,7 +24,6 @@ from .schemas import (
     TradeDeskResponse,
     WaiverPriorityOut,
 )
-from .weekly_sources import WeeklyDataUnavailable
 
 router = APIRouter(tags=["layers"])
 
@@ -32,21 +32,11 @@ router = APIRouter(tags=["layers"])
 # can flag the v1 approximations (ADR-0013 §4, §6).
 
 
-def _assemble(request: Request) -> AssembledWeek:
-    sources = getattr(request.app.state, "weekly_sources", None)
-    if sources is None:
-        raise HTTPException(503, "No weekly data source is configured for this server.")
-    try:
-        return sources.assemble()
-    except WeeklyDataUnavailable as exc:
-        raise HTTPException(503, str(exc)) from exc
-
-
 @router.get("/team-outlook", response_model=TeamOutlookResponse)
 def team_outlook_endpoint(request: Request) -> TeamOutlookResponse:
     """Team strength, expected vs actual wins, the contend/rebuild/hold signal
     with its inputs, and the bye-week crunch map with grades."""
-    a = _assemble(request)
+    a = assembled_week(request)
     outlook = team_outlook(a.league_state, playoff_sim_seed=a.rng_seed)
     ts = outlook.team_strength
     ew = outlook.expected_wins
@@ -85,11 +75,11 @@ def team_outlook_endpoint(request: Request) -> TeamOutlookResponse:
                 max_at_one_position=w.max_at_one_position,
                 can_field_legal_lineup=w.can_field_legal_lineup,
                 per_position=[
-                    {
-                        "role": p.role,
-                        "starters_on_bye": p.starters_on_bye,
-                        "starter_names": list(p.starter_names),
-                    }
+                    ByePositionOut(
+                        role=p.role,
+                        starters_on_bye=p.starters_on_bye,
+                        starter_names=list(p.starter_names),
+                    )
                     for p in w.per_position
                 ],
                 reasons=list(w.reasons),
@@ -105,10 +95,10 @@ def trade_desk_endpoint(request: Request) -> TradeDeskResponse:
     """Per-player opportunity scores, buy-low/sell-high candidates with the
     market-value proxy and trade edge, the desperate-team read with reasons, and
     the November-28 countdown."""
-    a = _assemble(request)
+    a = assembled_week(request)
     desk = trade_desk(a.trade_state)
 
-    def _candidate(c) -> TradeCandidateOut:
+    def _candidate(c: TradeCandidate) -> TradeCandidateOut:
         return TradeCandidateOut(
             player_id=c.player_id,
             name=c.name,
@@ -163,7 +153,7 @@ def free_agents_endpoint(request: Request) -> FreeAgentsResponse:
     """The two ranked free-agent lists with bench-need fit, own byes, and the
     worth-the-priority verdict, plus the current waiver priority and the
     post-cutdown window flag."""
-    a = _assemble(request)
+    a = assembled_week(request)
     wire = waiver_wire(a.waiver_state)
     prio = wire.waiver_priority
     win = wire.window

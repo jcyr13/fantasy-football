@@ -39,7 +39,8 @@ from ..yahoo.models import (
     RosterEntry,
     StandingsSnapshot,
 )
-from .identity import PlayerResolver, normalize_name, normalize_team
+from ._util import to_float
+from .identity import PlayerResolver, normalize_name, normalize_team, slugify
 from .inputs import AssembledPlayer, AssembledWeek
 from .opportunity import player_games, target_week_opportunity, usage_by_player_week
 from .scored_history import ScoredGame, scored_games_by_player, stat_rows_from_player_stats
@@ -53,7 +54,15 @@ __all__ = ["assemble_week", "WEEKLY_FORECAST_SIGMA_FRACTION"]
 
 REGULAR_SEASON_WEEKS = 14
 PLAYOFF_TEAM_COUNT = 6
+
+# Placeholder magnitudes, pinned by ``test_weekly_params.py`` (ADR-0013 §4), not
+# calibrated — the same treatment ADR-0007 gives the sim's correlation shares.
+# ``sigma`` for a team's season-rest weekly total, as a fraction of its mean.
 WEEKLY_FORECAST_SIGMA_FRACTION = 0.18
+# The mean a projection falls back to when a player has no scored history, no
+# consensus number and no Yahoo projection to anchor on — enough to keep the
+# lineup legal; the player is listed in ``AssembledWeek.caveats``.
+NOMINAL_REPLACEMENT_POINTS = 1.0
 
 _SEASON_ENDING = {
     "ir", "ir+", "injured reserve", "pup", "nfi", "suspended", "out for season",
@@ -71,9 +80,9 @@ def _schedule_index(
     """``team abbr`` → ``{week: game_id}`` for one season."""
     index: dict[str, dict[int, str]] = {}
     for row in schedule_rows:
-        if int(_num(row.get("season"))) != season:
+        if int(to_float(row.get("season"))) != season:
             continue
-        week = int(_num(row.get("week")))
+        week = int(to_float(row.get("week")))
         game_id = str(row.get("game_id") or "")
         for side in ("home_team", "away_team"):
             team = normalize_team(str(row.get(side) or "") or None)
@@ -98,11 +107,10 @@ def _bye_week_for(
     return None
 
 
-def _num(value: object) -> float:
-    try:
-        return float(value)  # type: ignore[arg-type]
-    except (TypeError, ValueError):
-        return 0.0
+def _is_on_bye(team: str | None, week: int, sched: Mapping[str, dict[int, str]]) -> bool:
+    """The team has no game in ``week`` and the schedule pull does cover that
+    week for them (so a missing week is a real bye, not a short pull)."""
+    return _bye_week_for(team, week, week, sched) == week
 
 
 # --- availability ----------------------------------------------------------
@@ -129,6 +137,7 @@ class _Resolved:
     scored: tuple[ScoredGame, ...]
     usage: Mapping[int, UsageSnapshot]
     birth_date: date | None
+    used_nominal_mean: bool = False
 
 
 def _resolve_player(
@@ -167,10 +176,9 @@ def _resolve_player(
     consensus_points = _consensus_points(consensus, name)
     if consensus_points is None:
         consensus_points = yahoo_projected_points
-    if opportunity is None and consensus_points is None:
-        # Nothing to anchor a projection: fall back to a nominal replacement
-        # level so the roster stays legal (flagged in the assembled caveats).
-        consensus_points = 1.0
+    used_nominal = opportunity is None and consensus_points is None
+    if used_nominal:
+        consensus_points = NOMINAL_REPLACEMENT_POINTS
 
     history = PlayerHistory(player_id=pid, position=role, games=history_games)
     projection = project(
@@ -191,9 +199,7 @@ def _resolve_player(
         residual_volume_floor=params.residual_volume_floor,
     )
     available, _out = _availability(injury_status)
-    on_bye = bool(nfl_team) and nfl_team in sched and week not in sched[nfl_team] and any(
-        w >= week for w in sched[nfl_team]
-    )
+    on_bye = _is_on_bye(nfl_team, week, sched)
     roster_player = RosterPlayer(
         player_id=pid,
         name=name,
@@ -215,6 +221,7 @@ def _resolve_player(
         scored=tuple(games),
         usage=p_usage,
         birth_date=identity.birth_date,
+        used_nominal_mean=used_nominal,
     )
 
 
@@ -235,7 +242,7 @@ def _consensus_points(consensus: ConsensusFeed | None, name: str) -> float | Non
 
 
 def _slug(name: str) -> str:
-    return normalize_name(name).replace(" ", "-") or "team"
+    return slugify(name) or "team"
 
 
 def _flat_weekly(points_for: float, completed_weeks: Sequence[int]) -> tuple[TeamWeekScore, ...]:
@@ -561,6 +568,11 @@ def assemble_week(
 
     dp_ids = {r.assembled.player_id for r in dp_resolved}
 
+    dp_yahoo_starters = tuple(
+        r.assembled.player_id
+        for e, r in zip(dp_entries, dp_resolved)
+        if e.is_starter
+    )
     opp_yahoo_starters = tuple(
         r.assembled.player_id
         for e, r in zip(opp_entries, opp_resolved)
@@ -640,6 +652,7 @@ def assemble_week(
         opp_resolved=opp_resolved,
         fa_resolved=fa_resolved,
         prior_team_weeks=prior_team_weeks,
+        consensus_wired=consensus is not None,
         sched=sched,
         dp_bye_players=dp_bye_players,
     )
@@ -655,6 +668,7 @@ def assemble_week(
         dead_parrots=tuple(r.assembled for r in dp_resolved),
         opponent=tuple(r.assembled for r in opp_resolved),
         free_agents=tuple(r.assembled for r in fa_resolved),
+        dead_parrots_yahoo_starters=dp_yahoo_starters,
         opponent_yahoo_starters=opp_yahoo_starters,
         opponent_prior_starters=None,
         dead_parrots_yahoo_projected_total=matchup.dead_parrots.yahoo_projected_total,
@@ -673,33 +687,43 @@ def _caveats(
     opp_resolved: Sequence[_Resolved],
     fa_resolved: Sequence[_Resolved],
     prior_team_weeks: Mapping[str, Mapping[int, float]] | None,
+    consensus_wired: bool,
     sched: Mapping[str, dict[int, str]],
     dp_bye_players: Sequence[ByePlayer],
 ) -> tuple[str, ...]:
+    everyone = (*dp_resolved, *opp_resolved, *fa_resolved)
     out: list[str] = [
         "Projection means use a decay-weighted trailing average of scored "
         "actuals as the opportunity baseline, not a usage forecast "
         "(ADR-0013 §3).",
     ]
-    unresolved = sorted(
-        {
-            r.assembled.name
-            for r in (*dp_resolved, *opp_resolved, *fa_resolved)
-            if not r.assembled.resolved
-        }
-    )
+    unresolved = sorted({r.assembled.name for r in everyone if not r.assembled.resolved})
     if unresolved:
         out.append(
             "No nflverse match for: "
             + ", ".join(unresolved)
             + " — projection falls back to the Yahoo number."
         )
+    nominal = sorted({r.assembled.name for r in everyone if r.used_nominal_mean})
+    if nominal:
+        out.append(
+            "No history, consensus or Yahoo number for: "
+            + ", ".join(nominal)
+            + f" — projected at a nominal {NOMINAL_REPLACEMENT_POINTS:.0f}-point "
+            "replacement level."
+        )
+    if not consensus_wired:
+        out.append(
+            "No consensus feed was supplied — projections have no external "
+            "cross-check and thin-history players lean on the Yahoo number."
+        )
     if not prior_team_weeks:
         out.append(
-            "Team strength, expected wins, playoff odds and the contend/rebuild "
-            "signal are computed from an even split of each team's season "
-            "points-for; the remaining schedule is a synthetic round robin "
-            "(ADR-0013 §4)."
+            "No real per-week team history yet (issue #17): team strength is a "
+            "percentile over an even split of each team's season points-for, and "
+            "the remaining schedule is a synthetic round robin. Expected wins, "
+            "luck and playoff odds are computed on that flat split and are not "
+            "reliable in v1 (ADR-0013 §4)."
         )
     if not any(p.bye_week is not None for p in dp_bye_players):
         out.append(

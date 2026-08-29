@@ -4,7 +4,12 @@ from __future__ import annotations
 
 from datetime import date
 
-from deadparrots.weekly.identity import PlayerResolver, normalize_name, synthetic_id
+from deadparrots.weekly.identity import (
+    PlayerResolver,
+    normalize_name,
+    slugify,
+    synthetic_id,
+)
 
 ROSTER = [
     {
@@ -80,3 +85,9 @@ def test_unresolved_falls_back_to_a_synthetic_id():
     out = r.resolve_or_synthetic("Nobody At All", team="BUF", position="WR")
     assert out.resolved is False
     assert out.player_id == synthetic_id("Nobody At All") == "yahoo:nobody-at-all"
+
+
+def test_slugify_and_synthetic_id_share_one_slug():
+    assert slugify("Dead Parrots") == "dead-parrots"
+    assert synthetic_id("Dead Parrots") == "yahoo:dead-parrots"
+    assert synthetic_id("") == "yahoo:unknown"
