@@ -10,7 +10,9 @@ from .rows import STATS_BY_UNIT, ScoringUnit, StatRow
 # The 2025 validation "oracle": real Yahoo per-player weekly fantasy points for
 # the RIP TIDE League, captured once from Yahoo's own box scores and frozen as
 # golden fixtures. The scoring engine is not trusted until its output reproduces
-# these exactly for every offense / kicker / team-DEF player-week (spec issue #1).
+# these exactly for every offense / kicker / team-DEF player-week (spec issue #1),
+# and to within ±1.0 for every individual-defender ("D" slot) player-week, with
+# each out-of-tolerance week catalogued and explained (ticket #5).
 #
 # How the raw file is captured: Yahoo's Fantasy API is not reachable for this
 # league (the developer account cannot attach the Fantasy Sports permission), so
@@ -22,7 +24,9 @@ from .rows import STATS_BY_UNIT, ScoringUnit, StatRow
 #
 # Sample scope: weeks 1, 5, 9 and 13, all 12 teams (starters + bench). Enough
 # player-weeks across every position and scoring situation to pin the ruleset;
-# widen the scrape and re-run ``build`` to grow it.
+# widen the scrape and re-run ``build`` to grow it. Individual defenders (rows
+# with only tackle / sack / takeaway lines) are classified and emitted too — the
+# gate holds them to ±1.0, not the cent.
 #
 # This module is the ONLY file in ``deadparrots.scoring`` that touches disk; the
 # engine never imports it.
@@ -36,6 +40,11 @@ _FIXTURE_DIR = Path(__file__).resolve().parents[3] / "tests" / "fixtures" / "sco
 BOX_SCORE_RAW_PATH = _FIXTURE_DIR / "yahoo_2025_box_scores.raw.json"
 ORACLE_FIXTURE_PATH = _FIXTURE_DIR / "yahoo_2025_oracle.json"
 STAT_ROWS_FIXTURE_PATH = _FIXTURE_DIR / "yahoo_2025_stat_rows.json"
+# Hand-maintained: every individual-defender player-week whose engine score is
+# more than ``IDP_TOLERANCE`` off Yahoo, each with a stated cause. The IDP gate
+# fails on any out-of-tolerance week that is not catalogued here (ticket #5).
+IDP_OUTLIER_CATALOGUE_PATH = _FIXTURE_DIR / "yahoo_2025_idp_outliers.json"
+IDP_TOLERANCE = 1.0
 
 
 @dataclass(frozen=True)
@@ -169,6 +178,48 @@ def load_stat_rows_fixture(path: Path = STAT_ROWS_FIXTURE_PATH) -> list[StatRow]
     return _load_fixture(path, _stat_row_from_json)
 
 
+@dataclass(frozen=True)
+class IdpOutlier:
+    """One catalogued individual-defender player-week outside ``IDP_TOLERANCE``.
+
+    ``engine_points`` / ``yahoo_points`` record the discrepancy as it stood when
+    the entry was written; the IDP gate re-checks them against a fresh score and
+    the oracle so a stale entry cannot linger. ``cause`` is a human sentence — an
+    NFL gamebook vs. Yahoo scorer difference (solo vs. assisted tackle splits, a
+    half-sack rounding, a TFL Yahoo did not credit), never "engine bug". A
+    systematic offset across many weeks is a ruleset gap and is fixed in
+    ``RIP_TIDE_RULESET`` instead of catalogued.
+    """
+
+    entity_id: str
+    season: int
+    week: int
+    engine_points: float
+    yahoo_points: float
+    cause: str
+
+    @property
+    def key(self) -> tuple[str, int, int]:
+        return (self.entity_id, self.season, self.week)
+
+
+def _idp_outlier_from_json(d: Jsonable) -> IdpOutlier:
+    return IdpOutlier(
+        entity_id=str(d["entity_id"]),
+        season=int(d["season"]),  # type: ignore[arg-type]
+        week=int(d["week"]),  # type: ignore[arg-type]
+        engine_points=float(d["engine_points"]),  # type: ignore[arg-type]
+        yahoo_points=float(d["yahoo_points"]),  # type: ignore[arg-type]
+        cause=str(d["cause"]),
+    )
+
+
+def load_idp_outlier_catalogue(
+    path: Path = IDP_OUTLIER_CATALOGUE_PATH,
+) -> list[IdpOutlier]:
+    return _load_fixture(path, _idp_outlier_from_json)
+
+
 # --------------------------------------------------------------------------- #
 # Box-score transform: raw Yahoo scrape -> (oracle records, stat rows).
 #
@@ -244,10 +295,29 @@ _TEAM_DEFENSE_LABELS: Mapping[str, str] = {
     "Tackles for Loss": "tackles_for_loss",
     "Return Yards": "return_yards",
 }
+# The "D" slot. Yahoo prints an individual defender's INT/fumble-return yardage
+# as "Turnover Return Yards" — its own canonical key ``turnover_return_yards``,
+# kept apart from a returner's kick/punt ``return_yards``.
+_INDIVIDUAL_DEFENSE_LABELS: Mapping[str, str] = {
+    "Tackle Solo": "tackle_solo",
+    "Tackle Assist": "tackle_assist",
+    "Pass Defended": "passes_defended",
+    "Sack": "sacks",
+    "Interception": "interceptions",
+    "Fumble Force": "forced_fumbles",
+    "Fumble Recovery": "fumble_recoveries",
+    "Touchdown": "defensive_touchdowns",
+    "Kickoff and Punt Return Touchdowns": "defensive_touchdowns",
+    "Safety": "safeties",
+    "Block Kick": "blocked_kicks",
+    "Tackles for Loss": "tackles_for_loss",
+    "Turnover Return Yards": "turnover_return_yards",
+}
 _LABELS_BY_UNIT: Mapping[ScoringUnit, Mapping[str, str]] = {
     ScoringUnit.OFFENSE: _OFFENSE_LABELS,
     ScoringUnit.KICKER: _KICKER_LABELS,
     ScoringUnit.TEAM_DEFENSE: _TEAM_DEFENSE_LABELS,
+    ScoringUnit.INDIVIDUAL_DEFENSE: _INDIVIDUAL_DEFENSE_LABELS,
 }
 
 # Labels that only an offensive player accrues (a tackle or return-yard line
@@ -264,9 +334,13 @@ class UnmappedStatLabelError(ValueError):
     """A raw box score used a Yahoo stat label the transform does not recognise."""
 
 
-def _classify(name: str, labels: set[str]) -> ScoringUnit | None:
-    """Which scoring unit a box-score line belongs to, or ``None`` to skip it
-    (a pure individual defender — the D-slot surface is a separate ticket).
+def _classify(name: str, labels: set[str]) -> ScoringUnit:
+    """Which scoring unit a box-score line belongs to.
+
+    Team defense by nickname; kicker by a field-goal / PAT line; offense by an
+    offensive stat (or a bare returner line for someone rostered on offense);
+    everything else — tackles, sacks, takeaways with no offensive stat — is a
+    pure individual defender, the "D" slot.
     """
     if name in TEAM_NICKNAMES:
         return ScoringUnit.TEAM_DEFENSE
@@ -276,7 +350,7 @@ def _classify(name: str, labels: set[str]) -> ScoringUnit | None:
         return ScoringUnit.OFFENSE
     if "Return Yards" in labels and labels <= {"Return Yards", *_IDP_SHARED}:
         return ScoringUnit.OFFENSE  # a returner rostered on offense, no box stats
-    return None  # only tackles etc. -> a pure individual defender
+    return ScoringUnit.INDIVIDUAL_DEFENSE
 
 
 def records_from_box_scores(
@@ -284,10 +358,10 @@ def records_from_box_scores(
 ) -> tuple[list[OracleRecord], list[StatRow]]:
     """Turn the raw box-score scrape into aligned oracle records and stat rows.
 
-    Both lists are keyed by ``(player/team name, season, week)``. Pure
-    individual defenders are dropped. Raises ``UnmappedStatLabelError`` if a
-    Yahoo label has no canonical mapping — that means the scrape widened into
-    territory the engine does not cover yet.
+    Both lists are keyed by ``(player/team name, season, week)`` and cover every
+    row in the scrape — offense, kicker, team DEF, and individual defender.
+    Raises ``UnmappedStatLabelError`` if a Yahoo label has no canonical mapping —
+    that means the scrape widened into territory the engine does not cover yet.
     """
     oracle: list[OracleRecord] = []
     stat_rows: list[StatRow] = []
@@ -297,8 +371,6 @@ def records_from_box_scores(
         week = int(week_str)
         labels = {str(label) for label, _ in lines}
         unit = _classify(name, labels)
-        if unit is None:
-            continue
 
         label_map = _LABELS_BY_UNIT[unit]
         stats: dict[str, float] = {}

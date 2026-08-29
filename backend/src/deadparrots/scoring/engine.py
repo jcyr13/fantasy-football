@@ -60,6 +60,30 @@ def _score_kicker(row: StatRow, ruleset: LeagueRuleset) -> dict[str, float]:
     }
 
 
+def _score_individual_defense(row: StatRow, ruleset: LeagueRuleset) -> dict[str, float]:
+    """The "D" slot: one defender scored on the full individual-defense schedule.
+
+    A distinct surface from team DEF (``_score_team_defense``) — no points-
+    allowed bonus, and it scores ``forced_fumbles`` and the defender's own
+    turnover-return yardage, which the team unit does not.
+    """
+    r = ruleset.individual_defense
+    return {
+        **_idp_points(row, r),  # the tackle / pass-defended lines shared with offense
+        "sacks": row.stat("sacks") * r.sack,
+        "interceptions": row.stat("interceptions") * r.interception,
+        "forced_fumbles": row.stat("forced_fumbles") * r.forced_fumble,
+        "fumble_recoveries": row.stat("fumble_recoveries") * r.fumble_recovery,
+        "defensive_touchdowns": row.stat("defensive_touchdowns") * r.touchdown,
+        "safeties": row.stat("safeties") * r.safety,
+        "blocked_kicks": row.stat("blocked_kicks") * r.blocked_kick,
+        "tackles_for_loss": row.stat("tackles_for_loss") * r.tackle_for_loss,
+        "turnover_return_yards": (
+            row.stat("turnover_return_yards") / r.turnover_return_yards_per_point
+        ),
+    }
+
+
 def _score_team_defense(row: StatRow, ruleset: LeagueRuleset) -> dict[str, float]:
     r = ruleset.team_defense
     return {
@@ -79,6 +103,7 @@ _SCORERS = {
     ScoringUnit.OFFENSE: _score_offense,
     ScoringUnit.KICKER: _score_kicker,
     ScoringUnit.TEAM_DEFENSE: _score_team_defense,
+    ScoringUnit.INDIVIDUAL_DEFENSE: _score_individual_defense,
 }
 
 

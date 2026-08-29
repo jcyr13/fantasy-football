@@ -11,6 +11,7 @@ from __future__ import annotations
 
 from .engine import round_points, score_player_weeks, score_row, total_points
 from .rows import (
+    INDIVIDUAL_DEFENSE_STATS,
     KICKER_STATS,
     OFFENSE_STATS,
     TEAM_DEFENSE_STATS,
@@ -31,6 +32,7 @@ from .ruleset import (
 )
 
 __all__ = [
+    "INDIVIDUAL_DEFENSE_STATS",
     "KICKER_STATS",
     "OFFENSE_STATS",
     "RIP_TIDE_RULESET",

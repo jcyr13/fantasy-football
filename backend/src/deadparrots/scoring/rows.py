@@ -13,11 +13,18 @@ from enum import StrEnum
 
 
 class ScoringUnit(StrEnum):
-    """Which rule set a row is scored under."""
+    """Which rule set a row is scored under.
+
+    ``INDIVIDUAL_DEFENSE`` is the RIP TIDE "D" slot — a single defender scored on
+    their own tackles, takeaways, and scores. It is a distinct surface from
+    ``TEAM_DEFENSE`` (spec issue #1, "IDP / D slot"); the two are never mixed for
+    one entity-week.
+    """
 
     OFFENSE = "offense"
     KICKER = "kicker"
     TEAM_DEFENSE = "team_defense"
+    INDIVIDUAL_DEFENSE = "individual_defense"
 
 
 # Canonical stat keys the engine understands, per unit. A row may omit any key
@@ -78,10 +85,35 @@ TEAM_DEFENSE_STATS: frozenset[str] = frozenset(
     }
 )
 
+# The "D" slot. Solo/assist tackles and passes defended share their canonical
+# keys and values with offense/kicker; the rest (takeaways, scores, blocked
+# kicks, TFL, and the defender's own interception/fumble-return yardage) are what
+# makes this a surface of its own. ``turnover_return_yards`` is kept distinct
+# from offense's kick/punt ``return_yards`` — the spec lists it as its own
+# category — and ``forced_fumbles`` is unique to IDP, where team DEF only scores
+# the recovery.
+INDIVIDUAL_DEFENSE_STATS: frozenset[str] = frozenset(
+    {
+        "tackle_solo",
+        "tackle_assist",
+        "passes_defended",
+        "sacks",
+        "interceptions",
+        "forced_fumbles",
+        "fumble_recoveries",
+        "defensive_touchdowns",
+        "safeties",
+        "blocked_kicks",
+        "tackles_for_loss",
+        "turnover_return_yards",
+    }
+)
+
 STATS_BY_UNIT: Mapping[ScoringUnit, frozenset[str]] = {
     ScoringUnit.OFFENSE: OFFENSE_STATS,
     ScoringUnit.KICKER: KICKER_STATS,
     ScoringUnit.TEAM_DEFENSE: TEAM_DEFENSE_STATS,
+    ScoringUnit.INDIVIDUAL_DEFENSE: INDIVIDUAL_DEFENSE_STATS,
 }
 
 
@@ -104,9 +136,10 @@ class UnknownStatError(ValueError):
 class StatRow:
     """One player-week (or team-week) of raw counting stats to be scored.
 
-    ``entity_id`` is the nflverse ``player_id`` for offense and kickers, and the
-    team abbreviation for ``TEAM_DEFENSE``. ``stats`` holds canonical keys from
-    the unit's vocabulary; missing keys count as 0.
+    ``entity_id`` is the nflverse ``player_id`` for offense, kickers, and
+    individual defenders, and the team abbreviation for ``TEAM_DEFENSE``.
+    ``stats`` holds canonical keys from the unit's vocabulary; missing keys
+    count as 0.
     """
 
     entity_id: str

@@ -88,7 +88,7 @@ def test_transform_reads_team_defense_by_nickname_and_fills_absent_points_allowe
     assert score_row(row, RIP_TIDE_RULESET).points == 10.72
 
 
-def test_transform_skips_a_pure_individual_defender():
+def test_transform_classifies_a_pure_individual_defender_as_the_d_slot():
     raw = {
         "Roquan Smith|1": [9.0, [["Tackle Solo", "8"], ["Tackle Assist", "2"]]],
         "Jordyn Brooks|1": [10.5, [
@@ -96,7 +96,25 @@ def test_transform_skips_a_pure_individual_defender():
         ]],
     }
     oracle, rows = records_from_box_scores(raw)
-    assert oracle == [] and rows == []
+    assert {r.unit for r in oracle} == {ScoringUnit.INDIVIDUAL_DEFENSE}
+    by_name = {r.entity_id: r for r in rows}
+    assert by_name["Roquan Smith"].stat("tackle_solo") == 8.0
+    # engine re-derives each Yahoo total from the mapped counts (within tolerance)
+    for row, rec in zip(rows, oracle, strict=True):
+        assert abs(score_row(row, RIP_TIDE_RULESET).points - rec.yahoo_points) <= 1.0
+
+
+def test_transform_maps_idp_turnover_return_yards_and_forced_fumble():
+    # 3 solo (3) + 1 INT (2) + 1 forced fumble (1) + 40 turnover-return yds (1.6)
+    raw = {"Kerby Joseph|9": [7.6, [
+        ["Tackle Solo", "3"], ["Interception", "1"], ["Fumble Force", "1"],
+        ["Turnover Return Yards", "40"],
+    ]]}
+    (rec,), (row,) = records_from_box_scores(raw)
+    assert rec.unit is ScoringUnit.INDIVIDUAL_DEFENSE
+    assert row.stat("forced_fumbles") == 1.0
+    assert row.stat("turnover_return_yards") == 40.0
+    assert score_row(row, RIP_TIDE_RULESET).points == 7.6
 
 
 def test_transform_raises_on_an_unmapped_yahoo_label():

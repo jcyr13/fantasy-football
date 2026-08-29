@@ -28,6 +28,10 @@ def defense(**stats) -> StatRow:
     return StatRow("BUF", 2025, 3, ScoringUnit.TEAM_DEFENSE, stats, label="BUF")
 
 
+def idp(**stats) -> StatRow:
+    return StatRow("d1", 2025, 3, ScoringUnit.INDIVIDUAL_DEFENSE, stats, label="Test Defender")
+
+
 # --------------------------------------------------------------------------- #
 # round_points
 # --------------------------------------------------------------------------- #
@@ -174,6 +178,85 @@ def test_team_defense_blowout_allowed_is_minus_four():
 def test_team_defense_points_allowed_defaults_to_shutout_tier_when_absent():
     # A row with no points_allowed stat is treated as 0 allowed -> +10.
     assert score_row(defense(sacks=0), RULES).points == 10.0
+
+
+# --------------------------------------------------------------------------- #
+# Individual defense (the "D" slot)
+# --------------------------------------------------------------------------- #
+
+
+def test_idp_full_line_totals_exactly():
+    row = idp(
+        tackle_solo=5,
+        tackle_assist=3,
+        sacks=1,
+        tackles_for_loss=2,
+        passes_defended=1,
+        forced_fumbles=1,
+    )
+    # 5 + 1.5 + 2 + 2 + 1 + 1
+    assert score_row(row, RULES).points == 12.5
+    assert score_row(row, RULES).unit is ScoringUnit.INDIVIDUAL_DEFENSE
+
+
+def test_idp_solo_and_assist_tackles_match_the_shared_values():
+    assert score_row(idp(tackle_solo=8, tackle_assist=4), RULES).points == 10.0
+
+
+def test_idp_takeaways_and_scores():
+    row = idp(interceptions=1, fumble_recoveries=1, defensive_touchdowns=1, safeties=1)
+    # 2 + 1 + 6 + 2
+    assert score_row(row, RULES).points == 11.0
+
+
+def test_idp_blocked_kick_scores_two():
+    assert score_row(idp(blocked_kicks=1, tackle_solo=1), RULES).points == 3.0
+
+
+def test_idp_turnover_return_yards_score_one_per_twenty_five():
+    # A pick-six: 1 INT (2) + 1 defensive TD (6) + 40 turnover-return yards (1.6)
+    row = idp(interceptions=1, defensive_touchdowns=1, turnover_return_yards=40)
+    assert score_row(row, RULES).points == 9.6
+
+
+def test_idp_turnover_return_yards_is_a_separate_key_from_offense_return_yards():
+    with pytest.raises(UnknownStatError):
+        StatRow("d1", 2025, 3, ScoringUnit.INDIVIDUAL_DEFENSE, {"return_yards": 40})
+
+
+def test_idp_is_a_distinct_surface_from_team_defense():
+    # Same sack/INT counts, but IDP has no points-allowed bonus and team DEF
+    # has no notion of an individual defender's line.
+    stats = {"sacks": 2, "interceptions": 1}
+    idp_pts = score_row(idp(**stats), RULES).points
+    team_pts = score_row(defense(**stats), RULES).points
+    assert idp_pts == 6.0  # 4 + 2, nothing else
+    assert team_pts == 16.0  # 4 + 2 + 10 (shutout tier, points_allowed absent)
+    assert idp_pts != team_pts
+
+
+def test_idp_forced_fumble_is_not_a_team_defense_stat():
+    assert score_row(idp(forced_fumbles=2), RULES).points == 2.0
+    with pytest.raises(UnknownStatError):
+        StatRow("BUF", 2025, 3, ScoringUnit.TEAM_DEFENSE, {"forced_fumbles": 1})
+
+
+def test_idp_missing_stats_default_to_zero():
+    assert score_row(idp(), RULES).points == 0.0
+
+
+def test_idp_breakdown_sums_to_the_unrounded_total():
+    row = idp(tackle_solo=6, tackle_assist=3, tackles_for_loss=1, turnover_return_yards=13)
+    scored = score_row(row, RULES)
+    assert scored.breakdown["tackle_solo"] == 6.0
+    assert scored.breakdown["tackle_assist"] == 1.5
+    assert scored.breakdown["turnover_return_yards"] == 13 / 25
+    assert round_points(sum(scored.breakdown.values())) == scored.points
+
+
+def test_idp_rejects_offensive_stat_keys():
+    with pytest.raises(UnknownStatError):
+        StatRow("d1", 2025, 3, ScoringUnit.INDIVIDUAL_DEFENSE, {"passing_yards": 100})
 
 
 # --------------------------------------------------------------------------- #

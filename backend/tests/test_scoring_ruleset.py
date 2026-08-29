@@ -34,8 +34,29 @@ def test_offense_rules_match_the_spec():
 def test_individual_defense_rules_are_shared_by_offense_and_kicker():
     idp = RIP_TIDE_RULESET.offense.individual_defense
     assert (idp.solo_tackle, idp.assisted_tackle, idp.pass_defended) == (1.0, 0.5, 1.0)
-    # Same object on the kicker rules — RIP TIDE scores these for any player.
+    # Same object on the kicker rules and on the top-level D-slot surface — RIP
+    # TIDE scores individual defensive plays for any player.
     assert RIP_TIDE_RULESET.kicker.individual_defense is idp
+    assert RIP_TIDE_RULESET.individual_defense is idp
+
+
+def test_individual_defender_slot_schedule_matches_the_spec():
+    # spec issue #1, "IDP / D slot": solo tackle 1, assist 0.5, sack 2, INT 2,
+    # forced fumble 1, fumble recovery 1, TD 6, safety 2, pass defended 1,
+    # block kick 2, TFL 1, turnover-return yards 25 per point.
+    idp = RIP_TIDE_RULESET.individual_defense
+    assert idp.solo_tackle == 1.0
+    assert idp.assisted_tackle == 0.5
+    assert idp.sack == 2.0
+    assert idp.interception == 2.0
+    assert idp.forced_fumble == 1.0
+    assert idp.fumble_recovery == 1.0
+    assert idp.touchdown == 6.0
+    assert idp.safety == 2.0
+    assert idp.pass_defended == 1.0
+    assert idp.blocked_kick == 2.0
+    assert idp.tackle_for_loss == 1.0
+    assert idp.turnover_return_yards_per_point == 25.0
 
 
 def test_kicker_rules_match_the_spec():

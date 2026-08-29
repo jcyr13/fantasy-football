@@ -18,8 +18,9 @@ jobs:
       - run: uv run ruff check
       - run: uv run pytest
       # The 2025 Yahoo scoring validation gate, surfaced as its own line so a
-      # regression against real Yahoo actuals is impossible to miss. See
-      # docs/scoring-oracle-capture.md.
+      # regression against real Yahoo actuals is impossible to miss. Covers the
+      # exact offense/kicker/DEF gate and the ±1.0 individual-defender (D slot)
+      # gate. See docs/scoring-oracle-capture.md.
       - name: scoring validation gate (2025 Yahoo actuals)
         run: uv run pytest -m gate -v
 
