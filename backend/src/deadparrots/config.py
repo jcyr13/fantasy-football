@@ -47,6 +47,18 @@ class Settings(BaseSettings):
     # Where the rsidecar container drops its payloads; defaults under data_dir.
     consensus_rsidecar_dir: Path | None = None
 
+    # News module (ticket #15). ESPN's keyless NFL news endpoint plus the ESPN
+    # NFL and Yahoo Sports NFL RSS feeds, polled at most every ~30 minutes; each
+    # item is name-matched to players and cached to SQLite with ``fetched_at``.
+    # A blank URL disables that feed. News is never part of a weekly snapshot.
+    news_espn_api_url: str = (
+        "https://site.api.espn.com/apis/site/v2/sports/football/nfl/news"
+    )
+    news_espn_rss_url: str = "https://www.espn.com/espn/rss/nfl/news"
+    news_yahoo_rss_url: str = "https://sports.yahoo.com/nfl/rss/"
+    news_poll_interval_minutes: int = 30
+    news_window_hours: int = 48
+
     # Email alert for a failed nflverse pull goes to John. Until the SMTP values
     # are set the alert is logged at ERROR instead of emailed (no credentials to
     # send with); set ``DEADPARROTS_SMTP_HOST`` etc. to turn on real delivery.
