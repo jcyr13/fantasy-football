@@ -52,6 +52,15 @@ class Settings(BaseSettings):
     # Where the rsidecar container drops its payloads; defaults under data_dir.
     consensus_rsidecar_dir: Path | None = None
 
+    # Weekly snapshot capture (ticket #17). The immutable per-week record is
+    # frozen Sunday late morning, before the 1 pm ET kickoffs — the write is
+    # INSERT OR IGNORE so a missed or re-fired run is harmless, and
+    # POST /api/history/capture is always available as the manual path.
+    snapshot_cron_day_of_week: str = "sun"
+    snapshot_cron_hour: int = 11
+    snapshot_cron_minute: int = 0
+    snapshot_cron_timezone: str = "America/New_York"
+
     # News module (ticket #15). ESPN's keyless NFL news endpoint plus the ESPN
     # NFL and Yahoo Sports NFL RSS feeds, polled at most every ~30 minutes; each
     # item is name-matched to players and cached to SQLite with ``fetched_at``.

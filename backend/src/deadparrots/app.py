@@ -5,6 +5,8 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 
 from deadparrots.api.health import router as health_router
+from deadparrots.api.history import register_weekly_snapshot_capture
+from deadparrots.api.history import router as history_router
 from deadparrots.api.layers import router as layers_router
 from deadparrots.api.ops import RefreshRunner
 from deadparrots.api.ops import router as ops_router
@@ -68,6 +70,15 @@ async def lifespan(app: FastAPI):
         sqlite_conn=app.state.sqlite,
         targets_provider=build_yahoo_targets_provider(settings),
     )
+    # The weekly snapshot capture (issue #17). Reads whatever weekly data source
+    # is on ``app.state`` at fire time; before the first assisted pull the
+    # assembly raises and the job logs a skip.
+    register_weekly_snapshot_capture(
+        scheduler,
+        settings=settings,
+        sqlite_conn=app.state.sqlite,
+        sources_provider=lambda: getattr(app.state, "weekly_sources", None),
+    )
 
     try:
         yield
@@ -98,6 +109,7 @@ def create_app(
     app.include_router(yahoo_router, prefix="/api")
     app.include_router(weekly_router, prefix="/api")
     app.include_router(layers_router, prefix="/api")
+    app.include_router(history_router, prefix="/api")
     app.include_router(ops_router, prefix="/api")
     return app
 
