@@ -107,8 +107,11 @@ A player whose fantasy output is spiking while opportunity is flat or declining 
 **Market-value proxy**:
 External consensus rest-of-season rank, used as a stand-in for what leaguemates believe a player is worth (there is no real trade market to observe).
 
+**Trade edge**:
+The signed gap, in positional-rank places, between the market-value proxy and the model's opportunity-adjusted rest-of-season rank for the same player. A buy-low / sell-high candidate is surfaced only when the edge runs in the flag's direction and clears roughly one positional tier (12 places at RB/WR, 6 at QB/TE); for sell-high the injury / hard-schedule weighting scales the edge before that test.
+
 **Desperate-team read**:
-A ranking of the other 11 managers by willingness to deal, from sub-.500 record, low points-for, roster age, and their own bye-week crunch.
+A ranking of the other 11 managers by willingness to deal, from sub-.500 record, low points-for, roster age, and their own bye-week crunch — four equally-weighted, min-max-normalized components. Top 2–3 surfaced with the components that flagged them.
 
 ### Roster mechanics & value
 
