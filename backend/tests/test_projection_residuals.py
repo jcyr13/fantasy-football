@@ -42,11 +42,9 @@ def test_position_aliases_resolve(alias, canonical):
     assert prior_for_position(alias) == POSITIONAL_RESIDUAL_PRIORS[canonical]
 
 
-def test_unknown_position_falls_back_wide_but_can_be_strict():
-    loose = prior_for_position("LONG_SNAPPER")
-    assert loose.cv >= POSITIONAL_RESIDUAL_PRIORS["RB"].cv
+def test_unknown_position_raises_rather_than_guessing_a_shape():
     with pytest.raises(UnknownPositionError):
-        prior_for_position("LONG_SNAPPER", strict=True)
+        prior_for_position("LONG_SNAPPER")
 
 
 def test_blend_endpoints_and_midpoint():

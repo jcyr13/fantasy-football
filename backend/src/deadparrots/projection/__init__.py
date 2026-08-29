@@ -34,7 +34,7 @@ from .model import (
     InsufficientDataError,
     PlayerProjection,
     ProjectionComponents,
-    ProjectionError,
+    ProjectionSource,
     project,
 )
 from .params import DEFAULT_PARAMS, ProjectionParams
@@ -56,8 +56,8 @@ __all__ = [
     "PlayerHistory",
     "PlayerProjection",
     "ProjectionComponents",
-    "ProjectionError",
     "ProjectionParams",
+    "ProjectionSource",
     "ResidualPrior",
     "UnknownPositionError",
     "UsageSnapshot",

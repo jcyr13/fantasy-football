@@ -60,13 +60,22 @@ drop-in replacement once fitted values exist — no interface change.
 
 ## Consequences
 
-- `ProjectionParams` carries four knobs §5 does not list —
+- `ProjectionParams` carries a few knobs §5 does not list —
   `opportunity_trend_sensitivity`, the four equal usage weights,
-  `opportunity_trend_floor`, `residual_volume_floor`, `own_skew_clamp`. Each is
-  an implementation constant §3 describes qualitatively; each is documented in
-  `params.py` against its §3 sentence and defaulted to match that prose.
-  `test_projection_params.py` still pins every genuinely methodology-derived
-  number.
+  `residual_volume_floor`, `own_skew_clamp`. Each is an implementation constant
+  §3 describes qualitatively; each is documented in `params.py` against its §3
+  sentence and defaulted to match that prose. `test_projection_params.py` still
+  pins every genuinely methodology-derived number. The opportunity trend
+  multiplier itself is **not** clamped — §3.4 says the adjustment "is not
+  separately capped", so `1 + sensitivity·slope` is applied as-is.
+- Two undocumented-in-§3 safety nets, both surfaced in `reasons` and both
+  low-confidence: `OPPORTUNITY_FALLBACK` (a rookie / role-change / no-history
+  player with no consensus number — the opportunity mean stands in for the
+  consensus mean §3.7 assumes), and `no-opportunity-forecast` (a player *with*
+  history but no opportunity-model output this week — the consensus number
+  anchors the mean while the player's own shape is still used). Both keep the
+  weekly slate fully projected when a single upstream input is missing rather
+  than raising mid-run.
 - `own_skew_clamp = 1.0` keeps the Cornish-Fisher draw monotonic in `z` down to
   `z = -3`, well past the reported P10, so a noisy few-game skew estimate cannot
   reorder the quantiles. A final `min_quantile_gap` nudge after rounding makes

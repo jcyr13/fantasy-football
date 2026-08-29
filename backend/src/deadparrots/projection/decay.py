@@ -45,7 +45,7 @@ def weighted_mean(values: Sequence[float], weights: Sequence[float]) -> float:
     return math.fsum(v * w for v, w in zip(values, weights)) / total_w
 
 
-def weighted_variance(values: Sequence[float], weights: Sequence[float]) -> float:
+def _weighted_variance(values: Sequence[float], weights: Sequence[float]) -> float:
     """Population weighted variance about the weighted mean (no reliability
     correction — the decay weights are not frequencies).
     """
@@ -56,8 +56,8 @@ def weighted_variance(values: Sequence[float], weights: Sequence[float]) -> floa
 
 
 def weighted_std(values: Sequence[float], weights: Sequence[float]) -> float:
-    """Square root of :func:`weighted_variance`."""
-    return math.sqrt(max(weighted_variance(values, weights), 0.0))
+    """Square root of :func:`_weighted_variance`."""
+    return math.sqrt(max(_weighted_variance(values, weights), 0.0))
 
 
 def weighted_skew(values: Sequence[float], weights: Sequence[float]) -> float:

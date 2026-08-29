@@ -3,7 +3,7 @@ from __future__ import annotations
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
 
-from .decay import weighted_mean, weighted_skew, weighted_std
+from .decay import weighted_skew, weighted_std
 
 # The *shape* half of the hybrid projection (methodology §3.2 step 2): the
 # distribution of (actual - expected) fantasy points for a position, held as a
@@ -72,33 +72,31 @@ _POSITION_ALIASES: Mapping[str, str] = {
     "FB": "RB", "HB": "RB",
 }
 
-# Fallback when a position is unrecognised: the widest common shape, so an
-# unknown player is treated as high-variance rather than falsely precise.
-_UNKNOWN_POSITION_PRIOR = ResidualPrior(cv=0.55, skew=0.40)
-
 
 class UnknownPositionError(ValueError):
-    """A history carried a position with no residual prior and no alias."""
+    """A history carried a position with no residual prior and no alias.
+
+    The model fails loudly rather than guessing a shape — positions come from
+    controlled nflverse roster data, so an unmapped one is a bug upstream, not
+    an exotic-but-valid input (cf. the consensus feed's "fails loudly" guard,
+    ADR-0005).
+    """
 
 
 def prior_for_position(
     position: str,
     priors: Mapping[str, ResidualPrior] = POSITIONAL_RESIDUAL_PRIORS,
-    *,
-    strict: bool = False,
 ) -> ResidualPrior:
     """The positional residual prior for ``position``, resolving aliases.
 
-    With ``strict=True`` an unrecognised position raises
-    :class:`UnknownPositionError`; otherwise it falls back to a wide default.
+    Raises :class:`UnknownPositionError` for a position that is neither a key
+    of ``priors`` nor a known alias of one.
     """
     key = position.strip().upper()
     key = _POSITION_ALIASES.get(key, key)
     if key in priors:
         return priors[key]
-    if strict:
-        raise UnknownPositionError(position)
-    return _UNKNOWN_POSITION_PRIOR
+    raise UnknownPositionError(position)
 
 
 def own_residual_shape(
@@ -121,13 +119,3 @@ def own_residual_shape(
     skew = weighted_skew(residuals, weights)
     skew = min(max(skew, -skew_clamp), skew_clamp)
     return ResidualPrior(cv=cv, skew=skew)
-
-
-def residual_bias(residuals: Sequence[float], weights: Sequence[float]) -> float:
-    """Decay-weighted mean residual — the systematic gap between the opportunity
-    model and this player's realised points. Added back onto the mean so a
-    player the role model persistently under-rates is not projected short.
-    """
-    if not residuals:
-        return 0.0
-    return weighted_mean(residuals, weights)

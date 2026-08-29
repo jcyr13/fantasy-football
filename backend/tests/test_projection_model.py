@@ -246,6 +246,40 @@ def test_raises_when_there_is_nothing_to_project():
             week=9,
             rng_seed=SEED,
         )
+    # InsufficientDataError is a ValueError (repo exception idiom)
+    assert issubclass(InsufficientDataError, ValueError)
+
+
+def test_history_present_but_no_opportunity_forecast_is_flagged():
+    # opportunity model produced nothing this week; consensus stands in for the
+    # mean but the player's own shape is still used -> soft, not a full fallback
+    h = history(n_games=8)
+    p = project(
+        h,
+        None,
+        season=2026,
+        week=10,
+        consensus_points=11.0,
+        rng_seed=SEED,
+    )
+    assert p.components.source == "player-history"
+    assert p.components.mean_base == 11.0
+    assert p.components.shape_own_weight == 1.0
+    assert p.low_confidence
+    assert "no-opportunity-forecast" in p.reasons
+
+
+def test_unknown_position_raises():
+    from deadparrots.projection.residuals import UnknownPositionError
+
+    with pytest.raises(UnknownPositionError):
+        project(
+            history(position="LONG_SNAPPER", n_games=6),
+            OpportunityMetrics(expected_points=5.0),
+            season=2026,
+            week=9,
+            rng_seed=SEED,
+        )
 
 
 def test_same_inputs_and_seed_produce_identical_output():

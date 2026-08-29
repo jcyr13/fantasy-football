@@ -4,8 +4,9 @@ import math
 import random
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
+from enum import StrEnum
 
-from ..scoring.engine import round_points
+from ..scoring import round_points
 from .decay import decay_weights, weighted_slope
 from .inputs import MatchupContext, OpportunityMetrics, PlayerGame, PlayerHistory
 from .params import DEFAULT_PARAMS, ProjectionParams
@@ -31,11 +32,7 @@ from .residuals import (
 # fixtures.
 
 
-class ProjectionError(Exception):
-    """Base class for projection failures."""
-
-
-class InsufficientDataError(ProjectionError):
+class InsufficientDataError(ValueError):
     """No usable mean is available — no current-season history, no consensus
     number, and no opportunity forecast. The caller has nothing to project.
     """
@@ -45,17 +42,30 @@ class InsufficientDataError(ProjectionError):
         super().__init__(f"{player_id}: {detail}")
 
 
+class ProjectionSource(StrEnum):
+    """Where a projection's mean came from.
+
+    ``PLAYER_HISTORY`` — the opportunity-model mean, with the player's own
+    residual shape (blended toward the positional prior below the ≥4-game
+    threshold). ``CONSENSUS_FALLBACK`` — the consensus-feed number, positional
+    prior for the shape (rookies, role-change, no current-season history —
+    methodology §3.7). ``OPPORTUNITY_FALLBACK`` — same as consensus fallback but
+    no consensus number was supplied, so the opportunity mean stands in.
+    """
+
+    PLAYER_HISTORY = "player-history"
+    CONSENSUS_FALLBACK = "consensus-fallback"
+    OPPORTUNITY_FALLBACK = "opportunity-fallback"
+
+
 @dataclass(frozen=True)
 class ProjectionComponents:
     """Every intermediate behind a :class:`PlayerProjection`.
 
-    ``source`` is ``"player-history"`` when the player's own residual shape was
-    used (possibly blended), ``"consensus-fallback"`` when the mean came from
-    the consensus feed, or ``"opportunity-fallback"`` when it came from the
-    opportunity model because no consensus number was supplied.
+    ``source`` records where the mean came from (see :class:`ProjectionSource`).
     """
 
-    source: str
+    source: ProjectionSource
     current_season_games: int
     mean_base: float
     opportunity_trend_slope: float
@@ -121,17 +131,17 @@ def project(
     )
 
     trend_slope = _combined_usage_slope(cur_games, params)
-    trend_multiplier = max(
-        1.0 + params.opportunity_trend_sensitivity * trend_slope,
-        params.opportunity_trend_floor,
-    )
+    # Not clamped: methodology §3.4 leaves the opportunity adjustment uncapped
+    # on purpose — it is bounded in practice by the [0, 1] range of the usage
+    # shares the slope is measured on.
+    trend_multiplier = 1.0 + params.opportunity_trend_sensitivity * trend_slope
     matchup_factor, matchup_factor_raw = _matchup_factor(
         matchup, params.matchup_adjustment_cap
     )
     mean_final = mean_base * trend_multiplier * matchup_factor
 
     positional_prior = prior_for_position(history.position, priors)
-    if source == "player-history":
+    if source is ProjectionSource.PLAYER_HISTORY:
         weights = decay_weights(n_games, params.decay_half_life_games)
         residuals = [g.actual_points - g.expected_points for g in cur_games]
         own_shape = own_residual_shape(
@@ -151,7 +161,9 @@ def project(
         mean_final, shape, params, rng_seed
     )
 
-    reasons = _low_confidence_reasons(history, week, n_games, source, params)
+    reasons = _low_confidence_reasons(
+        history, week, n_games, source, opportunity is None, params
+    )
     components = ProjectionComponents(
         source=source,
         current_season_games=n_games,
@@ -202,24 +214,25 @@ def _resolve_mean_base(
     opportunity: OpportunityMetrics | None,
     consensus_points: float | None,
     force_fallback: bool,
-) -> tuple[float, str]:
+) -> tuple[float, ProjectionSource]:
     """Pick the pre-adjustment mean and label the source it came from."""
     if force_fallback:
         if consensus_points is not None:
-            return consensus_points, "consensus-fallback"
+            return consensus_points, ProjectionSource.CONSENSUS_FALLBACK
         if opportunity is not None:
-            return opportunity.expected_points, "opportunity-fallback"
+            return opportunity.expected_points, ProjectionSource.OPPORTUNITY_FALLBACK
         raise InsufficientDataError(
             player_id,
             "no current-season history and neither a consensus nor an "
             "opportunity forecast to fall back on",
         )
     if opportunity is not None:
-        return opportunity.expected_points, "player-history"
+        return opportunity.expected_points, ProjectionSource.PLAYER_HISTORY
     if consensus_points is not None:
         # History exists but the opportunity model produced nothing this week;
         # lean on consensus for the mean while still using the player's shape.
-        return consensus_points, "player-history"
+        # ``opportunity is None`` on this path adds a low-confidence reason.
+        return consensus_points, ProjectionSource.PLAYER_HISTORY
     raise InsufficientDataError(
         player_id, "current-season history present but no mean to anchor it"
     )
@@ -296,8 +309,9 @@ def _skewed_unit(rng: random.Random, skew: float) -> float:
     """A mean-0, ~unit-variance draw with Fisher skewness ≈ ``skew``.
 
     First-order Cornish-Fisher expansion of a standard normal: monotonic in
-    ``z`` for the ``|skew| <= 1.5`` the model allows, so the sampled quantiles
-    keep their order.
+    ``z`` down to ``z = -3 / skew`` (below the reported P10 for the
+    ``|skew| <= 1`` the model allows), so the sampled quantiles keep their
+    order.
     """
     z = rng.gauss(0.0, 1.0)
     return z + (skew / 6.0) * (z * z - 1.0)
@@ -323,7 +337,8 @@ def _low_confidence_reasons(
     history: PlayerHistory,
     week: int,
     n_games: int,
-    source: str,
+    source: ProjectionSource,
+    opportunity_missing: bool,
     params: ProjectionParams,
 ) -> tuple[str, ...]:
     """Every reason the projection is soft (methodology §3.6–§3.8).
@@ -339,6 +354,13 @@ def _low_confidence_reasons(
         reasons.append("rookie")
     if history.role_change:
         reasons.append("role-change")
-    if source in ("consensus-fallback", "opportunity-fallback"):
-        reasons.append(source)
+    if source in (
+        ProjectionSource.CONSENSUS_FALLBACK,
+        ProjectionSource.OPPORTUNITY_FALLBACK,
+    ):
+        reasons.append(str(source))
+    elif opportunity_missing:
+        # PLAYER_HISTORY path but the mean came from the consensus number
+        # because the opportunity model produced nothing this week.
+        reasons.append("no-opportunity-forecast")
     return tuple(reasons)

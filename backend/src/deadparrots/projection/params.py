@@ -13,11 +13,12 @@ from dataclasses import dataclass
 class ProjectionParams:
     """Defaults for the weekly point-distribution model.
 
-    The three "not in §5" knobs (``opportunity_trend_sensitivity``, the usage
-    weights, ``residual_volume_floor``, and the Monte-Carlo settings) are
-    implementation constants §3 describes qualitatively but does not put a
-    number on; they are surfaced here so they can be tuned without a code
-    change. Their defaults are chosen to match §3's prose, not invented signal.
+    Some knobs here are not §5 rows — ``opportunity_trend_sensitivity``, the
+    four usage weights, ``residual_volume_floor``, ``own_skew_clamp``, and the
+    Monte-Carlo settings. They are implementation constants §3 describes
+    qualitatively but puts no number on; they are surfaced here so they can be
+    tuned without a code change, and their defaults are chosen to match §3's
+    prose rather than to invent signal.
     """
 
     # --- methodology §5, row 1 / §3.3 ------------------------------------
@@ -44,8 +45,9 @@ class ProjectionParams:
     # ``combined_slope`` is the weighted sum of the four usage signals'
     # decay-weighted per-game slopes. §3.4 says this adjustment is *not*
     # separately capped — it is bounded in practice by the [0, 1] range of the
-    # underlying shares. ``sensitivity = 1.0`` means "a +0.10/game combined
-    # share trend lifts the mean 10%".
+    # underlying shares — so no floor or ceiling is applied to it here.
+    # ``sensitivity = 1.0`` means "a +0.10/game combined share trend lifts the
+    # mean 10%".
     opportunity_trend_sensitivity: float = 1.0
     # The four signals are equal-weighted (methodology §4.5 / open question 6
     # accepts equal weights for the usage composite).
@@ -53,10 +55,6 @@ class ProjectionParams:
     usage_weight_target_share: float = 0.25
     usage_weight_route_participation: float = 0.25
     usage_weight_red_zone_share: float = 0.25
-    # Numeric guard only: keep ``1 + sensitivity * combined_slope`` at or above
-    # this so a wild negative trend cannot drive the mean to zero or below. Not
-    # a cap on the signal — it only bites on implausible slopes.
-    opportunity_trend_floor: float = 0.10
 
     # --- residual shape scaling (§3.2 step 2) -------------------------
     # The positional residual spread is a fraction of the player's projected

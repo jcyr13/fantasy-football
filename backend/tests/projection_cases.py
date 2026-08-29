@@ -261,7 +261,7 @@ def expected_payload(case: Case) -> dict[str, Any]:
         "low_confidence": p.low_confidence,
         "reasons": list(p.reasons),
         "components": {
-            "source": c.source,
+            "source": str(c.source),
             "current_season_games": c.current_season_games,
             "mean_base": c.mean_base,
             "opportunity_trend_slope": c.opportunity_trend_slope,
