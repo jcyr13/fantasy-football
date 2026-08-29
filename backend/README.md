@@ -16,3 +16,17 @@ uv run ruff check
 `GET /api/health` reports whether the SQLite app DB, the DuckDB connection, and
 the APScheduler instance came up. Data lives under `../data/` by default;
 override with `DEADPARROTS_DATA_DIR`.
+
+## nflverse ingestion
+
+```sh
+uv run python -m deadparrots.ingest        # pull all nflverse datasets now
+```
+
+Pulls play-by-play, weekly player stats, rosters, schedules, snap counts, depth
+charts, injuries, and the individual-defender table via `nflreadpy` into
+timestamped parquet under `../data/nflverse/` (see
+`../docs/adr/0004-nflverse-parquet-cache-layout.md`). Each run records a row per
+dataset in `nflverse_pull_status` (SQLite) and, on any failure, emails John
+(needs `DEADPARROTS_SMTP_HOST` etc.; logs at ERROR otherwise). The running API
+also runs this on a weekly cron (`DEADPARROTS_NFLVERSE_CRON_*`).
