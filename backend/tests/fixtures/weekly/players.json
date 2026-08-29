@@ -1,0 +1,92 @@
+{
+  "players": [
+    {
+      "name": "Free Waddle",
+      "team": "MIA",
+      "position": "WR",
+      "availability": "FA",
+      "waiver_claim_date": null,
+      "percent_rostered": "25%",
+      "projected_points": 12.5,
+      "opponent": "@OPP",
+      "injury_status": "Q"
+    },
+    {
+      "name": "Wire Runner",
+      "team": "CIN",
+      "position": "RB",
+      "availability": "W",
+      "waiver_claim_date": "Wed",
+      "percent_rostered": "25%",
+      "projected_points": 14.0,
+      "opponent": "@OPP",
+      "injury_status": null
+    },
+    {
+      "name": "Spare End",
+      "team": "BAL",
+      "position": "TE",
+      "availability": "FA",
+      "waiver_claim_date": null,
+      "percent_rostered": "25%",
+      "projected_points": 9.0,
+      "opponent": "@OPP",
+      "injury_status": null
+    },
+    {
+      "name": "Loose Kick",
+      "team": "KC",
+      "position": "K",
+      "availability": "FA",
+      "waiver_claim_date": null,
+      "percent_rostered": "25%",
+      "projected_points": 8.5,
+      "opponent": "@OPP",
+      "injury_status": null
+    },
+    {
+      "name": "Bench Backer",
+      "team": "DAL",
+      "position": "LB",
+      "availability": "FA",
+      "waiver_claim_date": null,
+      "percent_rostered": "25%",
+      "projected_points": 10.0,
+      "opponent": "@OPP",
+      "injury_status": null
+    },
+    {
+      "name": "Pocket Free",
+      "team": "PHI",
+      "position": "QB",
+      "availability": "FA",
+      "waiver_claim_date": null,
+      "percent_rostered": "25%",
+      "projected_points": 21.5,
+      "opponent": "@OPP",
+      "injury_status": null
+    },
+    {
+      "name": "Deep Reserve",
+      "team": "DAL",
+      "position": "WR",
+      "availability": "W",
+      "waiver_claim_date": "Wed",
+      "percent_rostered": "25%",
+      "projected_points": 12.5,
+      "opponent": "@OPP",
+      "injury_status": null
+    },
+    {
+      "name": "Ravens",
+      "team": "BAL",
+      "position": "DEF",
+      "availability": "FA",
+      "waiver_claim_date": null,
+      "percent_rostered": "25%",
+      "projected_points": 7.5,
+      "opponent": "@OPP",
+      "injury_status": null
+    }
+  ]
+}

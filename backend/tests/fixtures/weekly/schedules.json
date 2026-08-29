@@ -1,0 +1,434 @@
+[
+  {
+    "game_id": "2026_01_MIA_DAL",
+    "season": 2026,
+    "week": 1,
+    "away_team": "MIA",
+    "home_team": "DAL",
+    "gameday": "2026-09-01"
+  },
+  {
+    "game_id": "2026_01_KC_CIN",
+    "season": 2026,
+    "week": 1,
+    "away_team": "KC",
+    "home_team": "CIN",
+    "gameday": "2026-09-01"
+  },
+  {
+    "game_id": "2026_01_SF_BAL",
+    "season": 2026,
+    "week": 1,
+    "away_team": "SF",
+    "home_team": "BAL",
+    "gameday": "2026-09-01"
+  },
+  {
+    "game_id": "2026_01_PHI_BUF",
+    "season": 2026,
+    "week": 1,
+    "away_team": "PHI",
+    "home_team": "BUF",
+    "gameday": "2026-09-01"
+  },
+  {
+    "game_id": "2026_02_KC_CIN",
+    "season": 2026,
+    "week": 2,
+    "away_team": "KC",
+    "home_team": "CIN",
+    "gameday": "2026-09-02"
+  },
+  {
+    "game_id": "2026_02_SF_BAL",
+    "season": 2026,
+    "week": 2,
+    "away_team": "SF",
+    "home_team": "BAL",
+    "gameday": "2026-09-02"
+  },
+  {
+    "game_id": "2026_02_PHI_BUF",
+    "season": 2026,
+    "week": 2,
+    "away_team": "PHI",
+    "home_team": "BUF",
+    "gameday": "2026-09-02"
+  },
+  {
+    "game_id": "2026_02_DAL_MIA",
+    "season": 2026,
+    "week": 2,
+    "away_team": "DAL",
+    "home_team": "MIA",
+    "gameday": "2026-09-02"
+  },
+  {
+    "game_id": "2026_03_SF_BAL",
+    "season": 2026,
+    "week": 3,
+    "away_team": "SF",
+    "home_team": "BAL",
+    "gameday": "2026-09-03"
+  },
+  {
+    "game_id": "2026_03_PHI_BUF",
+    "season": 2026,
+    "week": 3,
+    "away_team": "PHI",
+    "home_team": "BUF",
+    "gameday": "2026-09-03"
+  },
+  {
+    "game_id": "2026_03_DAL_MIA",
+    "season": 2026,
+    "week": 3,
+    "away_team": "DAL",
+    "home_team": "MIA",
+    "gameday": "2026-09-03"
+  },
+  {
+    "game_id": "2026_03_CIN_KC",
+    "season": 2026,
+    "week": 3,
+    "away_team": "CIN",
+    "home_team": "KC",
+    "gameday": "2026-09-03"
+  },
+  {
+    "game_id": "2026_04_PHI_BUF",
+    "season": 2026,
+    "week": 4,
+    "away_team": "PHI",
+    "home_team": "BUF",
+    "gameday": "2026-09-04"
+  },
+  {
+    "game_id": "2026_04_DAL_MIA",
+    "season": 2026,
+    "week": 4,
+    "away_team": "DAL",
+    "home_team": "MIA",
+    "gameday": "2026-09-04"
+  },
+  {
+    "game_id": "2026_04_CIN_KC",
+    "season": 2026,
+    "week": 4,
+    "away_team": "CIN",
+    "home_team": "KC",
+    "gameday": "2026-09-04"
+  },
+  {
+    "game_id": "2026_04_BAL_SF",
+    "season": 2026,
+    "week": 4,
+    "away_team": "BAL",
+    "home_team": "SF",
+    "gameday": "2026-09-04"
+  },
+  {
+    "game_id": "2026_05_CIN_KC",
+    "season": 2026,
+    "week": 5,
+    "away_team": "CIN",
+    "home_team": "KC",
+    "gameday": "2026-09-05"
+  },
+  {
+    "game_id": "2026_05_BAL_SF",
+    "season": 2026,
+    "week": 5,
+    "away_team": "BAL",
+    "home_team": "SF",
+    "gameday": "2026-09-05"
+  },
+  {
+    "game_id": "2026_05_BUF_PHI",
+    "season": 2026,
+    "week": 5,
+    "away_team": "BUF",
+    "home_team": "PHI",
+    "gameday": "2026-09-05"
+  },
+  {
+    "game_id": "2026_06_BAL_KC",
+    "season": 2026,
+    "week": 6,
+    "away_team": "BAL",
+    "home_team": "KC",
+    "gameday": "2026-09-06"
+  },
+  {
+    "game_id": "2026_06_BUF_PHI",
+    "season": 2026,
+    "week": 6,
+    "away_team": "BUF",
+    "home_team": "PHI",
+    "gameday": "2026-09-06"
+  },
+  {
+    "game_id": "2026_06_MIA_DAL",
+    "season": 2026,
+    "week": 6,
+    "away_team": "MIA",
+    "home_team": "DAL",
+    "gameday": "2026-09-06"
+  },
+  {
+    "game_id": "2026_07_BAL_SF",
+    "season": 2026,
+    "week": 7,
+    "away_team": "BAL",
+    "home_team": "SF",
+    "gameday": "2026-09-07"
+  },
+  {
+    "game_id": "2026_07_BUF_PHI",
+    "season": 2026,
+    "week": 7,
+    "away_team": "BUF",
+    "home_team": "PHI",
+    "gameday": "2026-09-07"
+  },
+  {
+    "game_id": "2026_07_MIA_DAL",
+    "season": 2026,
+    "week": 7,
+    "away_team": "MIA",
+    "home_team": "DAL",
+    "gameday": "2026-09-07"
+  },
+  {
+    "game_id": "2026_07_KC_CIN",
+    "season": 2026,
+    "week": 7,
+    "away_team": "KC",
+    "home_team": "CIN",
+    "gameday": "2026-09-07"
+  },
+  {
+    "game_id": "2026_08_BUF_PHI",
+    "season": 2026,
+    "week": 8,
+    "away_team": "BUF",
+    "home_team": "PHI",
+    "gameday": "2026-09-08"
+  },
+  {
+    "game_id": "2026_08_MIA_DAL",
+    "season": 2026,
+    "week": 8,
+    "away_team": "MIA",
+    "home_team": "DAL",
+    "gameday": "2026-09-08"
+  },
+  {
+    "game_id": "2026_08_KC_CIN",
+    "season": 2026,
+    "week": 8,
+    "away_team": "KC",
+    "home_team": "CIN",
+    "gameday": "2026-09-08"
+  },
+  {
+    "game_id": "2026_08_SF_BAL",
+    "season": 2026,
+    "week": 8,
+    "away_team": "SF",
+    "home_team": "BAL",
+    "gameday": "2026-09-08"
+  },
+  {
+    "game_id": "2026_09_MIA_DAL",
+    "season": 2026,
+    "week": 9,
+    "away_team": "MIA",
+    "home_team": "DAL",
+    "gameday": "2026-09-09"
+  },
+  {
+    "game_id": "2026_09_KC_CIN",
+    "season": 2026,
+    "week": 9,
+    "away_team": "KC",
+    "home_team": "CIN",
+    "gameday": "2026-09-09"
+  },
+  {
+    "game_id": "2026_09_SF_BAL",
+    "season": 2026,
+    "week": 9,
+    "away_team": "SF",
+    "home_team": "BAL",
+    "gameday": "2026-09-09"
+  },
+  {
+    "game_id": "2026_09_PHI_BUF",
+    "season": 2026,
+    "week": 9,
+    "away_team": "PHI",
+    "home_team": "BUF",
+    "gameday": "2026-09-09"
+  },
+  {
+    "game_id": "2026_10_KC_CIN",
+    "season": 2026,
+    "week": 10,
+    "away_team": "KC",
+    "home_team": "CIN",
+    "gameday": "2026-09-10"
+  },
+  {
+    "game_id": "2026_10_SF_BAL",
+    "season": 2026,
+    "week": 10,
+    "away_team": "SF",
+    "home_team": "BAL",
+    "gameday": "2026-09-10"
+  },
+  {
+    "game_id": "2026_10_PHI_BUF",
+    "season": 2026,
+    "week": 10,
+    "away_team": "PHI",
+    "home_team": "BUF",
+    "gameday": "2026-09-10"
+  },
+  {
+    "game_id": "2026_10_DAL_MIA",
+    "season": 2026,
+    "week": 10,
+    "away_team": "DAL",
+    "home_team": "MIA",
+    "gameday": "2026-09-10"
+  },
+  {
+    "game_id": "2026_11_SF_BAL",
+    "season": 2026,
+    "week": 11,
+    "away_team": "SF",
+    "home_team": "BAL",
+    "gameday": "2026-09-11"
+  },
+  {
+    "game_id": "2026_11_PHI_BUF",
+    "season": 2026,
+    "week": 11,
+    "away_team": "PHI",
+    "home_team": "BUF",
+    "gameday": "2026-09-11"
+  },
+  {
+    "game_id": "2026_11_DAL_MIA",
+    "season": 2026,
+    "week": 11,
+    "away_team": "DAL",
+    "home_team": "MIA",
+    "gameday": "2026-09-11"
+  },
+  {
+    "game_id": "2026_11_CIN_KC",
+    "season": 2026,
+    "week": 11,
+    "away_team": "CIN",
+    "home_team": "KC",
+    "gameday": "2026-09-11"
+  },
+  {
+    "game_id": "2026_12_PHI_BUF",
+    "season": 2026,
+    "week": 12,
+    "away_team": "PHI",
+    "home_team": "BUF",
+    "gameday": "2026-09-12"
+  },
+  {
+    "game_id": "2026_12_DAL_MIA",
+    "season": 2026,
+    "week": 12,
+    "away_team": "DAL",
+    "home_team": "MIA",
+    "gameday": "2026-09-12"
+  },
+  {
+    "game_id": "2026_12_CIN_KC",
+    "season": 2026,
+    "week": 12,
+    "away_team": "CIN",
+    "home_team": "KC",
+    "gameday": "2026-09-12"
+  },
+  {
+    "game_id": "2026_12_BAL_SF",
+    "season": 2026,
+    "week": 12,
+    "away_team": "BAL",
+    "home_team": "SF",
+    "gameday": "2026-09-12"
+  },
+  {
+    "game_id": "2026_13_DAL_MIA",
+    "season": 2026,
+    "week": 13,
+    "away_team": "DAL",
+    "home_team": "MIA",
+    "gameday": "2026-09-13"
+  },
+  {
+    "game_id": "2026_13_CIN_KC",
+    "season": 2026,
+    "week": 13,
+    "away_team": "CIN",
+    "home_team": "KC",
+    "gameday": "2026-09-13"
+  },
+  {
+    "game_id": "2026_13_BAL_SF",
+    "season": 2026,
+    "week": 13,
+    "away_team": "BAL",
+    "home_team": "SF",
+    "gameday": "2026-09-13"
+  },
+  {
+    "game_id": "2026_13_BUF_PHI",
+    "season": 2026,
+    "week": 13,
+    "away_team": "BUF",
+    "home_team": "PHI",
+    "gameday": "2026-09-13"
+  },
+  {
+    "game_id": "2026_14_CIN_KC",
+    "season": 2026,
+    "week": 14,
+    "away_team": "CIN",
+    "home_team": "KC",
+    "gameday": "2026-09-14"
+  },
+  {
+    "game_id": "2026_14_BAL_SF",
+    "season": 2026,
+    "week": 14,
+    "away_team": "BAL",
+    "home_team": "SF",
+    "gameday": "2026-09-14"
+  },
+  {
+    "game_id": "2026_14_BUF_PHI",
+    "season": 2026,
+    "week": 14,
+    "away_team": "BUF",
+    "home_team": "PHI",
+    "gameday": "2026-09-14"
+  },
+  {
+    "game_id": "2026_14_MIA_DAL",
+    "season": 2026,
+    "week": 14,
+    "away_team": "MIA",
+    "home_team": "DAL",
+    "gameday": "2026-09-14"
+  }
+]

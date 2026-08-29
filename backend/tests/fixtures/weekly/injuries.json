@@ -1,0 +1,20 @@
+{
+  "entries": [
+    {
+      "name": "Hal Block",
+      "team": "BUF",
+      "position": "TE",
+      "status": "Questionable",
+      "detail": "Ankle",
+      "updated": "Fri"
+    },
+    {
+      "name": "Sy Depth",
+      "team": "MIA",
+      "position": "RB",
+      "status": "Out",
+      "detail": "Hamstring",
+      "updated": "Fri"
+    }
+  ]
+}

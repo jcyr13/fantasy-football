@@ -1,0 +1,271 @@
+{
+  "week": 3,
+  "teams": [
+    {
+      "team_name": "Dead Parrots",
+      "manager": "John",
+      "is_dead_parrots": true,
+      "roster": [
+        {
+          "slot": "QB",
+          "name": "Jed Signal",
+          "team": "BUF",
+          "position": "QB",
+          "opponent": "@OPP",
+          "projected_points": 21.5,
+          "injury_status": null
+        },
+        {
+          "slot": "BN",
+          "name": "Cal Backup",
+          "team": "KC",
+          "position": "QB",
+          "opponent": "@OPP",
+          "projected_points": 21.5,
+          "injury_status": null
+        },
+        {
+          "slot": "RB",
+          "name": "Ray Carrier",
+          "team": "MIA",
+          "position": "RB",
+          "opponent": "@OPP",
+          "projected_points": 14.0,
+          "injury_status": null
+        },
+        {
+          "slot": "RB",
+          "name": "Dom Burst",
+          "team": "SF",
+          "position": "RB",
+          "opponent": "@OPP",
+          "projected_points": 14.0,
+          "injury_status": null
+        },
+        {
+          "slot": "BN",
+          "name": "Ken Spell",
+          "team": "PHI",
+          "position": "RB",
+          "opponent": "@OPP",
+          "projected_points": 14.0,
+          "injury_status": null
+        },
+        {
+          "slot": "WR",
+          "name": "Sam Deep",
+          "team": "KC",
+          "position": "WR",
+          "opponent": "@OPP",
+          "projected_points": 12.5,
+          "injury_status": null
+        },
+        {
+          "slot": "WR",
+          "name": "Vic Slant",
+          "team": "DAL",
+          "position": "WR",
+          "opponent": "@OPP",
+          "projected_points": 12.5,
+          "injury_status": null
+        },
+        {
+          "slot": "W/R/T",
+          "name": "Ned Flat",
+          "team": "CIN",
+          "position": "WR",
+          "opponent": "@OPP",
+          "projected_points": 12.5,
+          "injury_status": null
+        },
+        {
+          "slot": "BN",
+          "name": "Om Bench",
+          "team": "BAL",
+          "position": "WR",
+          "opponent": "@OPP",
+          "projected_points": 12.5,
+          "injury_status": null
+        },
+        {
+          "slot": "TE",
+          "name": "Gus Seam",
+          "team": "SF",
+          "position": "TE",
+          "opponent": "@OPP",
+          "projected_points": 9.0,
+          "injury_status": null
+        },
+        {
+          "slot": "BN",
+          "name": "Hal Block",
+          "team": "BUF",
+          "position": "TE",
+          "opponent": "@OPP",
+          "projected_points": 9.0,
+          "injury_status": "Q"
+        },
+        {
+          "slot": "K",
+          "name": "Poe Boot",
+          "team": "PHI",
+          "position": "K",
+          "opponent": "@OPP",
+          "projected_points": 8.5,
+          "injury_status": null
+        },
+        {
+          "slot": "DEF",
+          "name": "Bills",
+          "team": "BUF",
+          "position": "DEF",
+          "opponent": "@OPP",
+          "projected_points": 7.5,
+          "injury_status": null
+        },
+        {
+          "slot": "D",
+          "name": "Rex Hunt",
+          "team": "BAL",
+          "position": "LB",
+          "opponent": "@OPP",
+          "projected_points": 10.0,
+          "injury_status": null
+        }
+      ]
+    },
+    {
+      "team_name": "Spanish Inquisition",
+      "manager": "Ximenez",
+      "is_dead_parrots": false,
+      "roster": [
+        {
+          "slot": "QB",
+          "name": "Otis Arm",
+          "team": "KC",
+          "position": "QB",
+          "opponent": "@OPP",
+          "projected_points": 21.5,
+          "injury_status": null
+        },
+        {
+          "slot": "BN",
+          "name": "Bud Hold",
+          "team": "BUF",
+          "position": "QB",
+          "opponent": "@OPP",
+          "projected_points": 21.5,
+          "injury_status": null
+        },
+        {
+          "slot": "RB",
+          "name": "Alan Dash",
+          "team": "SF",
+          "position": "RB",
+          "opponent": "@OPP",
+          "projected_points": 14.0,
+          "injury_status": null
+        },
+        {
+          "slot": "RB",
+          "name": "Moe Churn",
+          "team": "DAL",
+          "position": "RB",
+          "opponent": "@OPP",
+          "projected_points": 14.0,
+          "injury_status": null
+        },
+        {
+          "slot": "BN",
+          "name": "Sy Depth",
+          "team": "MIA",
+          "position": "RB",
+          "opponent": "@OPP",
+          "projected_points": 14.0,
+          "injury_status": null
+        },
+        {
+          "slot": "WR",
+          "name": "Lee Streak",
+          "team": "CIN",
+          "position": "WR",
+          "opponent": "@OPP",
+          "projected_points": 12.5,
+          "injury_status": null
+        },
+        {
+          "slot": "WR",
+          "name": "Art Post",
+          "team": "BAL",
+          "position": "WR",
+          "opponent": "@OPP",
+          "projected_points": 12.5,
+          "injury_status": null
+        },
+        {
+          "slot": "W/R/T",
+          "name": "Ty Wheel",
+          "team": "PHI",
+          "position": "WR",
+          "opponent": "@OPP",
+          "projected_points": 12.5,
+          "injury_status": null
+        },
+        {
+          "slot": "BN",
+          "name": "Cy Pine",
+          "team": "BUF",
+          "position": "WR",
+          "opponent": "@OPP",
+          "projected_points": 12.5,
+          "injury_status": null
+        },
+        {
+          "slot": "TE",
+          "name": "Rod Hook",
+          "team": "KC",
+          "position": "TE",
+          "opponent": "@OPP",
+          "projected_points": 9.0,
+          "injury_status": null
+        },
+        {
+          "slot": "BN",
+          "name": "Van Chip",
+          "team": "SF",
+          "position": "TE",
+          "opponent": "@OPP",
+          "projected_points": 9.0,
+          "injury_status": null
+        },
+        {
+          "slot": "K",
+          "name": "Wes Toe",
+          "team": "DAL",
+          "position": "K",
+          "opponent": "@OPP",
+          "projected_points": 8.5,
+          "injury_status": null
+        },
+        {
+          "slot": "DEF",
+          "name": "49ers",
+          "team": "SF",
+          "position": "DEF",
+          "opponent": "@OPP",
+          "projected_points": 7.5,
+          "injury_status": null
+        },
+        {
+          "slot": "D",
+          "name": "Cliff Snap",
+          "team": "CIN",
+          "position": "S",
+          "opponent": "@OPP",
+          "projected_points": 9.5,
+          "injury_status": null
+        }
+      ]
+    }
+  ]
+}
