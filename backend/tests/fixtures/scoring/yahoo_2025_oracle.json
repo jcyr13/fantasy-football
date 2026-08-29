@@ -1,0 +1,4778 @@
+[
+  {
+    "entity_id": "Andy Borregales",
+    "label": "Andy Borregales",
+    "season": 2025,
+    "unit": "kicker",
+    "week": 13,
+    "yahoo_points": 15.0
+  },
+  {
+    "entity_id": "Brandon Aubrey",
+    "label": "Brandon Aubrey",
+    "season": 2025,
+    "unit": "kicker",
+    "week": 1,
+    "yahoo_points": 11.0
+  },
+  {
+    "entity_id": "Brandon Aubrey",
+    "label": "Brandon Aubrey",
+    "season": 2025,
+    "unit": "kicker",
+    "week": 5,
+    "yahoo_points": 6.0
+  },
+  {
+    "entity_id": "Brandon Aubrey",
+    "label": "Brandon Aubrey",
+    "season": 2025,
+    "unit": "kicker",
+    "week": 9,
+    "yahoo_points": 5.0
+  },
+  {
+    "entity_id": "Brandon Aubrey",
+    "label": "Brandon Aubrey",
+    "season": 2025,
+    "unit": "kicker",
+    "week": 13,
+    "yahoo_points": 12.0
+  },
+  {
+    "entity_id": "Cam Little",
+    "label": "Cam Little",
+    "season": 2025,
+    "unit": "kicker",
+    "week": 13,
+    "yahoo_points": 6.0
+  },
+  {
+    "entity_id": "Cameron Dicker",
+    "label": "Cameron Dicker",
+    "season": 2025,
+    "unit": "kicker",
+    "week": 1,
+    "yahoo_points": 9.0
+  },
+  {
+    "entity_id": "Cameron Dicker",
+    "label": "Cameron Dicker",
+    "season": 2025,
+    "unit": "kicker",
+    "week": 9,
+    "yahoo_points": 12.0
+  },
+  {
+    "entity_id": "Cameron Dicker",
+    "label": "Cameron Dicker",
+    "season": 2025,
+    "unit": "kicker",
+    "week": 13,
+    "yahoo_points": 9.5
+  },
+  {
+    "entity_id": "Chad Ryland",
+    "label": "Chad Ryland",
+    "season": 2025,
+    "unit": "kicker",
+    "week": 5,
+    "yahoo_points": 3.0
+  },
+  {
+    "entity_id": "Chase McLaughlin",
+    "label": "Chase McLaughlin",
+    "season": 2025,
+    "unit": "kicker",
+    "week": 1,
+    "yahoo_points": 5.0
+  },
+  {
+    "entity_id": "Chase McLaughlin",
+    "label": "Chase McLaughlin",
+    "season": 2025,
+    "unit": "kicker",
+    "week": 13,
+    "yahoo_points": 10.0
+  },
+  {
+    "entity_id": "Chris Boswell",
+    "label": "Chris Boswell",
+    "season": 2025,
+    "unit": "kicker",
+    "week": 1,
+    "yahoo_points": 14.0
+  },
+  {
+    "entity_id": "Chris Boswell",
+    "label": "Chris Boswell",
+    "season": 2025,
+    "unit": "kicker",
+    "week": 9,
+    "yahoo_points": 10.0
+  },
+  {
+    "entity_id": "Eddy Pineiro",
+    "label": "Eddy Pineiro",
+    "season": 2025,
+    "unit": "kicker",
+    "week": 9,
+    "yahoo_points": 12.0
+  },
+  {
+    "entity_id": "Evan McPherson",
+    "label": "Evan McPherson",
+    "season": 2025,
+    "unit": "kicker",
+    "week": 1,
+    "yahoo_points": 5.0
+  },
+  {
+    "entity_id": "Evan McPherson",
+    "label": "Evan McPherson",
+    "season": 2025,
+    "unit": "kicker",
+    "week": 9,
+    "yahoo_points": 11.0
+  },
+  {
+    "entity_id": "Evan McPherson",
+    "label": "Evan McPherson",
+    "season": 2025,
+    "unit": "kicker",
+    "week": 13,
+    "yahoo_points": 24.0
+  },
+  {
+    "entity_id": "Harrison Butker",
+    "label": "Harrison Butker",
+    "season": 2025,
+    "unit": "kicker",
+    "week": 1,
+    "yahoo_points": 10.0
+  },
+  {
+    "entity_id": "Harrison Butker",
+    "label": "Harrison Butker",
+    "season": 2025,
+    "unit": "kicker",
+    "week": 5,
+    "yahoo_points": 4.5
+  },
+  {
+    "entity_id": "Harrison Butker",
+    "label": "Harrison Butker",
+    "season": 2025,
+    "unit": "kicker",
+    "week": 9,
+    "yahoo_points": 8.0
+  },
+  {
+    "entity_id": "Harrison Butker",
+    "label": "Harrison Butker",
+    "season": 2025,
+    "unit": "kicker",
+    "week": 13,
+    "yahoo_points": 4.0
+  },
+  {
+    "entity_id": "Jake Bates",
+    "label": "Jake Bates",
+    "season": 2025,
+    "unit": "kicker",
+    "week": 1,
+    "yahoo_points": 8.0
+  },
+  {
+    "entity_id": "Jake Bates",
+    "label": "Jake Bates",
+    "season": 2025,
+    "unit": "kicker",
+    "week": 5,
+    "yahoo_points": 5.0
+  },
+  {
+    "entity_id": "Jake Bates",
+    "label": "Jake Bates",
+    "season": 2025,
+    "unit": "kicker",
+    "week": 9,
+    "yahoo_points": 7.5
+  },
+  {
+    "entity_id": "Jake Bates",
+    "label": "Jake Bates",
+    "season": 2025,
+    "unit": "kicker",
+    "week": 13,
+    "yahoo_points": 6.0
+  },
+  {
+    "entity_id": "Jake Elliott",
+    "label": "Jake Elliott",
+    "season": 2025,
+    "unit": "kicker",
+    "week": 5,
+    "yahoo_points": 5.0
+  },
+  {
+    "entity_id": "Jason Myers",
+    "label": "Jason Myers",
+    "season": 2025,
+    "unit": "kicker",
+    "week": 5,
+    "yahoo_points": 5.0
+  },
+  {
+    "entity_id": "Jason Myers",
+    "label": "Jason Myers",
+    "season": 2025,
+    "unit": "kicker",
+    "week": 9,
+    "yahoo_points": 9.0
+  },
+  {
+    "entity_id": "Jason Myers",
+    "label": "Jason Myers",
+    "season": 2025,
+    "unit": "kicker",
+    "week": 13,
+    "yahoo_points": 19.0
+  },
+  {
+    "entity_id": "Joshua Karty",
+    "label": "Joshua Karty",
+    "season": 2025,
+    "unit": "kicker",
+    "week": 5,
+    "yahoo_points": 5.0
+  },
+  {
+    "entity_id": "Joshua Karty",
+    "label": "Joshua Karty",
+    "season": 2025,
+    "unit": "kicker",
+    "week": 9,
+    "yahoo_points": 3.0
+  },
+  {
+    "entity_id": "Ka'imi Fairbairn",
+    "label": "Ka'imi Fairbairn",
+    "season": 2025,
+    "unit": "kicker",
+    "week": 1,
+    "yahoo_points": 15.0
+  },
+  {
+    "entity_id": "Ka'imi Fairbairn",
+    "label": "Ka'imi Fairbairn",
+    "season": 2025,
+    "unit": "kicker",
+    "week": 5,
+    "yahoo_points": 18.0
+  },
+  {
+    "entity_id": "Ka'imi Fairbairn",
+    "label": "Ka'imi Fairbairn",
+    "season": 2025,
+    "unit": "kicker",
+    "week": 9,
+    "yahoo_points": 18.0
+  },
+  {
+    "entity_id": "Ka'imi Fairbairn",
+    "label": "Ka'imi Fairbairn",
+    "season": 2025,
+    "unit": "kicker",
+    "week": 13,
+    "yahoo_points": 9.0
+  },
+  {
+    "entity_id": "Matt Gay",
+    "label": "Matt Gay",
+    "season": 2025,
+    "unit": "kicker",
+    "week": 1,
+    "yahoo_points": 3.0
+  },
+  {
+    "entity_id": "Matt Gay",
+    "label": "Matt Gay",
+    "season": 2025,
+    "unit": "kicker",
+    "week": 5,
+    "yahoo_points": 9.0
+  },
+  {
+    "entity_id": "Spencer Shrader",
+    "label": "Spencer Shrader",
+    "season": 2025,
+    "unit": "kicker",
+    "week": 5,
+    "yahoo_points": 2.0
+  },
+  {
+    "entity_id": "Tyler Loop",
+    "label": "Tyler Loop",
+    "season": 2025,
+    "unit": "kicker",
+    "week": 1,
+    "yahoo_points": 13.0
+  },
+  {
+    "entity_id": "Tyler Loop",
+    "label": "Tyler Loop",
+    "season": 2025,
+    "unit": "kicker",
+    "week": 5,
+    "yahoo_points": 5.0
+  },
+  {
+    "entity_id": "Tyler Loop",
+    "label": "Tyler Loop",
+    "season": 2025,
+    "unit": "kicker",
+    "week": 9,
+    "yahoo_points": 4.0
+  },
+  {
+    "entity_id": "Tyler Loop",
+    "label": "Tyler Loop",
+    "season": 2025,
+    "unit": "kicker",
+    "week": 13,
+    "yahoo_points": 2.0
+  },
+  {
+    "entity_id": "Wil Lutz",
+    "label": "Wil Lutz",
+    "season": 2025,
+    "unit": "kicker",
+    "week": 1,
+    "yahoo_points": 8.0
+  },
+  {
+    "entity_id": "Wil Lutz",
+    "label": "Wil Lutz",
+    "season": 2025,
+    "unit": "kicker",
+    "week": 13,
+    "yahoo_points": 9.0
+  },
+  {
+    "entity_id": "Will Reichard",
+    "label": "Will Reichard",
+    "season": 2025,
+    "unit": "kicker",
+    "week": 1,
+    "yahoo_points": 9.0
+  },
+  {
+    "entity_id": "Will Reichard",
+    "label": "Will Reichard",
+    "season": 2025,
+    "unit": "kicker",
+    "week": 5,
+    "yahoo_points": 3.0
+  },
+  {
+    "entity_id": "Will Reichard",
+    "label": "Will Reichard",
+    "season": 2025,
+    "unit": "kicker",
+    "week": 9,
+    "yahoo_points": 11.0
+  },
+  {
+    "entity_id": "A.J. Brown",
+    "label": "A.J. Brown",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 0.8
+  },
+  {
+    "entity_id": "A.J. Brown",
+    "label": "A.J. Brown",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 4.3
+  },
+  {
+    "entity_id": "A.J. Brown",
+    "label": "A.J. Brown",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 25.2
+  },
+  {
+    "entity_id": "Aaron Jones Sr.",
+    "label": "Aaron Jones Sr.",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 12.7
+  },
+  {
+    "entity_id": "Aaron Jones Sr.",
+    "label": "Aaron Jones Sr.",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 9.8
+  },
+  {
+    "entity_id": "Aaron Jones Sr.",
+    "label": "Aaron Jones Sr.",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 2.5
+  },
+  {
+    "entity_id": "Aaron Rodgers",
+    "label": "Aaron Rodgers",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 11.12
+  },
+  {
+    "entity_id": "Adam Thielen",
+    "label": "Adam Thielen",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 2.0
+  },
+  {
+    "entity_id": "Alec Pierce",
+    "label": "Alec Pierce",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 14.8
+  },
+  {
+    "entity_id": "Alvin Kamara",
+    "label": "Alvin Kamara",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 11.7
+  },
+  {
+    "entity_id": "Alvin Kamara",
+    "label": "Alvin Kamara",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 5.5
+  },
+  {
+    "entity_id": "Alvin Kamara",
+    "label": "Alvin Kamara",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 1.7
+  },
+  {
+    "entity_id": "Amon-Ra St. Brown",
+    "label": "Amon-Ra St. Brown",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 5.5
+  },
+  {
+    "entity_id": "Amon-Ra St. Brown",
+    "label": "Amon-Ra St. Brown",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 10.0
+  },
+  {
+    "entity_id": "Amon-Ra St. Brown",
+    "label": "Amon-Ra St. Brown",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 9.7
+  },
+  {
+    "entity_id": "Ashton Jeanty",
+    "label": "Ashton Jeanty",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 10.0
+  },
+  {
+    "entity_id": "Ashton Jeanty",
+    "label": "Ashton Jeanty",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 10.9
+  },
+  {
+    "entity_id": "Ashton Jeanty",
+    "label": "Ashton Jeanty",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 14.9
+  },
+  {
+    "entity_id": "Ashton Jeanty",
+    "label": "Ashton Jeanty",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 6.1
+  },
+  {
+    "entity_id": "Austin Ekeler",
+    "label": "Austin Ekeler",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 5.7
+  },
+  {
+    "entity_id": "Baker Mayfield",
+    "label": "Baker Mayfield",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 27.58
+  },
+  {
+    "entity_id": "Baker Mayfield",
+    "label": "Baker Mayfield",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 29.66
+  },
+  {
+    "entity_id": "Baker Mayfield",
+    "label": "Baker Mayfield",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 14.46
+  },
+  {
+    "entity_id": "Bam Knight",
+    "label": "Bam Knight",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 4.7
+  },
+  {
+    "entity_id": "Bhayshul Tuten",
+    "label": "Bhayshul Tuten",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 1.58
+  },
+  {
+    "entity_id": "Bhayshul Tuten",
+    "label": "Bhayshul Tuten",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 2.1
+  },
+  {
+    "entity_id": "Bijan Robinson",
+    "label": "Bijan Robinson",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 18.4
+  },
+  {
+    "entity_id": "Bijan Robinson",
+    "label": "Bijan Robinson",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 9.6
+  },
+  {
+    "entity_id": "Bijan Robinson",
+    "label": "Bijan Robinson",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 25.3
+  },
+  {
+    "entity_id": "Bo Nix",
+    "label": "Bo Nix",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 11.84
+  },
+  {
+    "entity_id": "Bo Nix",
+    "label": "Bo Nix",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 17.88
+  },
+  {
+    "entity_id": "Bo Nix",
+    "label": "Bo Nix",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 22.52
+  },
+  {
+    "entity_id": "Bo Nix",
+    "label": "Bo Nix",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 18.44
+  },
+  {
+    "entity_id": "Braelon Allen",
+    "label": "Braelon Allen",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 6.9
+  },
+  {
+    "entity_id": "Breece Hall",
+    "label": "Breece Hall",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 14.5
+  },
+  {
+    "entity_id": "Breece Hall",
+    "label": "Breece Hall",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 15.5
+  },
+  {
+    "entity_id": "Breece Hall",
+    "label": "Breece Hall",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 13.6
+  },
+  {
+    "entity_id": "Brenton Strange",
+    "label": "Brenton Strange",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 2.2
+  },
+  {
+    "entity_id": "Brian Thomas Jr.",
+    "label": "Brian Thomas Jr.",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 8.0
+  },
+  {
+    "entity_id": "Brian Thomas Jr.",
+    "label": "Brian Thomas Jr.",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 8.0
+  },
+  {
+    "entity_id": "Brian Thomas Jr.",
+    "label": "Brian Thomas Jr.",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 5.5
+  },
+  {
+    "entity_id": "Brian Thomas Jr.",
+    "label": "Brian Thomas Jr.",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 2.8
+  },
+  {
+    "entity_id": "Brock Bowers",
+    "label": "Brock Bowers",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 11.3
+  },
+  {
+    "entity_id": "Brock Bowers",
+    "label": "Brock Bowers",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 31.3
+  },
+  {
+    "entity_id": "Brock Bowers",
+    "label": "Brock Bowers",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 18.3
+  },
+  {
+    "entity_id": "Brock Purdy",
+    "label": "Brock Purdy",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 21.78
+  },
+  {
+    "entity_id": "Brock Purdy",
+    "label": "Brock Purdy",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 18.12
+  },
+  {
+    "entity_id": "Bryce Young",
+    "label": "Bryce Young",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 13.16
+  },
+  {
+    "entity_id": "Bryce Young",
+    "label": "Bryce Young",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 16.02
+  },
+  {
+    "entity_id": "Bucky Irving",
+    "label": "Bucky Irving",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 10.5
+  },
+  {
+    "entity_id": "Bucky Irving",
+    "label": "Bucky Irving",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 14.1
+  },
+  {
+    "entity_id": "C.J. Stroud",
+    "label": "C.J. Stroud",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 6.72
+  },
+  {
+    "entity_id": "C.J. Stroud",
+    "label": "C.J. Stroud",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 34.76
+  },
+  {
+    "entity_id": "C.J. Stroud",
+    "label": "C.J. Stroud",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 2.36
+  },
+  {
+    "entity_id": "C.J. Stroud",
+    "label": "C.J. Stroud",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 8.04
+  },
+  {
+    "entity_id": "Cade Otton",
+    "label": "Cade Otton",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 0.9
+  },
+  {
+    "entity_id": "Caleb Williams",
+    "label": "Caleb Williams",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 24.2
+  },
+  {
+    "entity_id": "Caleb Williams",
+    "label": "Caleb Williams",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 40.7
+  },
+  {
+    "entity_id": "Caleb Williams",
+    "label": "Caleb Williams",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 11.46
+  },
+  {
+    "entity_id": "Calvin Ridley",
+    "label": "Calvin Ridley",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 2.7
+  },
+  {
+    "entity_id": "Calvin Ridley",
+    "label": "Calvin Ridley",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 13.1
+  },
+  {
+    "entity_id": "Cam Skattebo",
+    "label": "Cam Skattebo",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 0.9
+  },
+  {
+    "entity_id": "Cam Skattebo",
+    "label": "Cam Skattebo",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 10.4
+  },
+  {
+    "entity_id": "CeeDee Lamb",
+    "label": "CeeDee Lamb",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 11.0
+  },
+  {
+    "entity_id": "CeeDee Lamb",
+    "label": "CeeDee Lamb",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 8.5
+  },
+  {
+    "entity_id": "CeeDee Lamb",
+    "label": "CeeDee Lamb",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 17.2
+  },
+  {
+    "entity_id": "Chase Brown",
+    "label": "Chase Brown",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 11.1
+  },
+  {
+    "entity_id": "Chase Brown",
+    "label": "Chase Brown",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 4.8
+  },
+  {
+    "entity_id": "Chase Brown",
+    "label": "Chase Brown",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 12.2
+  },
+  {
+    "entity_id": "Chase Brown",
+    "label": "Chase Brown",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 11.3
+  },
+  {
+    "entity_id": "Chig Okonkwo",
+    "label": "Chig Okonkwo",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 1.9
+  },
+  {
+    "entity_id": "Chimere Dike",
+    "label": "Chimere Dike",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 6.98
+  },
+  {
+    "entity_id": "Chris Godwin Jr.",
+    "label": "Chris Godwin Jr.",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 2.6
+  },
+  {
+    "entity_id": "Chris Godwin Jr.",
+    "label": "Chris Godwin Jr.",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 7.8
+  },
+  {
+    "entity_id": "Chris Olave",
+    "label": "Chris Olave",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 5.4
+  },
+  {
+    "entity_id": "Chris Olave",
+    "label": "Chris Olave",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 5.9
+  },
+  {
+    "entity_id": "Chris Olave",
+    "label": "Chris Olave",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 5.7
+  },
+  {
+    "entity_id": "Chris Olave",
+    "label": "Chris Olave",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 10.7
+  },
+  {
+    "entity_id": "Chris Rodriguez Jr.",
+    "label": "Chris Rodriguez Jr.",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 10.1
+  },
+  {
+    "entity_id": "Christian McCaffrey",
+    "label": "Christian McCaffrey",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 14.7
+  },
+  {
+    "entity_id": "Christian McCaffrey",
+    "label": "Christian McCaffrey",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 19.9
+  },
+  {
+    "entity_id": "Christian McCaffrey",
+    "label": "Christian McCaffrey",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 29.3
+  },
+  {
+    "entity_id": "Christian McCaffrey",
+    "label": "Christian McCaffrey",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 13.4
+  },
+  {
+    "entity_id": "Christian Watson",
+    "label": "Christian Watson",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 14.3
+  },
+  {
+    "entity_id": "Chuba Hubbard",
+    "label": "Chuba Hubbard",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 14.9
+  },
+  {
+    "entity_id": "Chuba Hubbard",
+    "label": "Chuba Hubbard",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 1.7
+  },
+  {
+    "entity_id": "Colston Loveland",
+    "label": "Colston Loveland",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 1.2
+  },
+  {
+    "entity_id": "Colston Loveland",
+    "label": "Colston Loveland",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 23.8
+  },
+  {
+    "entity_id": "Colston Loveland",
+    "label": "Colston Loveland",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 2.8
+  },
+  {
+    "entity_id": "Cooper Kupp",
+    "label": "Cooper Kupp",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 1.5
+  },
+  {
+    "entity_id": "Cooper Kupp",
+    "label": "Cooper Kupp",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 5.9
+  },
+  {
+    "entity_id": "Courtland Sutton",
+    "label": "Courtland Sutton",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 13.1
+  },
+  {
+    "entity_id": "Courtland Sutton",
+    "label": "Courtland Sutton",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 9.9
+  },
+  {
+    "entity_id": "Courtland Sutton",
+    "label": "Courtland Sutton",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 9.0
+  },
+  {
+    "entity_id": "Courtland Sutton",
+    "label": "Courtland Sutton",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 12.2
+  },
+  {
+    "entity_id": "D'Andre Swift",
+    "label": "D'Andre Swift",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 6.5
+  },
+  {
+    "entity_id": "D'Andre Swift",
+    "label": "D'Andre Swift",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 19.8
+  },
+  {
+    "entity_id": "DJ Moore",
+    "label": "DJ Moore",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 7.6
+  },
+  {
+    "entity_id": "DJ Moore",
+    "label": "DJ Moore",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 20.98
+  },
+  {
+    "entity_id": "DJ Moore",
+    "label": "DJ Moore",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 2.7
+  },
+  {
+    "entity_id": "DK Metcalf",
+    "label": "DK Metcalf",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 8.3
+  },
+  {
+    "entity_id": "DK Metcalf",
+    "label": "DK Metcalf",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 0.6
+  },
+  {
+    "entity_id": "DK Metcalf",
+    "label": "DK Metcalf",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 3.2
+  },
+  {
+    "entity_id": "Dak Prescott",
+    "label": "Dak Prescott",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 8.82
+  },
+  {
+    "entity_id": "Dak Prescott",
+    "label": "Dak Prescott",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 35.28
+  },
+  {
+    "entity_id": "Dak Prescott",
+    "label": "Dak Prescott",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 13.4
+  },
+  {
+    "entity_id": "Dak Prescott",
+    "label": "Dak Prescott",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 25.6
+  },
+  {
+    "entity_id": "Dallas Goedert",
+    "label": "Dallas Goedert",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 4.4
+  },
+  {
+    "entity_id": "Dallas Goedert",
+    "label": "Dallas Goedert",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 7.9
+  },
+  {
+    "entity_id": "Dallas Goedert",
+    "label": "Dallas Goedert",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 2.7
+  },
+  {
+    "entity_id": "Dalton Kincaid",
+    "label": "Dalton Kincaid",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 10.8
+  },
+  {
+    "entity_id": "Dalton Kincaid",
+    "label": "Dalton Kincaid",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 10.8
+  },
+  {
+    "entity_id": "Dalton Kincaid",
+    "label": "Dalton Kincaid",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 16.1
+  },
+  {
+    "entity_id": "Daniel Jones",
+    "label": "Daniel Jones",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 20.68
+  },
+  {
+    "entity_id": "Daniel Jones",
+    "label": "Daniel Jones",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 19.08
+  },
+  {
+    "entity_id": "Daniel Jones",
+    "label": "Daniel Jones",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 19.14
+  },
+  {
+    "entity_id": "Darius Slayton",
+    "label": "Darius Slayton",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 3.1
+  },
+  {
+    "entity_id": "Darius Slayton",
+    "label": "Darius Slayton",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 6.2
+  },
+  {
+    "entity_id": "Darius Slayton",
+    "label": "Darius Slayton",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 12.1
+  },
+  {
+    "entity_id": "Darren Waller",
+    "label": "Darren Waller",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 13.8
+  },
+  {
+    "entity_id": "Darren Waller",
+    "label": "Darren Waller",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 4.7
+  },
+  {
+    "entity_id": "Davante Adams",
+    "label": "Davante Adams",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 5.1
+  },
+  {
+    "entity_id": "Davante Adams",
+    "label": "Davante Adams",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 8.8
+  },
+  {
+    "entity_id": "Davante Adams",
+    "label": "Davante Adams",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 18.0
+  },
+  {
+    "entity_id": "Davante Adams",
+    "label": "Davante Adams",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 17.8
+  },
+  {
+    "entity_id": "David Montgomery",
+    "label": "David Montgomery",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 4.3
+  },
+  {
+    "entity_id": "David Montgomery",
+    "label": "David Montgomery",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 19.22
+  },
+  {
+    "entity_id": "David Montgomery",
+    "label": "David Montgomery",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 11.0
+  },
+  {
+    "entity_id": "David Montgomery",
+    "label": "David Montgomery",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 10.8
+  },
+  {
+    "entity_id": "David Njoku",
+    "label": "David Njoku",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 3.7
+  },
+  {
+    "entity_id": "De'Von Achane",
+    "label": "De'Von Achane",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 14.5
+  },
+  {
+    "entity_id": "De'Von Achane",
+    "label": "De'Von Achane",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 10.6
+  },
+  {
+    "entity_id": "De'Von Achane",
+    "label": "De'Von Achane",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 10.6
+  },
+  {
+    "entity_id": "De'Von Achane",
+    "label": "De'Von Achane",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 19.4
+  },
+  {
+    "entity_id": "DeVonta Smith",
+    "label": "DeVonta Smith",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 1.6
+  },
+  {
+    "entity_id": "DeVonta Smith",
+    "label": "DeVonta Smith",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 11.4
+  },
+  {
+    "entity_id": "DeVonta Smith",
+    "label": "DeVonta Smith",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 4.8
+  },
+  {
+    "entity_id": "Deebo Samuel Sr.",
+    "label": "Deebo Samuel Sr.",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 17.6
+  },
+  {
+    "entity_id": "Deebo Samuel Sr.",
+    "label": "Deebo Samuel Sr.",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 15.6
+  },
+  {
+    "entity_id": "Deebo Samuel Sr.",
+    "label": "Deebo Samuel Sr.",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 5.6
+  },
+  {
+    "entity_id": "Deebo Samuel Sr.",
+    "label": "Deebo Samuel Sr.",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 10.66
+  },
+  {
+    "entity_id": "Derrick Henry",
+    "label": "Derrick Henry",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 30.2
+  },
+  {
+    "entity_id": "Derrick Henry",
+    "label": "Derrick Henry",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 10.3
+  },
+  {
+    "entity_id": "Derrick Henry",
+    "label": "Derrick Henry",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 12.1
+  },
+  {
+    "entity_id": "Derrick Henry",
+    "label": "Derrick Henry",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 16.4
+  },
+  {
+    "entity_id": "Devin Neal",
+    "label": "Devin Neal",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 6.9
+  },
+  {
+    "entity_id": "Drake London",
+    "label": "Drake London",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 5.5
+  },
+  {
+    "entity_id": "Drake London",
+    "label": "Drake London",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 29.8
+  },
+  {
+    "entity_id": "Drake Maye",
+    "label": "Drake Maye",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 13.78
+  },
+  {
+    "entity_id": "Drake Maye",
+    "label": "Drake Maye",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 8.12
+  },
+  {
+    "entity_id": "Drake Maye",
+    "label": "Drake Maye",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 17.36
+  },
+  {
+    "entity_id": "Drake Maye",
+    "label": "Drake Maye",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 21.48
+  },
+  {
+    "entity_id": "Emanuel Wilson",
+    "label": "Emanuel Wilson",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 1.4
+  },
+  {
+    "entity_id": "Emari Demercado",
+    "label": "Emari Demercado",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 9.1
+  },
+  {
+    "entity_id": "Emeka Egbuka",
+    "label": "Emeka Egbuka",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 19.6
+  },
+  {
+    "entity_id": "Emeka Egbuka",
+    "label": "Emeka Egbuka",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 24.3
+  },
+  {
+    "entity_id": "Emeka Egbuka",
+    "label": "Emeka Egbuka",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 4.2
+  },
+  {
+    "entity_id": "Evan Engram",
+    "label": "Evan Engram",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 2.1
+  },
+  {
+    "entity_id": "Garrett Wilson",
+    "label": "Garrett Wilson",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 15.5
+  },
+  {
+    "entity_id": "Garrett Wilson",
+    "label": "Garrett Wilson",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 13.1
+  },
+  {
+    "entity_id": "George Kittle",
+    "label": "George Kittle",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 8.5
+  },
+  {
+    "entity_id": "George Kittle",
+    "label": "George Kittle",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 2.9
+  },
+  {
+    "entity_id": "George Kittle",
+    "label": "George Kittle",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 6.7
+  },
+  {
+    "entity_id": "George Pickens",
+    "label": "George Pickens",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 3.0
+  },
+  {
+    "entity_id": "George Pickens",
+    "label": "George Pickens",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 11.7
+  },
+  {
+    "entity_id": "George Pickens",
+    "label": "George Pickens",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 7.9
+  },
+  {
+    "entity_id": "George Pickens",
+    "label": "George Pickens",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 10.8
+  },
+  {
+    "entity_id": "Harold Fannin Jr.",
+    "label": "Harold Fannin Jr.",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 10.3
+  },
+  {
+    "entity_id": "Hunter Henry",
+    "label": "Hunter Henry",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 6.6
+  },
+  {
+    "entity_id": "Hunter Henry",
+    "label": "Hunter Henry",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 4.6
+  },
+  {
+    "entity_id": "Hunter Henry",
+    "label": "Hunter Henry",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 5.1
+  },
+  {
+    "entity_id": "Hunter Henry",
+    "label": "Hunter Henry",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 7.3
+  },
+  {
+    "entity_id": "Isaiah Likely",
+    "label": "Isaiah Likely",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 6.0
+  },
+  {
+    "entity_id": "Isiah Pacheco",
+    "label": "Isiah Pacheco",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 2.8
+  },
+  {
+    "entity_id": "Isiah Pacheco",
+    "label": "Isiah Pacheco",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 5.6
+  },
+  {
+    "entity_id": "Isiah Pacheco",
+    "label": "Isiah Pacheco",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 3.3
+  },
+  {
+    "entity_id": "J.J. McCarthy",
+    "label": "J.J. McCarthy",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 24.22
+  },
+  {
+    "entity_id": "J.K. Dobbins",
+    "label": "J.K. Dobbins",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 12.8
+  },
+  {
+    "entity_id": "J.K. Dobbins",
+    "label": "J.K. Dobbins",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 14.4
+  },
+  {
+    "entity_id": "J.K. Dobbins",
+    "label": "J.K. Dobbins",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 5.9
+  },
+  {
+    "entity_id": "Ja'Marr Chase",
+    "label": "Ja'Marr Chase",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 2.6
+  },
+  {
+    "entity_id": "Ja'Marr Chase",
+    "label": "Ja'Marr Chase",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 26.0
+  },
+  {
+    "entity_id": "Ja'Marr Chase",
+    "label": "Ja'Marr Chase",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 11.1
+  },
+  {
+    "entity_id": "Ja'Marr Chase",
+    "label": "Ja'Marr Chase",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 11.0
+  },
+  {
+    "entity_id": "Jacoby Brissett",
+    "label": "Jacoby Brissett",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 22.64
+  },
+  {
+    "entity_id": "Jacory Croskey-Merritt",
+    "label": "Jacory Croskey-Merritt",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 14.2
+  },
+  {
+    "entity_id": "Jacory Croskey-Merritt",
+    "label": "Jacory Croskey-Merritt",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 4.1
+  },
+  {
+    "entity_id": "Jacory Croskey-Merritt",
+    "label": "Jacory Croskey-Merritt",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 2.0
+  },
+  {
+    "entity_id": "Jahmyr Gibbs",
+    "label": "Jahmyr Gibbs",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 5.0
+  },
+  {
+    "entity_id": "Jahmyr Gibbs",
+    "label": "Jahmyr Gibbs",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 14.7
+  },
+  {
+    "entity_id": "Jahmyr Gibbs",
+    "label": "Jahmyr Gibbs",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 2.8
+  },
+  {
+    "entity_id": "Jahmyr Gibbs",
+    "label": "Jahmyr Gibbs",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 8.6
+  },
+  {
+    "entity_id": "Jake Ferguson",
+    "label": "Jake Ferguson",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 2.3
+  },
+  {
+    "entity_id": "Jake Ferguson",
+    "label": "Jake Ferguson",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 16.9
+  },
+  {
+    "entity_id": "Jake Ferguson",
+    "label": "Jake Ferguson",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 5.0
+  },
+  {
+    "entity_id": "Jake Ferguson",
+    "label": "Jake Ferguson",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 4.6
+  },
+  {
+    "entity_id": "Jakobi Meyers",
+    "label": "Jakobi Meyers",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 9.7
+  },
+  {
+    "entity_id": "Jakobi Meyers",
+    "label": "Jakobi Meyers",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 3.2
+  },
+  {
+    "entity_id": "Jakobi Meyers",
+    "label": "Jakobi Meyers",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 2.3
+  },
+  {
+    "entity_id": "Jakobi Meyers",
+    "label": "Jakobi Meyers",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 15.3
+  },
+  {
+    "entity_id": "Jalen Hurts",
+    "label": "Jalen Hurts",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 23.28
+  },
+  {
+    "entity_id": "Jalen Hurts",
+    "label": "Jalen Hurts",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 17.5
+  },
+  {
+    "entity_id": "Jalen Hurts",
+    "label": "Jalen Hurts",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 23.3
+  },
+  {
+    "entity_id": "James Conner",
+    "label": "James Conner",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 10.4
+  },
+  {
+    "entity_id": "James Cook III",
+    "label": "James Cook III",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 16.2
+  },
+  {
+    "entity_id": "James Cook III",
+    "label": "James Cook III",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 4.9
+  },
+  {
+    "entity_id": "James Cook III",
+    "label": "James Cook III",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 12.5
+  },
+  {
+    "entity_id": "James Cook III",
+    "label": "James Cook III",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 17.7
+  },
+  {
+    "entity_id": "Jameson Williams",
+    "label": "Jameson Williams",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 2.6
+  },
+  {
+    "entity_id": "Jameson Williams",
+    "label": "Jameson Williams",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 1.0
+  },
+  {
+    "entity_id": "Jameson Williams",
+    "label": "Jameson Williams",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 13.6
+  },
+  {
+    "entity_id": "Jameson Williams",
+    "label": "Jameson Williams",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 19.9
+  },
+  {
+    "entity_id": "Jared Goff",
+    "label": "Jared Goff",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 9.9
+  },
+  {
+    "entity_id": "Jared Goff",
+    "label": "Jared Goff",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 24.12
+  },
+  {
+    "entity_id": "Jared Goff",
+    "label": "Jared Goff",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 18.36
+  },
+  {
+    "entity_id": "Jared Goff",
+    "label": "Jared Goff",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 21.64
+  },
+  {
+    "entity_id": "Jauan Jennings",
+    "label": "Jauan Jennings",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 1.6
+  },
+  {
+    "entity_id": "Jauan Jennings",
+    "label": "Jauan Jennings",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 10.1
+  },
+  {
+    "entity_id": "Jauan Jennings",
+    "label": "Jauan Jennings",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 9.9
+  },
+  {
+    "entity_id": "Javonte Williams",
+    "label": "Javonte Williams",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 18.4
+  },
+  {
+    "entity_id": "Javonte Williams",
+    "label": "Javonte Williams",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 25.9
+  },
+  {
+    "entity_id": "Javonte Williams",
+    "label": "Javonte Williams",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 8.3
+  },
+  {
+    "entity_id": "Javonte Williams",
+    "label": "Javonte Williams",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 14.0
+  },
+  {
+    "entity_id": "Jaxon Smith-Njigba",
+    "label": "Jaxon Smith-Njigba",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 12.4
+  },
+  {
+    "entity_id": "Jaxon Smith-Njigba",
+    "label": "Jaxon Smith-Njigba",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 19.2
+  },
+  {
+    "entity_id": "Jaxon Smith-Njigba",
+    "label": "Jaxon Smith-Njigba",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 14.0
+  },
+  {
+    "entity_id": "Jaxon Smith-Njigba",
+    "label": "Jaxon Smith-Njigba",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 2.3
+  },
+  {
+    "entity_id": "Jaxson Dart",
+    "label": "Jaxson Dart",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 29.24
+  },
+  {
+    "entity_id": "Jayden Daniels",
+    "label": "Jayden Daniels",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 19.12
+  },
+  {
+    "entity_id": "Jayden Daniels",
+    "label": "Jayden Daniels",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 18.14
+  },
+  {
+    "entity_id": "Jayden Daniels",
+    "label": "Jayden Daniels",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 12.22
+  },
+  {
+    "entity_id": "Jayden Higgins",
+    "label": "Jayden Higgins",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 0.4
+  },
+  {
+    "entity_id": "Jaylen Waddle",
+    "label": "Jaylen Waddle",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 3.0
+  },
+  {
+    "entity_id": "Jaylen Waddle",
+    "label": "Jaylen Waddle",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 17.0
+  },
+  {
+    "entity_id": "Jaylen Waddle",
+    "label": "Jaylen Waddle",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 8.2
+  },
+  {
+    "entity_id": "Jaylen Waddle",
+    "label": "Jaylen Waddle",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 4.0
+  },
+  {
+    "entity_id": "Jaylen Warren",
+    "label": "Jaylen Warren",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 11.9
+  },
+  {
+    "entity_id": "Jaylen Warren",
+    "label": "Jaylen Warren",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 14.9
+  },
+  {
+    "entity_id": "Jaylen Warren",
+    "label": "Jaylen Warren",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 10.4
+  },
+  {
+    "entity_id": "Jerome Ford",
+    "label": "Jerome Ford",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 1.5
+  },
+  {
+    "entity_id": "Jerry Jeudy",
+    "label": "Jerry Jeudy",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 7.6
+  },
+  {
+    "entity_id": "Jerry Jeudy",
+    "label": "Jerry Jeudy",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 1.5
+  },
+  {
+    "entity_id": "Jerry Jeudy",
+    "label": "Jerry Jeudy",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 2.6
+  },
+  {
+    "entity_id": "Joe Burrow",
+    "label": "Joe Burrow",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 7.82
+  },
+  {
+    "entity_id": "Joe Burrow",
+    "label": "Joe Burrow",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 22.24
+  },
+  {
+    "entity_id": "Joe Flacco",
+    "label": "Joe Flacco",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 39.7
+  },
+  {
+    "entity_id": "Jonathan Taylor",
+    "label": "Jonathan Taylor",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 9.8
+  },
+  {
+    "entity_id": "Jonathan Taylor",
+    "label": "Jonathan Taylor",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 28.6
+  },
+  {
+    "entity_id": "Jonathan Taylor",
+    "label": "Jonathan Taylor",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 5.7
+  },
+  {
+    "entity_id": "Jonathan Taylor",
+    "label": "Jonathan Taylor",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 12.1
+  },
+  {
+    "entity_id": "Jonnu Smith",
+    "label": "Jonnu Smith",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 7.5
+  },
+  {
+    "entity_id": "Jordan Addison",
+    "label": "Jordan Addison",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 10.1
+  },
+  {
+    "entity_id": "Jordan Addison",
+    "label": "Jordan Addison",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 6.4
+  },
+  {
+    "entity_id": "Jordan Addison",
+    "label": "Jordan Addison",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 3.6
+  },
+  {
+    "entity_id": "Jordan Love",
+    "label": "Jordan Love",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 19.92
+  },
+  {
+    "entity_id": "Jordan Love",
+    "label": "Jordan Love",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 9.02
+  },
+  {
+    "entity_id": "Jordan Love",
+    "label": "Jordan Love",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 33.76
+  },
+  {
+    "entity_id": "Jordan Mason",
+    "label": "Jordan Mason",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 7.5
+  },
+  {
+    "entity_id": "Jordan Mason",
+    "label": "Jordan Mason",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 11.6
+  },
+  {
+    "entity_id": "Jordan Mason",
+    "label": "Jordan Mason",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 3.7
+  },
+  {
+    "entity_id": "Jordan Mason",
+    "label": "Jordan Mason",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 4.8
+  },
+  {
+    "entity_id": "Josh Allen",
+    "label": "Josh Allen",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 41.76
+  },
+  {
+    "entity_id": "Josh Allen",
+    "label": "Josh Allen",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 25.42
+  },
+  {
+    "entity_id": "Josh Allen",
+    "label": "Josh Allen",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 27.82
+  },
+  {
+    "entity_id": "Josh Allen",
+    "label": "Josh Allen",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 19.72
+  },
+  {
+    "entity_id": "Josh Downs",
+    "label": "Josh Downs",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 1.2
+  },
+  {
+    "entity_id": "Josh Downs",
+    "label": "Josh Downs",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 5.4
+  },
+  {
+    "entity_id": "Josh Jacobs",
+    "label": "Josh Jacobs",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 13.0
+  },
+  {
+    "entity_id": "Josh Jacobs",
+    "label": "Josh Jacobs",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 16.0
+  },
+  {
+    "entity_id": "Josh Jacobs",
+    "label": "Josh Jacobs",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 9.1
+  },
+  {
+    "entity_id": "Justin Fields",
+    "label": "Justin Fields",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 30.52
+  },
+  {
+    "entity_id": "Justin Fields",
+    "label": "Justin Fields",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 24.92
+  },
+  {
+    "entity_id": "Justin Herbert",
+    "label": "Justin Herbert",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 30.92
+  },
+  {
+    "entity_id": "Justin Herbert",
+    "label": "Justin Herbert",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 13.64
+  },
+  {
+    "entity_id": "Justin Herbert",
+    "label": "Justin Herbert",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 26.7
+  },
+  {
+    "entity_id": "Justin Herbert",
+    "label": "Justin Herbert",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 14.84
+  },
+  {
+    "entity_id": "Justin Jefferson",
+    "label": "Justin Jefferson",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 10.8
+  },
+  {
+    "entity_id": "Justin Jefferson",
+    "label": "Justin Jefferson",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 12.3
+  },
+  {
+    "entity_id": "Justin Jefferson",
+    "label": "Justin Jefferson",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 10.7
+  },
+  {
+    "entity_id": "Justin Jefferson",
+    "label": "Justin Jefferson",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 0.9
+  },
+  {
+    "entity_id": "Juwan Johnson",
+    "label": "Juwan Johnson",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 1.7
+  },
+  {
+    "entity_id": "Juwan Johnson",
+    "label": "Juwan Johnson",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 9.1
+  },
+  {
+    "entity_id": "Juwan Johnson",
+    "label": "Juwan Johnson",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 3.9
+  },
+  {
+    "entity_id": "Kaleb Johnson",
+    "label": "Kaleb Johnson",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 5.08
+  },
+  {
+    "entity_id": "Kareem Hunt",
+    "label": "Kareem Hunt",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 11.5
+  },
+  {
+    "entity_id": "Kareem Hunt",
+    "label": "Kareem Hunt",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 8.0
+  },
+  {
+    "entity_id": "Keenan Allen",
+    "label": "Keenan Allen",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 6.8
+  },
+  {
+    "entity_id": "Keenan Allen",
+    "label": "Keenan Allen",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 4.1
+  },
+  {
+    "entity_id": "Keenan Allen",
+    "label": "Keenan Allen",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 3.0
+  },
+  {
+    "entity_id": "Kendre Miller",
+    "label": "Kendre Miller",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 5.62
+  },
+  {
+    "entity_id": "Kendrick Bourne",
+    "label": "Kendrick Bourne",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 3.4
+  },
+  {
+    "entity_id": "Kenneth Walker III",
+    "label": "Kenneth Walker III",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 2.4
+  },
+  {
+    "entity_id": "Kenneth Walker III",
+    "label": "Kenneth Walker III",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 8.6
+  },
+  {
+    "entity_id": "Kenneth Walker III",
+    "label": "Kenneth Walker III",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 6.1
+  },
+  {
+    "entity_id": "Kenneth Walker III",
+    "label": "Kenneth Walker III",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 7.4
+  },
+  {
+    "entity_id": "Kenny Gainwell",
+    "label": "Kenny Gainwell",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 3.4
+  },
+  {
+    "entity_id": "Kenny Gainwell",
+    "label": "Kenny Gainwell",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 5.54
+  },
+  {
+    "entity_id": "Keon Coleman",
+    "label": "Keon Coleman",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 17.2
+  },
+  {
+    "entity_id": "Keon Coleman",
+    "label": "Keon Coleman",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 8.3
+  },
+  {
+    "entity_id": "Keon Coleman",
+    "label": "Keon Coleman",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 1.7
+  },
+  {
+    "entity_id": "Keon Coleman",
+    "label": "Keon Coleman",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 6.9
+  },
+  {
+    "entity_id": "Khalil Shakir",
+    "label": "Khalil Shakir",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 6.4
+  },
+  {
+    "entity_id": "Khalil Shakir",
+    "label": "Khalil Shakir",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 6.0
+  },
+  {
+    "entity_id": "Khalil Shakir",
+    "label": "Khalil Shakir",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 4.86
+  },
+  {
+    "entity_id": "Khalil Shakir",
+    "label": "Khalil Shakir",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 0.5
+  },
+  {
+    "entity_id": "Kimani Vidal",
+    "label": "Kimani Vidal",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 3.0
+  },
+  {
+    "entity_id": "Kimani Vidal",
+    "label": "Kimani Vidal",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 19.7
+  },
+  {
+    "entity_id": "Kyle Monangai",
+    "label": "Kyle Monangai",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 19.8
+  },
+  {
+    "entity_id": "Kyle Pitts Sr.",
+    "label": "Kyle Pitts Sr.",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 5.9
+  },
+  {
+    "entity_id": "Kyle Pitts Sr.",
+    "label": "Kyle Pitts Sr.",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 3.8
+  },
+  {
+    "entity_id": "Kyle Pitts Sr.",
+    "label": "Kyle Pitts Sr.",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 8.2
+  },
+  {
+    "entity_id": "Kyler Murray",
+    "label": "Kyler Murray",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 17.32
+  },
+  {
+    "entity_id": "Kyler Murray",
+    "label": "Kyler Murray",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 14.3
+  },
+  {
+    "entity_id": "Kyren Williams",
+    "label": "Kyren Williams",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 12.9
+  },
+  {
+    "entity_id": "Kyren Williams",
+    "label": "Kyren Williams",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 25.1
+  },
+  {
+    "entity_id": "Kyren Williams",
+    "label": "Kyren Williams",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 17.4
+  },
+  {
+    "entity_id": "Kyren Williams",
+    "label": "Kyren Williams",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 13.2
+  },
+  {
+    "entity_id": "Ladd McConkey",
+    "label": "Ladd McConkey",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 7.4
+  },
+  {
+    "entity_id": "Ladd McConkey",
+    "label": "Ladd McConkey",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 9.9
+  },
+  {
+    "entity_id": "Ladd McConkey",
+    "label": "Ladd McConkey",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 5.6
+  },
+  {
+    "entity_id": "Ladd McConkey",
+    "label": "Ladd McConkey",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 9.9
+  },
+  {
+    "entity_id": "Lamar Jackson",
+    "label": "Lamar Jackson",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 31.36
+  },
+  {
+    "entity_id": "Lamar Jackson",
+    "label": "Lamar Jackson",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 31.56
+  },
+  {
+    "entity_id": "Lamar Jackson",
+    "label": "Lamar Jackson",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 9.54
+  },
+  {
+    "entity_id": "Mac Jones",
+    "label": "Mac Jones",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 25.18
+  },
+  {
+    "entity_id": "Malik Nabers",
+    "label": "Malik Nabers",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 7.1
+  },
+  {
+    "entity_id": "Malik Washington",
+    "label": "Malik Washington",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 5.08
+  },
+  {
+    "entity_id": "Malik Washington",
+    "label": "Malik Washington",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 8.62
+  },
+  {
+    "entity_id": "Mark Andrews",
+    "label": "Mark Andrews",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 0.5
+  },
+  {
+    "entity_id": "Mark Andrews",
+    "label": "Mark Andrews",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 3.2
+  },
+  {
+    "entity_id": "Mark Andrews",
+    "label": "Mark Andrews",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 14.6
+  },
+  {
+    "entity_id": "Mark Andrews",
+    "label": "Mark Andrews",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 4.7
+  },
+  {
+    "entity_id": "Marvin Harrison Jr.",
+    "label": "Marvin Harrison Jr.",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 13.1
+  },
+  {
+    "entity_id": "Marvin Harrison Jr.",
+    "label": "Marvin Harrison Jr.",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 9.8
+  },
+  {
+    "entity_id": "Marvin Harrison Jr.",
+    "label": "Marvin Harrison Jr.",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 15.6
+  },
+  {
+    "entity_id": "Marvin Harrison Jr.",
+    "label": "Marvin Harrison Jr.",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 6.9
+  },
+  {
+    "entity_id": "Marvin Mims Jr.",
+    "label": "Marvin Mims Jr.",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 6.36
+  },
+  {
+    "entity_id": "Mason Taylor",
+    "label": "Mason Taylor",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 2.0
+  },
+  {
+    "entity_id": "Mason Taylor",
+    "label": "Mason Taylor",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 8.7
+  },
+  {
+    "entity_id": "Matthew Golden",
+    "label": "Matthew Golden",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 2.04
+  },
+  {
+    "entity_id": "Matthew Stafford",
+    "label": "Matthew Stafford",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 32.56
+  },
+  {
+    "entity_id": "Matthew Stafford",
+    "label": "Matthew Stafford",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 32.84
+  },
+  {
+    "entity_id": "Matthew Stafford",
+    "label": "Matthew Stafford",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 17.62
+  },
+  {
+    "entity_id": "Michael Carter",
+    "label": "Michael Carter",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 6.4
+  },
+  {
+    "entity_id": "Michael Penix Jr.",
+    "label": "Michael Penix Jr.",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 25.02
+  },
+  {
+    "entity_id": "Michael Pittman Jr.",
+    "label": "Michael Pittman Jr.",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 9.9
+  },
+  {
+    "entity_id": "Michael Pittman Jr.",
+    "label": "Michael Pittman Jr.",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 11.5
+  },
+  {
+    "entity_id": "Michael Pittman Jr.",
+    "label": "Michael Pittman Jr.",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 1.3
+  },
+  {
+    "entity_id": "Michael Wilson",
+    "label": "Michael Wilson",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 3.6
+  },
+  {
+    "entity_id": "Mike Evans",
+    "label": "Mike Evans",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 5.1
+  },
+  {
+    "entity_id": "Nick Chubb",
+    "label": "Nick Chubb",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 6.0
+  },
+  {
+    "entity_id": "Nick Chubb",
+    "label": "Nick Chubb",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 12.1
+  },
+  {
+    "entity_id": "Nick Chubb",
+    "label": "Nick Chubb",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 3.4
+  },
+  {
+    "entity_id": "Nick Chubb",
+    "label": "Nick Chubb",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 9.4
+  },
+  {
+    "entity_id": "Nico Collins",
+    "label": "Nico Collins",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 2.5
+  },
+  {
+    "entity_id": "Nico Collins",
+    "label": "Nico Collins",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 12.0
+  },
+  {
+    "entity_id": "Nico Collins",
+    "label": "Nico Collins",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 7.5
+  },
+  {
+    "entity_id": "Nico Collins",
+    "label": "Nico Collins",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 16.5
+  },
+  {
+    "entity_id": "Omarion Hampton",
+    "label": "Omarion Hampton",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 6.1
+  },
+  {
+    "entity_id": "Omarion Hampton",
+    "label": "Omarion Hampton",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 7.0
+  },
+  {
+    "entity_id": "Oronde Gadsden",
+    "label": "Oronde Gadsden",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 1.4
+  },
+  {
+    "entity_id": "Oronde Gadsden",
+    "label": "Oronde Gadsden",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 6.8
+  },
+  {
+    "entity_id": "Oronde Gadsden",
+    "label": "Oronde Gadsden",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 2.7
+  },
+  {
+    "entity_id": "Patrick Mahomes",
+    "label": "Patrick Mahomes",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 26.02
+  },
+  {
+    "entity_id": "Patrick Mahomes",
+    "label": "Patrick Mahomes",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 29.72
+  },
+  {
+    "entity_id": "Patrick Mahomes",
+    "label": "Patrick Mahomes",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 8.5
+  },
+  {
+    "entity_id": "Patrick Mahomes",
+    "label": "Patrick Mahomes",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 34.44
+  },
+  {
+    "entity_id": "Puka Nacua",
+    "label": "Puka Nacua",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 13.1
+  },
+  {
+    "entity_id": "Puka Nacua",
+    "label": "Puka Nacua",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 14.5
+  },
+  {
+    "entity_id": "Puka Nacua",
+    "label": "Puka Nacua",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 15.8
+  },
+  {
+    "entity_id": "Puka Nacua",
+    "label": "Puka Nacua",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 7.2
+  },
+  {
+    "entity_id": "Quentin Johnston",
+    "label": "Quentin Johnston",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 4.9
+  },
+  {
+    "entity_id": "Quentin Johnston",
+    "label": "Quentin Johnston",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 11.3
+  },
+  {
+    "entity_id": "Quentin Johnston",
+    "label": "Quentin Johnston",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 8.3
+  },
+  {
+    "entity_id": "Quinshon Judkins",
+    "label": "Quinshon Judkins",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 12.8
+  },
+  {
+    "entity_id": "Quinshon Judkins",
+    "label": "Quinshon Judkins",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 12.9
+  },
+  {
+    "entity_id": "RJ Harvey",
+    "label": "RJ Harvey",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 6.9
+  },
+  {
+    "entity_id": "RJ Harvey",
+    "label": "RJ Harvey",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 6.32
+  },
+  {
+    "entity_id": "RJ Harvey",
+    "label": "RJ Harvey",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 13.76
+  },
+  {
+    "entity_id": "RJ Harvey",
+    "label": "RJ Harvey",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 18.2
+  },
+  {
+    "entity_id": "Rachaad White",
+    "label": "Rachaad White",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 19.1
+  },
+  {
+    "entity_id": "Rachaad White",
+    "label": "Rachaad White",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 2.9
+  },
+  {
+    "entity_id": "Rashee Rice",
+    "label": "Rashee Rice",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 14.6
+  },
+  {
+    "entity_id": "Rashee Rice",
+    "label": "Rashee Rice",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 21.4
+  },
+  {
+    "entity_id": "Rashid Shaheed",
+    "label": "Rashid Shaheed",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 4.02
+  },
+  {
+    "entity_id": "Rashid Shaheed",
+    "label": "Rashid Shaheed",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 17.4
+  },
+  {
+    "entity_id": "Rashid Shaheed",
+    "label": "Rashid Shaheed",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 9.32
+  },
+  {
+    "entity_id": "Rashid Shaheed",
+    "label": "Rashid Shaheed",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 3.32
+  },
+  {
+    "entity_id": "Rashod Bateman",
+    "label": "Rashod Bateman",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 1.0
+  },
+  {
+    "entity_id": "Rhamondre Stevenson",
+    "label": "Rhamondre Stevenson",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 2.7
+  },
+  {
+    "entity_id": "Rhamondre Stevenson",
+    "label": "Rhamondre Stevenson",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 16.3
+  },
+  {
+    "entity_id": "Rhamondre Stevenson",
+    "label": "Rhamondre Stevenson",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 8.0
+  },
+  {
+    "entity_id": "Ricky Pearsall",
+    "label": "Ricky Pearsall",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 11.8
+  },
+  {
+    "entity_id": "Rico Dowdle",
+    "label": "Rico Dowdle",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 30.4
+  },
+  {
+    "entity_id": "Rico Dowdle",
+    "label": "Rico Dowdle",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 26.1
+  },
+  {
+    "entity_id": "Rico Dowdle",
+    "label": "Rico Dowdle",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 7.9
+  },
+  {
+    "entity_id": "Rome Odunze",
+    "label": "Rome Odunze",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 9.7
+  },
+  {
+    "entity_id": "Rome Odunze",
+    "label": "Rome Odunze",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 0.8
+  },
+  {
+    "entity_id": "Romeo Doubs",
+    "label": "Romeo Doubs",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 9.34
+  },
+  {
+    "entity_id": "Romeo Doubs",
+    "label": "Romeo Doubs",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 8.08
+  },
+  {
+    "entity_id": "Sam Darnold",
+    "label": "Sam Darnold",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 36.64
+  },
+  {
+    "entity_id": "Sam Darnold",
+    "label": "Sam Darnold",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 36.2
+  },
+  {
+    "entity_id": "Sam Darnold",
+    "label": "Sam Darnold",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 1.12
+  },
+  {
+    "entity_id": "Sam LaPorta",
+    "label": "Sam LaPorta",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 7.9
+  },
+  {
+    "entity_id": "Sam LaPorta",
+    "label": "Sam LaPorta",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 15.2
+  },
+  {
+    "entity_id": "Sam LaPorta",
+    "label": "Sam LaPorta",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 15.7
+  },
+  {
+    "entity_id": "Saquon Barkley",
+    "label": "Saquon Barkley",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 14.4
+  },
+  {
+    "entity_id": "Saquon Barkley",
+    "label": "Saquon Barkley",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 14.8
+  },
+  {
+    "entity_id": "Saquon Barkley",
+    "label": "Saquon Barkley",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 5.6
+  },
+  {
+    "entity_id": "Stefon Diggs",
+    "label": "Stefon Diggs",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 6.7
+  },
+  {
+    "entity_id": "Stefon Diggs",
+    "label": "Stefon Diggs",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 14.6
+  },
+  {
+    "entity_id": "Stefon Diggs",
+    "label": "Stefon Diggs",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 9.8
+  },
+  {
+    "entity_id": "Stefon Diggs",
+    "label": "Stefon Diggs",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 2.6
+  },
+  {
+    "entity_id": "T.J. Hockenson",
+    "label": "T.J. Hockenson",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 1.5
+  },
+  {
+    "entity_id": "T.J. Hockenson",
+    "label": "T.J. Hockenson",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 3.8
+  },
+  {
+    "entity_id": "T.J. Hockenson",
+    "label": "T.J. Hockenson",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 7.1
+  },
+  {
+    "entity_id": "T.J. Hockenson",
+    "label": "T.J. Hockenson",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 5.9
+  },
+  {
+    "entity_id": "Tank Bigsby",
+    "label": "Tank Bigsby",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 2.0
+  },
+  {
+    "entity_id": "Tee Higgins",
+    "label": "Tee Higgins",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 3.3
+  },
+  {
+    "entity_id": "Tee Higgins",
+    "label": "Tee Higgins",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 8.2
+  },
+  {
+    "entity_id": "Tee Higgins",
+    "label": "Tee Higgins",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 26.1
+  },
+  {
+    "entity_id": "Terry McLaurin",
+    "label": "Terry McLaurin",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 2.7
+  },
+  {
+    "entity_id": "Terry McLaurin",
+    "label": "Terry McLaurin",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 15.6
+  },
+  {
+    "entity_id": "Tetairoa McMillan",
+    "label": "Tetairoa McMillan",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 6.8
+  },
+  {
+    "entity_id": "Tetairoa McMillan",
+    "label": "Tetairoa McMillan",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 7.3
+  },
+  {
+    "entity_id": "Tetairoa McMillan",
+    "label": "Tetairoa McMillan",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 4.6
+  },
+  {
+    "entity_id": "Tetairoa McMillan",
+    "label": "Tetairoa McMillan",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 10.3
+  },
+  {
+    "entity_id": "Theo Johnson",
+    "label": "Theo Johnson",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 2.9
+  },
+  {
+    "entity_id": "Tommy Tremble",
+    "label": "Tommy Tremble",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 1.7
+  },
+  {
+    "entity_id": "Tony Pollard",
+    "label": "Tony Pollard",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 8.9
+  },
+  {
+    "entity_id": "Tony Pollard",
+    "label": "Tony Pollard",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 13.8
+  },
+  {
+    "entity_id": "Tony Pollard",
+    "label": "Tony Pollard",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 6.8
+  },
+  {
+    "entity_id": "Tony Pollard",
+    "label": "Tony Pollard",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 6.3
+  },
+  {
+    "entity_id": "Travis Etienne Jr.",
+    "label": "Travis Etienne Jr.",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 15.6
+  },
+  {
+    "entity_id": "Travis Etienne Jr.",
+    "label": "Travis Etienne Jr.",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 6.8
+  },
+  {
+    "entity_id": "Travis Etienne Jr.",
+    "label": "Travis Etienne Jr.",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 11.5
+  },
+  {
+    "entity_id": "Travis Etienne Jr.",
+    "label": "Travis Etienne Jr.",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 4.1
+  },
+  {
+    "entity_id": "Travis Hunter",
+    "label": "Travis Hunter",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 3.8
+  },
+  {
+    "entity_id": "Travis Hunter",
+    "label": "Travis Hunter",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 9.4
+  },
+  {
+    "entity_id": "Travis Kelce",
+    "label": "Travis Kelce",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 10.7
+  },
+  {
+    "entity_id": "Travis Kelce",
+    "label": "Travis Kelce",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 12.1
+  },
+  {
+    "entity_id": "Travis Kelce",
+    "label": "Travis Kelce",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 8.6
+  },
+  {
+    "entity_id": "Travis Kelce",
+    "label": "Travis Kelce",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 10.5
+  },
+  {
+    "entity_id": "Tre Tucker",
+    "label": "Tre Tucker",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 7.1
+  },
+  {
+    "entity_id": "Tre Tucker",
+    "label": "Tre Tucker",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 3.8
+  },
+  {
+    "entity_id": "Tre Tucker",
+    "label": "Tre Tucker",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 2.0
+  },
+  {
+    "entity_id": "TreVeyon Henderson",
+    "label": "TreVeyon Henderson",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 6.82
+  },
+  {
+    "entity_id": "TreVeyon Henderson",
+    "label": "TreVeyon Henderson",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 3.62
+  },
+  {
+    "entity_id": "TreVeyon Henderson",
+    "label": "TreVeyon Henderson",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 8.7
+  },
+  {
+    "entity_id": "TreVeyon Henderson",
+    "label": "TreVeyon Henderson",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 8.6
+  },
+  {
+    "entity_id": "Trevor Lawrence",
+    "label": "Trevor Lawrence",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 13.32
+  },
+  {
+    "entity_id": "Trevor Lawrence",
+    "label": "Trevor Lawrence",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 28.24
+  },
+  {
+    "entity_id": "Trevor Lawrence",
+    "label": "Trevor Lawrence",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 22.66
+  },
+  {
+    "entity_id": "Trey McBride",
+    "label": "Trey McBride",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 6.1
+  },
+  {
+    "entity_id": "Trey McBride",
+    "label": "Trey McBride",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 4.1
+  },
+  {
+    "entity_id": "Trey McBride",
+    "label": "Trey McBride",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 11.5
+  },
+  {
+    "entity_id": "Trey McBride",
+    "label": "Trey McBride",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 14.2
+  },
+  {
+    "entity_id": "Troy Franklin",
+    "label": "Troy Franklin",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 3.1
+  },
+  {
+    "entity_id": "Tua Tagovailoa",
+    "label": "Tua Tagovailoa",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 8.26
+  },
+  {
+    "entity_id": "Tua Tagovailoa",
+    "label": "Tua Tagovailoa",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 25.74
+  },
+  {
+    "entity_id": "Tua Tagovailoa",
+    "label": "Tua Tagovailoa",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 7.54
+  },
+  {
+    "entity_id": "Tucker Kraft",
+    "label": "Tucker Kraft",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 7.9
+  },
+  {
+    "entity_id": "Tucker Kraft",
+    "label": "Tucker Kraft",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 2.0
+  },
+  {
+    "entity_id": "Tyjae Spears",
+    "label": "Tyjae Spears",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 6.2
+  },
+  {
+    "entity_id": "Tyjae Spears",
+    "label": "Tyjae Spears",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 2.4
+  },
+  {
+    "entity_id": "Tyler Allgeier",
+    "label": "Tyler Allgeier",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 11.5
+  },
+  {
+    "entity_id": "Tyler Warren",
+    "label": "Tyler Warren",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 7.9
+  },
+  {
+    "entity_id": "Tyler Warren",
+    "label": "Tyler Warren",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 10.4
+  },
+  {
+    "entity_id": "Tyler Warren",
+    "label": "Tyler Warren",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 2.6
+  },
+  {
+    "entity_id": "Tyler Warren",
+    "label": "Tyler Warren",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 8.2
+  },
+  {
+    "entity_id": "Tyreek Hill",
+    "label": "Tyreek Hill",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 4.0
+  },
+  {
+    "entity_id": "Tyrone Tracy Jr.",
+    "label": "Tyrone Tracy Jr.",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 3.5
+  },
+  {
+    "entity_id": "Tyrone Tracy Jr.",
+    "label": "Tyrone Tracy Jr.",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 3.7
+  },
+  {
+    "entity_id": "Tyrone Tracy Jr.",
+    "label": "Tyrone Tracy Jr.",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 3.3
+  },
+  {
+    "entity_id": "Wan'Dale Robinson",
+    "label": "Wan'Dale Robinson",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 3.2
+  },
+  {
+    "entity_id": "Wan'Dale Robinson",
+    "label": "Wan'Dale Robinson",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 4.6
+  },
+  {
+    "entity_id": "Wan'Dale Robinson",
+    "label": "Wan'Dale Robinson",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 3.4
+  },
+  {
+    "entity_id": "Woody Marks",
+    "label": "Woody Marks",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 2.4
+  },
+  {
+    "entity_id": "Woody Marks",
+    "label": "Woody Marks",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 2.7
+  },
+  {
+    "entity_id": "Woody Marks",
+    "label": "Woody Marks",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 6.7
+  },
+  {
+    "entity_id": "Xavier Legette",
+    "label": "Xavier Legette",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 1.0
+  },
+  {
+    "entity_id": "Xavier Worthy",
+    "label": "Xavier Worthy",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 5.1
+  },
+  {
+    "entity_id": "Xavier Worthy",
+    "label": "Xavier Worthy",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 4.0
+  },
+  {
+    "entity_id": "Xavier Worthy",
+    "label": "Xavier Worthy",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 7.4
+  },
+  {
+    "entity_id": "Zach Charbonnet",
+    "label": "Zach Charbonnet",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 10.7
+  },
+  {
+    "entity_id": "Zach Charbonnet",
+    "label": "Zach Charbonnet",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 10.8
+  },
+  {
+    "entity_id": "Zach Charbonnet",
+    "label": "Zach Charbonnet",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 4.6
+  },
+  {
+    "entity_id": "Zach Charbonnet",
+    "label": "Zach Charbonnet",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 11.2
+  },
+  {
+    "entity_id": "Zach Ertz",
+    "label": "Zach Ertz",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 8.6
+  },
+  {
+    "entity_id": "Zach Ertz",
+    "label": "Zach Ertz",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 4.6
+  },
+  {
+    "entity_id": "Zay Flowers",
+    "label": "Zay Flowers",
+    "season": 2025,
+    "unit": "offense",
+    "week": 1,
+    "yahoo_points": 21.1
+  },
+  {
+    "entity_id": "Zay Flowers",
+    "label": "Zay Flowers",
+    "season": 2025,
+    "unit": "offense",
+    "week": 5,
+    "yahoo_points": 7.2
+  },
+  {
+    "entity_id": "Zay Flowers",
+    "label": "Zay Flowers",
+    "season": 2025,
+    "unit": "offense",
+    "week": 9,
+    "yahoo_points": 6.4
+  },
+  {
+    "entity_id": "Zay Flowers",
+    "label": "Zay Flowers",
+    "season": 2025,
+    "unit": "offense",
+    "week": 13,
+    "yahoo_points": 0.6
+  },
+  {
+    "entity_id": "49ers",
+    "label": "49ers",
+    "season": 2025,
+    "unit": "team_defense",
+    "week": 9,
+    "yahoo_points": 12.04
+  },
+  {
+    "entity_id": "Bears",
+    "label": "Bears",
+    "season": 2025,
+    "unit": "team_defense",
+    "week": 9,
+    "yahoo_points": 16.36
+  },
+  {
+    "entity_id": "Bengals",
+    "label": "Bengals",
+    "season": 2025,
+    "unit": "team_defense",
+    "week": 1,
+    "yahoo_points": 16.72
+  },
+  {
+    "entity_id": "Bills",
+    "label": "Bills",
+    "season": 2025,
+    "unit": "team_defense",
+    "week": 1,
+    "yahoo_points": 13.72
+  },
+  {
+    "entity_id": "Bills",
+    "label": "Bills",
+    "season": 2025,
+    "unit": "team_defense",
+    "week": 5,
+    "yahoo_points": 20.08
+  },
+  {
+    "entity_id": "Bills",
+    "label": "Bills",
+    "season": 2025,
+    "unit": "team_defense",
+    "week": 13,
+    "yahoo_points": 20.44
+  },
+  {
+    "entity_id": "Broncos",
+    "label": "Broncos",
+    "season": 2025,
+    "unit": "team_defense",
+    "week": 1,
+    "yahoo_points": 30.16
+  },
+  {
+    "entity_id": "Broncos",
+    "label": "Broncos",
+    "season": 2025,
+    "unit": "team_defense",
+    "week": 5,
+    "yahoo_points": 23.0
+  },
+  {
+    "entity_id": "Broncos",
+    "label": "Broncos",
+    "season": 2025,
+    "unit": "team_defense",
+    "week": 9,
+    "yahoo_points": 17.24
+  },
+  {
+    "entity_id": "Broncos",
+    "label": "Broncos",
+    "season": 2025,
+    "unit": "team_defense",
+    "week": 13,
+    "yahoo_points": 19.12
+  },
+  {
+    "entity_id": "Browns",
+    "label": "Browns",
+    "season": 2025,
+    "unit": "team_defense",
+    "week": 5,
+    "yahoo_points": 18.36
+  },
+  {
+    "entity_id": "Browns",
+    "label": "Browns",
+    "season": 2025,
+    "unit": "team_defense",
+    "week": 13,
+    "yahoo_points": 9.04
+  },
+  {
+    "entity_id": "Buccaneers",
+    "label": "Buccaneers",
+    "season": 2025,
+    "unit": "team_defense",
+    "week": 13,
+    "yahoo_points": 13.76
+  },
+  {
+    "entity_id": "Cardinals",
+    "label": "Cardinals",
+    "season": 2025,
+    "unit": "team_defense",
+    "week": 1,
+    "yahoo_points": 13.12
+  },
+  {
+    "entity_id": "Cardinals",
+    "label": "Cardinals",
+    "season": 2025,
+    "unit": "team_defense",
+    "week": 5,
+    "yahoo_points": 16.24
+  },
+  {
+    "entity_id": "Chargers",
+    "label": "Chargers",
+    "season": 2025,
+    "unit": "team_defense",
+    "week": 1,
+    "yahoo_points": 9.68
+  },
+  {
+    "entity_id": "Chargers",
+    "label": "Chargers",
+    "season": 2025,
+    "unit": "team_defense",
+    "week": 5,
+    "yahoo_points": 12.52
+  },
+  {
+    "entity_id": "Chargers",
+    "label": "Chargers",
+    "season": 2025,
+    "unit": "team_defense",
+    "week": 9,
+    "yahoo_points": 16.24
+  },
+  {
+    "entity_id": "Chargers",
+    "label": "Chargers",
+    "season": 2025,
+    "unit": "team_defense",
+    "week": 13,
+    "yahoo_points": 25.24
+  },
+  {
+    "entity_id": "Colts",
+    "label": "Colts",
+    "season": 2025,
+    "unit": "team_defense",
+    "week": 5,
+    "yahoo_points": 29.96
+  },
+  {
+    "entity_id": "Colts",
+    "label": "Colts",
+    "season": 2025,
+    "unit": "team_defense",
+    "week": 9,
+    "yahoo_points": 17.92
+  },
+  {
+    "entity_id": "Colts",
+    "label": "Colts",
+    "season": 2025,
+    "unit": "team_defense",
+    "week": 13,
+    "yahoo_points": 14.16
+  },
+  {
+    "entity_id": "Commanders",
+    "label": "Commanders",
+    "season": 2025,
+    "unit": "team_defense",
+    "week": 1,
+    "yahoo_points": 21.44
+  },
+  {
+    "entity_id": "Cowboys",
+    "label": "Cowboys",
+    "season": 2025,
+    "unit": "team_defense",
+    "week": 9,
+    "yahoo_points": 32.28
+  },
+  {
+    "entity_id": "Eagles",
+    "label": "Eagles",
+    "season": 2025,
+    "unit": "team_defense",
+    "week": 1,
+    "yahoo_points": 6.28
+  },
+  {
+    "entity_id": "Falcons",
+    "label": "Falcons",
+    "season": 2025,
+    "unit": "team_defense",
+    "week": 13,
+    "yahoo_points": 15.16
+  },
+  {
+    "entity_id": "Jaguars",
+    "label": "Jaguars",
+    "season": 2025,
+    "unit": "team_defense",
+    "week": 9,
+    "yahoo_points": 16.36
+  },
+  {
+    "entity_id": "Jaguars",
+    "label": "Jaguars",
+    "season": 2025,
+    "unit": "team_defense",
+    "week": 13,
+    "yahoo_points": 21.88
+  },
+  {
+    "entity_id": "Jets",
+    "label": "Jets",
+    "season": 2025,
+    "unit": "team_defense",
+    "week": 1,
+    "yahoo_points": 23.0
+  },
+  {
+    "entity_id": "Jets",
+    "label": "Jets",
+    "season": 2025,
+    "unit": "team_defense",
+    "week": 5,
+    "yahoo_points": 8.84
+  },
+  {
+    "entity_id": "Lions",
+    "label": "Lions",
+    "season": 2025,
+    "unit": "team_defense",
+    "week": 1,
+    "yahoo_points": 7.4
+  },
+  {
+    "entity_id": "Lions",
+    "label": "Lions",
+    "season": 2025,
+    "unit": "team_defense",
+    "week": 5,
+    "yahoo_points": 20.92
+  },
+  {
+    "entity_id": "Lions",
+    "label": "Lions",
+    "season": 2025,
+    "unit": "team_defense",
+    "week": 9,
+    "yahoo_points": 26.4
+  },
+  {
+    "entity_id": "Packers",
+    "label": "Packers",
+    "season": 2025,
+    "unit": "team_defense",
+    "week": 1,
+    "yahoo_points": 25.84
+  },
+  {
+    "entity_id": "Packers",
+    "label": "Packers",
+    "season": 2025,
+    "unit": "team_defense",
+    "week": 9,
+    "yahoo_points": 8.96
+  },
+  {
+    "entity_id": "Packers",
+    "label": "Packers",
+    "season": 2025,
+    "unit": "team_defense",
+    "week": 13,
+    "yahoo_points": 16.88
+  },
+  {
+    "entity_id": "Panthers",
+    "label": "Panthers",
+    "season": 2025,
+    "unit": "team_defense",
+    "week": 13,
+    "yahoo_points": 21.16
+  },
+  {
+    "entity_id": "Patriots",
+    "label": "Patriots",
+    "season": 2025,
+    "unit": "team_defense",
+    "week": 9,
+    "yahoo_points": 7.76
+  },
+  {
+    "entity_id": "Patriots",
+    "label": "Patriots",
+    "season": 2025,
+    "unit": "team_defense",
+    "week": 13,
+    "yahoo_points": 25.12
+  },
+  {
+    "entity_id": "Rams",
+    "label": "Rams",
+    "season": 2025,
+    "unit": "team_defense",
+    "week": 5,
+    "yahoo_points": 10.72
+  },
+  {
+    "entity_id": "Rams",
+    "label": "Rams",
+    "season": 2025,
+    "unit": "team_defense",
+    "week": 9,
+    "yahoo_points": 11.44
+  },
+  {
+    "entity_id": "Rams",
+    "label": "Rams",
+    "season": 2025,
+    "unit": "team_defense",
+    "week": 13,
+    "yahoo_points": 12.4
+  },
+  {
+    "entity_id": "Ravens",
+    "label": "Ravens",
+    "season": 2025,
+    "unit": "team_defense",
+    "week": 1,
+    "yahoo_points": 7.92
+  },
+  {
+    "entity_id": "Ravens",
+    "label": "Ravens",
+    "season": 2025,
+    "unit": "team_defense",
+    "week": 13,
+    "yahoo_points": 12.48
+  },
+  {
+    "entity_id": "Saints",
+    "label": "Saints",
+    "season": 2025,
+    "unit": "team_defense",
+    "week": 5,
+    "yahoo_points": 19.08
+  },
+  {
+    "entity_id": "Seahawks",
+    "label": "Seahawks",
+    "season": 2025,
+    "unit": "team_defense",
+    "week": 13,
+    "yahoo_points": 38.72
+  },
+  {
+    "entity_id": "Steelers",
+    "label": "Steelers",
+    "season": 2025,
+    "unit": "team_defense",
+    "week": 1,
+    "yahoo_points": 14.6
+  },
+  {
+    "entity_id": "Texans",
+    "label": "Texans",
+    "season": 2025,
+    "unit": "team_defense",
+    "week": 1,
+    "yahoo_points": 14.24
+  },
+  {
+    "entity_id": "Texans",
+    "label": "Texans",
+    "season": 2025,
+    "unit": "team_defense",
+    "week": 5,
+    "yahoo_points": 17.8
+  },
+  {
+    "entity_id": "Texans",
+    "label": "Texans",
+    "season": 2025,
+    "unit": "team_defense",
+    "week": 9,
+    "yahoo_points": 17.88
+  },
+  {
+    "entity_id": "Texans",
+    "label": "Texans",
+    "season": 2025,
+    "unit": "team_defense",
+    "week": 13,
+    "yahoo_points": 13.72
+  },
+  {
+    "entity_id": "Vikings",
+    "label": "Vikings",
+    "season": 2025,
+    "unit": "team_defense",
+    "week": 1,
+    "yahoo_points": 20.04
+  },
+  {
+    "entity_id": "Vikings",
+    "label": "Vikings",
+    "season": 2025,
+    "unit": "team_defense",
+    "week": 5,
+    "yahoo_points": 14.68
+  },
+  {
+    "entity_id": "Vikings",
+    "label": "Vikings",
+    "season": 2025,
+    "unit": "team_defense",
+    "week": 9,
+    "yahoo_points": 29.84
+  },
+  {
+    "entity_id": "Vikings",
+    "label": "Vikings",
+    "season": 2025,
+    "unit": "team_defense",
+    "week": 13,
+    "yahoo_points": 24.76
+  }
+]
