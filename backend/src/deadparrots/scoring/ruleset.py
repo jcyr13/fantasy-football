@@ -16,6 +16,22 @@ from dataclasses import dataclass
 
 
 @dataclass(frozen=True)
+class IndividualDefenseRules:
+    """Individual defensive plays, scored for whoever records them.
+
+    RIP TIDE credits these to *any* player — a WR who makes a tackle after his
+    QB is intercepted gets the solo-tackle point. The full individual-defender
+    ("D" slot) surface, with its own tolerance and outlier catalogue, is a
+    separate ticket; this covers only the stats that show up on offensive and
+    kicking box scores.
+    """
+
+    solo_tackle: float
+    assisted_tackle: float
+    pass_defended: float
+
+
+@dataclass(frozen=True)
 class OffenseRules:
     """Offense scoring for QB / RB / WR / TE.
 
@@ -26,12 +42,17 @@ class OffenseRules:
     passing_yards_per_point: float
     rushing_yards_per_point: float
     receiving_yards_per_point: float
+    # Kick/punt return yardage, scored for any position that accrues it (a WR on
+    # returns, etc.). Yahoo's 2025 box scores show this at 1 point per 25 yards,
+    # the same rate as passing yards.
+    return_yards_per_point: float
     passing_touchdown: float
     rushing_touchdown: float
     receiving_touchdown: float
     interception_thrown: float
     sack_taken: float
     two_point_conversion: float
+    individual_defense: IndividualDefenseRules
     # The PRD scoring list does not enumerate an offensive fumble-lost penalty.
     # It is kept as an explicit knob (default 0.0) so that if the 2025 golden
     # gate turns up a systematic offset explained by fumbles, the fix is a
@@ -56,6 +77,7 @@ class KickerRules:
     fg_missed_0_19: float
     pat_made: float
     pat_missed: float
+    individual_defense: IndividualDefenseRules
 
 
 @dataclass(frozen=True)
@@ -86,6 +108,9 @@ class TeamDefenseRules:
     safety: float
     blocked_kick: float
     tackle_for_loss: float
+    # Return yardage the defense/special teams unit accrues, at 1 point per 25
+    # yards (Yahoo 2025 box scores).
+    return_yards_per_point: float
     points_allowed_tiers: tuple[PointsAllowedTier, ...]
 
     def points_allowed_bonus(self, points_allowed: float) -> float:
@@ -108,18 +133,26 @@ class LeagueRuleset:
     team_defense: TeamDefenseRules
 
 
+_RIP_TIDE_IDP = IndividualDefenseRules(
+    solo_tackle=1.0,
+    assisted_tackle=0.5,
+    pass_defended=1.0,
+)
+
 RIP_TIDE_RULESET = LeagueRuleset(
     name="RIP TIDE",
     offense=OffenseRules(
         passing_yards_per_point=25.0,
         rushing_yards_per_point=10.0,
         receiving_yards_per_point=10.0,
+        return_yards_per_point=25.0,
         passing_touchdown=6.0,
         rushing_touchdown=6.0,
         receiving_touchdown=6.0,
         interception_thrown=-1.0,
         sack_taken=-1.0,
         two_point_conversion=2.0,
+        individual_defense=_RIP_TIDE_IDP,
         fumble_lost=0.0,
     ),
     kicker=KickerRules(
@@ -131,6 +164,7 @@ RIP_TIDE_RULESET = LeagueRuleset(
         fg_missed_0_19=-1.0,
         pat_made=1.0,
         pat_missed=-1.0,
+        individual_defense=_RIP_TIDE_IDP,
     ),
     team_defense=TeamDefenseRules(
         sack=2.0,
@@ -140,6 +174,7 @@ RIP_TIDE_RULESET = LeagueRuleset(
         safety=2.0,
         blocked_kick=2.0,
         tackle_for_loss=1.0,
+        return_yards_per_point=25.0,
         points_allowed_tiers=(
             PointsAllowedTier(upper_bound=0, points=10.0),
             PointsAllowedTier(upper_bound=6, points=7.0),

@@ -1,0 +1,6932 @@
+[
+  {
+    "entity_id": "Andy Borregales",
+    "label": "Andy Borregales",
+    "season": 2025,
+    "stats": {
+      "fg_made_20_29": 3.0,
+      "fg_made_30_39": 1.0,
+      "pat_made": 3.0
+    },
+    "unit": "kicker",
+    "week": 13
+  },
+  {
+    "entity_id": "Brandon Aubrey",
+    "label": "Brandon Aubrey",
+    "season": 2025,
+    "stats": {
+      "fg_made_40_49": 1.0,
+      "fg_made_50_plus": 1.0,
+      "pat_made": 2.0
+    },
+    "unit": "kicker",
+    "week": 1
+  },
+  {
+    "entity_id": "Brandon Aubrey",
+    "label": "Brandon Aubrey",
+    "season": 2025,
+    "stats": {
+      "fg_made_30_39": 1.0,
+      "pat_made": 4.0,
+      "pat_missed": 1.0
+    },
+    "unit": "kicker",
+    "week": 5
+  },
+  {
+    "entity_id": "Brandon Aubrey",
+    "label": "Brandon Aubrey",
+    "season": 2025,
+    "stats": {
+      "fg_made_20_29": 1.0,
+      "pat_made": 2.0
+    },
+    "unit": "kicker",
+    "week": 9
+  },
+  {
+    "entity_id": "Brandon Aubrey",
+    "label": "Brandon Aubrey",
+    "season": 2025,
+    "stats": {
+      "fg_made_20_29": 1.0,
+      "fg_made_30_39": 1.0,
+      "fg_made_40_49": 1.0,
+      "pat_made": 2.0
+    },
+    "unit": "kicker",
+    "week": 13
+  },
+  {
+    "entity_id": "Cam Little",
+    "label": "Cam Little",
+    "season": 2025,
+    "stats": {
+      "fg_made_40_49": 1.0,
+      "pat_made": 2.0
+    },
+    "unit": "kicker",
+    "week": 13
+  },
+  {
+    "entity_id": "Cameron Dicker",
+    "label": "Cameron Dicker",
+    "season": 2025,
+    "stats": {
+      "fg_made_30_39": 2.0,
+      "pat_made": 3.0
+    },
+    "unit": "kicker",
+    "week": 1
+  },
+  {
+    "entity_id": "Cameron Dicker",
+    "label": "Cameron Dicker",
+    "season": 2025,
+    "stats": {
+      "fg_made_20_29": 1.0,
+      "fg_made_50_plus": 1.0,
+      "pat_made": 3.0,
+      "tackle_solo": 1.0
+    },
+    "unit": "kicker",
+    "week": 9
+  },
+  {
+    "entity_id": "Cameron Dicker",
+    "label": "Cameron Dicker",
+    "season": 2025,
+    "stats": {
+      "fg_made_50_plus": 1.0,
+      "pat_made": 4.0,
+      "tackle_assist": 1.0
+    },
+    "unit": "kicker",
+    "week": 13
+  },
+  {
+    "entity_id": "Chad Ryland",
+    "label": "Chad Ryland",
+    "season": 2025,
+    "stats": {
+      "pat_made": 3.0
+    },
+    "unit": "kicker",
+    "week": 5
+  },
+  {
+    "entity_id": "Chase McLaughlin",
+    "label": "Chase McLaughlin",
+    "season": 2025,
+    "stats": {
+      "fg_made_40_49": 1.0,
+      "pat_made": 2.0,
+      "pat_missed": 1.0
+    },
+    "unit": "kicker",
+    "week": 1
+  },
+  {
+    "entity_id": "Chase McLaughlin",
+    "label": "Chase McLaughlin",
+    "season": 2025,
+    "stats": {
+      "fg_made_20_29": 1.0,
+      "fg_made_50_plus": 1.0,
+      "pat_made": 2.0
+    },
+    "unit": "kicker",
+    "week": 13
+  },
+  {
+    "entity_id": "Chris Boswell",
+    "label": "Chris Boswell",
+    "season": 2025,
+    "stats": {
+      "fg_made_50_plus": 2.0,
+      "pat_made": 4.0
+    },
+    "unit": "kicker",
+    "week": 1
+  },
+  {
+    "entity_id": "Chris Boswell",
+    "label": "Chris Boswell",
+    "season": 2025,
+    "stats": {
+      "fg_made_20_29": 1.0,
+      "fg_made_40_49": 1.0,
+      "pat_made": 3.0
+    },
+    "unit": "kicker",
+    "week": 9
+  },
+  {
+    "entity_id": "Eddy Pineiro",
+    "label": "Eddy Pineiro",
+    "season": 2025,
+    "stats": {
+      "fg_made_30_39": 1.0,
+      "fg_made_50_plus": 1.0,
+      "pat_made": 4.0
+    },
+    "unit": "kicker",
+    "week": 9
+  },
+  {
+    "entity_id": "Evan McPherson",
+    "label": "Evan McPherson",
+    "season": 2025,
+    "stats": {
+      "fg_made_30_39": 1.0,
+      "pat_made": 2.0
+    },
+    "unit": "kicker",
+    "week": 1
+  },
+  {
+    "entity_id": "Evan McPherson",
+    "label": "Evan McPherson",
+    "season": 2025,
+    "stats": {
+      "fg_made_30_39": 1.0,
+      "fg_made_40_49": 1.0,
+      "pat_made": 4.0
+    },
+    "unit": "kicker",
+    "week": 9
+  },
+  {
+    "entity_id": "Evan McPherson",
+    "label": "Evan McPherson",
+    "season": 2025,
+    "stats": {
+      "fg_made_20_29": 1.0,
+      "fg_made_30_39": 2.0,
+      "fg_made_40_49": 2.0,
+      "fg_made_50_plus": 1.0,
+      "pat_made": 2.0
+    },
+    "unit": "kicker",
+    "week": 13
+  },
+  {
+    "entity_id": "Harrison Butker",
+    "label": "Harrison Butker",
+    "season": 2025,
+    "stats": {
+      "fg_made_20_29": 1.0,
+      "fg_made_30_39": 1.0,
+      "fg_made_50_plus": 1.0,
+      "pat_missed": 1.0
+    },
+    "unit": "kicker",
+    "week": 1
+  },
+  {
+    "entity_id": "Harrison Butker",
+    "label": "Harrison Butker",
+    "season": 2025,
+    "stats": {
+      "pat_made": 4.0,
+      "tackle_assist": 1.0
+    },
+    "unit": "kicker",
+    "week": 5
+  },
+  {
+    "entity_id": "Harrison Butker",
+    "label": "Harrison Butker",
+    "season": 2025,
+    "stats": {
+      "fg_made_0_19": 1.0,
+      "fg_made_40_49": 1.0,
+      "pat_made": 1.0
+    },
+    "unit": "kicker",
+    "week": 9
+  },
+  {
+    "entity_id": "Harrison Butker",
+    "label": "Harrison Butker",
+    "season": 2025,
+    "stats": {
+      "pat_made": 4.0
+    },
+    "unit": "kicker",
+    "week": 13
+  },
+  {
+    "entity_id": "Jake Bates",
+    "label": "Jake Bates",
+    "season": 2025,
+    "stats": {
+      "fg_made_20_29": 1.0,
+      "fg_made_30_39": 1.0,
+      "pat_made": 1.0,
+      "tackle_solo": 1.0
+    },
+    "unit": "kicker",
+    "week": 1
+  },
+  {
+    "entity_id": "Jake Bates",
+    "label": "Jake Bates",
+    "season": 2025,
+    "stats": {
+      "pat_made": 5.0
+    },
+    "unit": "kicker",
+    "week": 5
+  },
+  {
+    "entity_id": "Jake Bates",
+    "label": "Jake Bates",
+    "season": 2025,
+    "stats": {
+      "fg_made_40_49": 1.0,
+      "pat_made": 3.0,
+      "tackle_assist": 1.0
+    },
+    "unit": "kicker",
+    "week": 9
+  },
+  {
+    "entity_id": "Jake Bates",
+    "label": "Jake Bates",
+    "season": 2025,
+    "stats": {
+      "fg_made_30_39": 1.0,
+      "pat_made": 3.0
+    },
+    "unit": "kicker",
+    "week": 13
+  },
+  {
+    "entity_id": "Jake Elliott",
+    "label": "Jake Elliott",
+    "season": 2025,
+    "stats": {
+      "fg_made_30_39": 1.0,
+      "pat_made": 2.0
+    },
+    "unit": "kicker",
+    "week": 5
+  },
+  {
+    "entity_id": "Jason Myers",
+    "label": "Jason Myers",
+    "season": 2025,
+    "stats": {
+      "pat_made": 5.0
+    },
+    "unit": "kicker",
+    "week": 5
+  },
+  {
+    "entity_id": "Jason Myers",
+    "label": "Jason Myers",
+    "season": 2025,
+    "stats": {
+      "fg_made_40_49": 1.0,
+      "pat_made": 5.0
+    },
+    "unit": "kicker",
+    "week": 9
+  },
+  {
+    "entity_id": "Jason Myers",
+    "label": "Jason Myers",
+    "season": 2025,
+    "stats": {
+      "fg_made_30_39": 1.0,
+      "fg_made_40_49": 1.0,
+      "fg_made_50_plus": 2.0,
+      "pat_made": 2.0
+    },
+    "unit": "kicker",
+    "week": 13
+  },
+  {
+    "entity_id": "Joshua Karty",
+    "label": "Joshua Karty",
+    "season": 2025,
+    "stats": {
+      "fg_made_40_49": 1.0,
+      "pat_made": 2.0,
+      "pat_missed": 1.0
+    },
+    "unit": "kicker",
+    "week": 5
+  },
+  {
+    "entity_id": "Joshua Karty",
+    "label": "Joshua Karty",
+    "season": 2025,
+    "stats": {
+      "pat_made": 4.0,
+      "pat_missed": 1.0
+    },
+    "unit": "kicker",
+    "week": 9
+  },
+  {
+    "entity_id": "Ka'imi Fairbairn",
+    "label": "Ka'imi Fairbairn",
+    "season": 2025,
+    "stats": {
+      "fg_made_40_49": 1.0,
+      "fg_made_50_plus": 2.0,
+      "tackle_solo": 1.0
+    },
+    "unit": "kicker",
+    "week": 1
+  },
+  {
+    "entity_id": "Ka'imi Fairbairn",
+    "label": "Ka'imi Fairbairn",
+    "season": 2025,
+    "stats": {
+      "fg_made_30_39": 1.0,
+      "fg_made_50_plus": 2.0,
+      "pat_made": 5.0
+    },
+    "unit": "kicker",
+    "week": 5
+  },
+  {
+    "entity_id": "Ka'imi Fairbairn",
+    "label": "Ka'imi Fairbairn",
+    "season": 2025,
+    "stats": {
+      "fg_made_20_29": 1.0,
+      "fg_made_30_39": 1.0,
+      "fg_made_40_49": 3.0
+    },
+    "unit": "kicker",
+    "week": 9
+  },
+  {
+    "entity_id": "Ka'imi Fairbairn",
+    "label": "Ka'imi Fairbairn",
+    "season": 2025,
+    "stats": {
+      "fg_made_20_29": 1.0,
+      "fg_made_40_49": 1.0,
+      "pat_made": 2.0
+    },
+    "unit": "kicker",
+    "week": 13
+  },
+  {
+    "entity_id": "Matt Gay",
+    "label": "Matt Gay",
+    "season": 2025,
+    "stats": {
+      "pat_made": 3.0
+    },
+    "unit": "kicker",
+    "week": 1
+  },
+  {
+    "entity_id": "Matt Gay",
+    "label": "Matt Gay",
+    "season": 2025,
+    "stats": {
+      "fg_made_20_29": 1.0,
+      "fg_made_30_39": 1.0,
+      "pat_made": 3.0
+    },
+    "unit": "kicker",
+    "week": 5
+  },
+  {
+    "entity_id": "Spencer Shrader",
+    "label": "Spencer Shrader",
+    "season": 2025,
+    "stats": {
+      "pat_made": 2.0
+    },
+    "unit": "kicker",
+    "week": 5
+  },
+  {
+    "entity_id": "Tyler Loop",
+    "label": "Tyler Loop",
+    "season": 2025,
+    "stats": {
+      "fg_made_40_49": 1.0,
+      "fg_made_50_plus": 1.0,
+      "pat_made": 4.0,
+      "pat_missed": 1.0,
+      "tackle_solo": 1.0
+    },
+    "unit": "kicker",
+    "week": 1
+  },
+  {
+    "entity_id": "Tyler Loop",
+    "label": "Tyler Loop",
+    "season": 2025,
+    "stats": {
+      "fg_made_20_29": 1.0,
+      "pat_made": 1.0,
+      "tackle_solo": 1.0
+    },
+    "unit": "kicker",
+    "week": 5
+  },
+  {
+    "entity_id": "Tyler Loop",
+    "label": "Tyler Loop",
+    "season": 2025,
+    "stats": {
+      "pat_made": 4.0
+    },
+    "unit": "kicker",
+    "week": 9
+  },
+  {
+    "entity_id": "Tyler Loop",
+    "label": "Tyler Loop",
+    "season": 2025,
+    "stats": {
+      "pat_made": 2.0
+    },
+    "unit": "kicker",
+    "week": 13
+  },
+  {
+    "entity_id": "Wil Lutz",
+    "label": "Wil Lutz",
+    "season": 2025,
+    "stats": {
+      "fg_made_30_39": 2.0,
+      "pat_made": 2.0
+    },
+    "unit": "kicker",
+    "week": 1
+  },
+  {
+    "entity_id": "Wil Lutz",
+    "label": "Wil Lutz",
+    "season": 2025,
+    "stats": {
+      "fg_made_30_39": 2.0,
+      "pat_made": 3.0
+    },
+    "unit": "kicker",
+    "week": 13
+  },
+  {
+    "entity_id": "Will Reichard",
+    "label": "Will Reichard",
+    "season": 2025,
+    "stats": {
+      "fg_made_30_39": 1.0,
+      "fg_made_50_plus": 1.0,
+      "pat_made": 1.0
+    },
+    "unit": "kicker",
+    "week": 1
+  },
+  {
+    "entity_id": "Will Reichard",
+    "label": "Will Reichard",
+    "season": 2025,
+    "stats": {
+      "pat_made": 3.0
+    },
+    "unit": "kicker",
+    "week": 5
+  },
+  {
+    "entity_id": "Will Reichard",
+    "label": "Will Reichard",
+    "season": 2025,
+    "stats": {
+      "fg_made_20_29": 1.0,
+      "fg_made_50_plus": 1.0,
+      "pat_made": 3.0
+    },
+    "unit": "kicker",
+    "week": 9
+  },
+  {
+    "entity_id": "A.J. Brown",
+    "label": "A.J. Brown",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 8.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "A.J. Brown",
+    "label": "A.J. Brown",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 43.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "A.J. Brown",
+    "label": "A.J. Brown",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 2.0,
+      "receiving_yards": 132.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Aaron Jones Sr.",
+    "label": "Aaron Jones Sr.",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 1.0,
+      "receiving_yards": 44.0,
+      "rushing_yards": 23.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Aaron Jones Sr.",
+    "label": "Aaron Jones Sr.",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 20.0,
+      "rushing_yards": 78.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Aaron Jones Sr.",
+    "label": "Aaron Jones Sr.",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 22.0,
+      "rushing_yards": 3.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Aaron Rodgers",
+    "label": "Aaron Rodgers",
+    "season": 2025,
+    "stats": {
+      "passing_touchdowns": 1.0,
+      "passing_yards": 203.0,
+      "sacks_taken": 3.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Adam Thielen",
+    "label": "Adam Thielen",
+    "season": 2025,
+    "stats": {
+      "two_point_conversions": 1.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Alec Pierce",
+    "label": "Alec Pierce",
+    "season": 2025,
+    "stats": {
+      "passes_defended": 1.0,
+      "receiving_touchdowns": 1.0,
+      "receiving_yards": 78.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Alvin Kamara",
+    "label": "Alvin Kamara",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 12.0,
+      "rushing_touchdowns": 1.0,
+      "rushing_yards": 45.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Alvin Kamara",
+    "label": "Alvin Kamara",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 28.0,
+      "rushing_yards": 27.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Alvin Kamara",
+    "label": "Alvin Kamara",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 3.0,
+      "rushing_yards": 14.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Amon-Ra St. Brown",
+    "label": "Amon-Ra St. Brown",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 45.0,
+      "tackle_solo": 1.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Amon-Ra St. Brown",
+    "label": "Amon-Ra St. Brown",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 100.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Amon-Ra St. Brown",
+    "label": "Amon-Ra St. Brown",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 97.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Ashton Jeanty",
+    "label": "Ashton Jeanty",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 2.0,
+      "rushing_touchdowns": 1.0,
+      "rushing_yards": 38.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Ashton Jeanty",
+    "label": "Ashton Jeanty",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 42.0,
+      "rushing_yards": 67.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Ashton Jeanty",
+    "label": "Ashton Jeanty",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 1.0,
+      "receiving_yards": 47.0,
+      "rushing_yards": 42.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Ashton Jeanty",
+    "label": "Ashton Jeanty",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 30.0,
+      "rushing_yards": 31.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Austin Ekeler",
+    "label": "Austin Ekeler",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 31.0,
+      "rushing_yards": 26.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Baker Mayfield",
+    "label": "Baker Mayfield",
+    "season": 2025,
+    "stats": {
+      "passing_touchdowns": 3.0,
+      "passing_yards": 167.0,
+      "rushing_yards": 39.0,
+      "sacks_taken": 1.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Baker Mayfield",
+    "label": "Baker Mayfield",
+    "season": 2025,
+    "stats": {
+      "passing_touchdowns": 2.0,
+      "passing_yards": 379.0,
+      "rushing_yards": 15.0,
+      "sacks_taken": 1.0,
+      "two_point_conversions": 1.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Baker Mayfield",
+    "label": "Baker Mayfield",
+    "season": 2025,
+    "stats": {
+      "passing_touchdowns": 1.0,
+      "passing_yards": 194.0,
+      "rushing_yards": 27.0,
+      "sacks_taken": 2.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Bam Knight",
+    "label": "Bam Knight",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 20.0,
+      "rushing_yards": 27.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Bhayshul Tuten",
+    "label": "Bhayshul Tuten",
+    "season": 2025,
+    "stats": {
+      "return_yards": 12.0,
+      "rushing_yards": 11.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Bhayshul Tuten",
+    "label": "Bhayshul Tuten",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 5.0,
+      "rushing_yards": 6.0,
+      "tackle_solo": 1.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Bijan Robinson",
+    "label": "Bijan Robinson",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 1.0,
+      "receiving_yards": 100.0,
+      "rushing_yards": 24.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Bijan Robinson",
+    "label": "Bijan Robinson",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 50.0,
+      "rushing_yards": 46.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Bijan Robinson",
+    "label": "Bijan Robinson",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 51.0,
+      "rushing_touchdowns": 1.0,
+      "rushing_yards": 142.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Bo Nix",
+    "label": "Bo Nix",
+    "season": 2025,
+    "stats": {
+      "interceptions_thrown": 2.0,
+      "passing_touchdowns": 1.0,
+      "passing_yards": 176.0,
+      "rushing_yards": 18.0,
+      "sacks_taken": 1.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Bo Nix",
+    "label": "Bo Nix",
+    "season": 2025,
+    "stats": {
+      "passing_touchdowns": 1.0,
+      "passing_yards": 242.0,
+      "rushing_yards": 22.0,
+      "sacks_taken": 2.0,
+      "two_point_conversions": 1.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Bo Nix",
+    "label": "Bo Nix",
+    "season": 2025,
+    "stats": {
+      "interceptions_thrown": 1.0,
+      "passing_touchdowns": 2.0,
+      "passing_yards": 173.0,
+      "rushing_yards": 36.0,
+      "sacks_taken": 1.0,
+      "two_point_conversions": 1.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Bo Nix",
+    "label": "Bo Nix",
+    "season": 2025,
+    "stats": {
+      "interceptions_thrown": 1.0,
+      "passing_touchdowns": 1.0,
+      "passing_yards": 321.0,
+      "rushing_yards": 16.0,
+      "sacks_taken": 1.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Braelon Allen",
+    "label": "Braelon Allen",
+    "season": 2025,
+    "stats": {
+      "rushing_touchdowns": 1.0,
+      "rushing_yards": 9.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Breece Hall",
+    "label": "Breece Hall",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 38.0,
+      "rushing_yards": 107.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Breece Hall",
+    "label": "Breece Hall",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 42.0,
+      "rushing_yards": 113.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Breece Hall",
+    "label": "Breece Hall",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 8.0,
+      "rushing_touchdowns": 1.0,
+      "rushing_yards": 68.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Brenton Strange",
+    "label": "Brenton Strange",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 22.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Brian Thomas Jr.",
+    "label": "Brian Thomas Jr.",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 11.0,
+      "rushing_touchdowns": 1.0,
+      "rushing_yards": 9.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Brian Thomas Jr.",
+    "label": "Brian Thomas Jr.",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 80.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Brian Thomas Jr.",
+    "label": "Brian Thomas Jr.",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 55.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Brian Thomas Jr.",
+    "label": "Brian Thomas Jr.",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 28.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Brock Bowers",
+    "label": "Brock Bowers",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 103.0,
+      "tackle_solo": 1.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Brock Bowers",
+    "label": "Brock Bowers",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 3.0,
+      "receiving_yards": 127.0,
+      "rushing_yards": 6.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Brock Bowers",
+    "label": "Brock Bowers",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 2.0,
+      "receiving_yards": 63.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Brock Purdy",
+    "label": "Brock Purdy",
+    "season": 2025,
+    "stats": {
+      "interceptions_thrown": 2.0,
+      "passing_touchdowns": 2.0,
+      "passing_yards": 277.0,
+      "rushing_yards": 17.0,
+      "sacks_taken": 1.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Brock Purdy",
+    "label": "Brock Purdy",
+    "season": 2025,
+    "stats": {
+      "passing_touchdowns": 1.0,
+      "passing_yards": 168.0,
+      "rushing_touchdowns": 1.0,
+      "rushing_yards": 4.0,
+      "sacks_taken": 1.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Bryce Young",
+    "label": "Bryce Young",
+    "season": 2025,
+    "stats": {
+      "interceptions_thrown": 2.0,
+      "passing_touchdowns": 1.0,
+      "passing_yards": 154.0,
+      "rushing_yards": 40.0,
+      "sacks_taken": 1.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Bryce Young",
+    "label": "Bryce Young",
+    "season": 2025,
+    "stats": {
+      "interceptions_thrown": 1.0,
+      "passing_touchdowns": 2.0,
+      "passing_yards": 198.0,
+      "rushing_yards": 1.0,
+      "sacks_taken": 3.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Bucky Irving",
+    "label": "Bucky Irving",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 1.0,
+      "receiving_yards": 8.0,
+      "rushing_yards": 37.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Bucky Irving",
+    "label": "Bucky Irving",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 20.0,
+      "rushing_touchdowns": 1.0,
+      "rushing_yards": 61.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "C.J. Stroud",
+    "label": "C.J. Stroud",
+    "season": 2025,
+    "stats": {
+      "interceptions_thrown": 1.0,
+      "passing_yards": 188.0,
+      "rushing_yards": 32.0,
+      "sacks_taken": 3.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "C.J. Stroud",
+    "label": "C.J. Stroud",
+    "season": 2025,
+    "stats": {
+      "passing_touchdowns": 4.0,
+      "passing_yards": 244.0,
+      "rushing_yards": 30.0,
+      "sacks_taken": 2.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "C.J. Stroud",
+    "label": "C.J. Stroud",
+    "season": 2025,
+    "stats": {
+      "passing_yards": 79.0,
+      "rushing_yards": 12.0,
+      "sacks_taken": 2.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "C.J. Stroud",
+    "label": "C.J. Stroud",
+    "season": 2025,
+    "stats": {
+      "interceptions_thrown": 1.0,
+      "passing_yards": 276.0,
+      "sacks_taken": 2.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Cade Otton",
+    "label": "Cade Otton",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 9.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Caleb Williams",
+    "label": "Caleb Williams",
+    "season": 2025,
+    "stats": {
+      "passing_touchdowns": 1.0,
+      "passing_yards": 210.0,
+      "rushing_touchdowns": 1.0,
+      "rushing_yards": 58.0,
+      "sacks_taken": 2.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Caleb Williams",
+    "label": "Caleb Williams",
+    "season": 2025,
+    "stats": {
+      "passing_touchdowns": 3.0,
+      "passing_yards": 280.0,
+      "receiving_touchdowns": 1.0,
+      "receiving_yards": 22.0,
+      "rushing_yards": 53.0,
+      "sacks_taken": 2.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Caleb Williams",
+    "label": "Caleb Williams",
+    "season": 2025,
+    "stats": {
+      "interceptions_thrown": 1.0,
+      "passing_touchdowns": 1.0,
+      "passing_yards": 154.0,
+      "rushing_yards": 13.0,
+      "sacks_taken": 2.0,
+      "tackle_solo": 1.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Calvin Ridley",
+    "label": "Calvin Ridley",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 27.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Calvin Ridley",
+    "label": "Calvin Ridley",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 131.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Cam Skattebo",
+    "label": "Cam Skattebo",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 12.0,
+      "rushing_yards": -3.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Cam Skattebo",
+    "label": "Cam Skattebo",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 45.0,
+      "rushing_yards": 59.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "CeeDee Lamb",
+    "label": "CeeDee Lamb",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 110.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "CeeDee Lamb",
+    "label": "CeeDee Lamb",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 85.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "CeeDee Lamb",
+    "label": "CeeDee Lamb",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 1.0,
+      "receiving_yards": 112.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Chase Brown",
+    "label": "Chase Brown",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 8.0,
+      "rushing_touchdowns": 1.0,
+      "rushing_yards": 43.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Chase Brown",
+    "label": "Chase Brown",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 21.0,
+      "rushing_yards": 27.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Chase Brown",
+    "label": "Chase Brown",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 75.0,
+      "rushing_yards": 37.0,
+      "tackle_solo": 1.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Chase Brown",
+    "label": "Chase Brown",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 35.0,
+      "rushing_yards": 78.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Chig Okonkwo",
+    "label": "Chig Okonkwo",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 19.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Chimere Dike",
+    "label": "Chimere Dike",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 8.0,
+      "return_yards": 152.0,
+      "rushing_yards": 1.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Chris Godwin Jr.",
+    "label": "Chris Godwin Jr.",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 26.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Chris Godwin Jr.",
+    "label": "Chris Godwin Jr.",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 78.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Chris Olave",
+    "label": "Chris Olave",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 54.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Chris Olave",
+    "label": "Chris Olave",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 59.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Chris Olave",
+    "label": "Chris Olave",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 57.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Chris Olave",
+    "label": "Chris Olave",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 1.0,
+      "receiving_yards": 47.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Chris Rodriguez Jr.",
+    "label": "Chris Rodriguez Jr.",
+    "season": 2025,
+    "stats": {
+      "rushing_touchdowns": 1.0,
+      "rushing_yards": 41.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Christian McCaffrey",
+    "label": "Christian McCaffrey",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 73.0,
+      "rushing_yards": 69.0,
+      "tackle_assist": 1.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Christian McCaffrey",
+    "label": "Christian McCaffrey",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 1.0,
+      "receiving_yards": 82.0,
+      "rushing_yards": 57.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Christian McCaffrey",
+    "label": "Christian McCaffrey",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 1.0,
+      "receiving_yards": 67.0,
+      "rushing_touchdowns": 1.0,
+      "rushing_yards": 106.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Christian McCaffrey",
+    "label": "Christian McCaffrey",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 21.0,
+      "rushing_touchdowns": 1.0,
+      "rushing_yards": 53.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Christian Watson",
+    "label": "Christian Watson",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 1.0,
+      "receiving_yards": 80.0,
+      "rushing_yards": 3.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Chuba Hubbard",
+    "label": "Chuba Hubbard",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 1.0,
+      "receiving_yards": 32.0,
+      "rushing_yards": 57.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Chuba Hubbard",
+    "label": "Chuba Hubbard",
+    "season": 2025,
+    "stats": {
+      "rushing_yards": 17.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Colston Loveland",
+    "label": "Colston Loveland",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 12.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Colston Loveland",
+    "label": "Colston Loveland",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 2.0,
+      "receiving_yards": 118.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Colston Loveland",
+    "label": "Colston Loveland",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 28.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Cooper Kupp",
+    "label": "Cooper Kupp",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 15.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Cooper Kupp",
+    "label": "Cooper Kupp",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 59.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Courtland Sutton",
+    "label": "Courtland Sutton",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 1.0,
+      "receiving_yards": 61.0,
+      "tackle_solo": 1.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Courtland Sutton",
+    "label": "Courtland Sutton",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 99.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Courtland Sutton",
+    "label": "Courtland Sutton",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 1.0,
+      "receiving_yards": 30.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Courtland Sutton",
+    "label": "Courtland Sutton",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 1.0,
+      "receiving_yards": 62.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "D'Andre Swift",
+    "label": "D'Andre Swift",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 12.0,
+      "rushing_yards": 53.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "D'Andre Swift",
+    "label": "D'Andre Swift",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 13.0,
+      "rushing_touchdowns": 1.0,
+      "rushing_yards": 125.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "DJ Moore",
+    "label": "DJ Moore",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 68.0,
+      "rushing_yards": 8.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "DJ Moore",
+    "label": "DJ Moore",
+    "season": 2025,
+    "stats": {
+      "passing_touchdowns": 1.0,
+      "passing_yards": 2.0,
+      "receiving_yards": 72.0,
+      "rushing_touchdowns": 1.0,
+      "rushing_yards": 17.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "DJ Moore",
+    "label": "DJ Moore",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 17.0,
+      "rushing_yards": 10.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "DK Metcalf",
+    "label": "DK Metcalf",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 83.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "DK Metcalf",
+    "label": "DK Metcalf",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 6.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "DK Metcalf",
+    "label": "DK Metcalf",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 32.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Dak Prescott",
+    "label": "Dak Prescott",
+    "season": 2025,
+    "stats": {
+      "passing_yards": 188.0,
+      "rushing_yards": 3.0,
+      "tackle_solo": 1.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Dak Prescott",
+    "label": "Dak Prescott",
+    "season": 2025,
+    "stats": {
+      "passing_touchdowns": 4.0,
+      "passing_yards": 237.0,
+      "rushing_yards": 28.0,
+      "sacks_taken": 1.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Dak Prescott",
+    "label": "Dak Prescott",
+    "season": 2025,
+    "stats": {
+      "interceptions_thrown": 1.0,
+      "passing_touchdowns": 1.0,
+      "passing_yards": 250.0,
+      "rushing_yards": 34.0,
+      "sacks_taken": 5.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Dak Prescott",
+    "label": "Dak Prescott",
+    "season": 2025,
+    "stats": {
+      "interceptions_thrown": 1.0,
+      "passing_touchdowns": 2.0,
+      "passing_yards": 320.0,
+      "rushing_yards": -2.0,
+      "two_point_conversions": 1.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Dallas Goedert",
+    "label": "Dallas Goedert",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 44.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Dallas Goedert",
+    "label": "Dallas Goedert",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 1.0,
+      "receiving_yards": 19.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Dallas Goedert",
+    "label": "Dallas Goedert",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 27.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Dalton Kincaid",
+    "label": "Dalton Kincaid",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 1.0,
+      "receiving_yards": 48.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Dalton Kincaid",
+    "label": "Dalton Kincaid",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 108.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Dalton Kincaid",
+    "label": "Dalton Kincaid",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 1.0,
+      "receiving_yards": 101.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Daniel Jones",
+    "label": "Daniel Jones",
+    "season": 2025,
+    "stats": {
+      "passing_touchdowns": 2.0,
+      "passing_yards": 212.0,
+      "rushing_yards": 2.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Daniel Jones",
+    "label": "Daniel Jones",
+    "season": 2025,
+    "stats": {
+      "interceptions_thrown": 3.0,
+      "passing_touchdowns": 1.0,
+      "passing_yards": 342.0,
+      "rushing_touchdowns": 1.0,
+      "rushing_yards": 4.0,
+      "sacks_taken": 5.0,
+      "tackle_solo": 1.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Daniel Jones",
+    "label": "Daniel Jones",
+    "season": 2025,
+    "stats": {
+      "passing_touchdowns": 2.0,
+      "passing_yards": 201.0,
+      "rushing_yards": 1.0,
+      "sacks_taken": 1.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Darius Slayton",
+    "label": "Darius Slayton",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 31.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Darius Slayton",
+    "label": "Darius Slayton",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 62.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Darius Slayton",
+    "label": "Darius Slayton",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 1.0,
+      "receiving_yards": 41.0,
+      "two_point_conversions": 1.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Darren Waller",
+    "label": "Darren Waller",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 1.0,
+      "receiving_yards": 78.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Darren Waller",
+    "label": "Darren Waller",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 47.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Davante Adams",
+    "label": "Davante Adams",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 51.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Davante Adams",
+    "label": "Davante Adams",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 88.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Davante Adams",
+    "label": "Davante Adams",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 2.0,
+      "receiving_yards": 60.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Davante Adams",
+    "label": "Davante Adams",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 2.0,
+      "receiving_yards": 58.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "David Montgomery",
+    "label": "David Montgomery",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 18.0,
+      "rushing_yards": 25.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "David Montgomery",
+    "label": "David Montgomery",
+    "season": 2025,
+    "stats": {
+      "passing_touchdowns": 1.0,
+      "passing_yards": 3.0,
+      "receiving_yards": 6.0,
+      "rushing_touchdowns": 1.0,
+      "rushing_yards": 65.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "David Montgomery",
+    "label": "David Montgomery",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 10.0,
+      "rushing_touchdowns": 1.0,
+      "rushing_yards": 40.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "David Montgomery",
+    "label": "David Montgomery",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 16.0,
+      "rushing_touchdowns": 1.0,
+      "rushing_yards": 32.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "David Njoku",
+    "label": "David Njoku",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 37.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "De'Von Achane",
+    "label": "De'Von Achane",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 1.0,
+      "receiving_yards": 20.0,
+      "rushing_yards": 55.0,
+      "tackle_solo": 1.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "De'Von Achane",
+    "label": "De'Von Achane",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 1.0,
+      "receiving_yards": 30.0,
+      "rushing_yards": 16.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "De'Von Achane",
+    "label": "De'Von Achane",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 39.0,
+      "rushing_yards": 67.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "De'Von Achane",
+    "label": "De'Von Achane",
+    "season": 2025,
+    "stats": {
+      "rushing_touchdowns": 1.0,
+      "rushing_yards": 134.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "DeVonta Smith",
+    "label": "DeVonta Smith",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 16.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "DeVonta Smith",
+    "label": "DeVonta Smith",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 114.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "DeVonta Smith",
+    "label": "DeVonta Smith",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 48.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Deebo Samuel Sr.",
+    "label": "Deebo Samuel Sr.",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 77.0,
+      "return_yards": 50.0,
+      "rushing_touchdowns": 1.0,
+      "rushing_yards": 19.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Deebo Samuel Sr.",
+    "label": "Deebo Samuel Sr.",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 1.0,
+      "receiving_yards": 96.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Deebo Samuel Sr.",
+    "label": "Deebo Samuel Sr.",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 41.0,
+      "return_yards": 30.0,
+      "rushing_yards": 3.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Deebo Samuel Sr.",
+    "label": "Deebo Samuel Sr.",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 64.0,
+      "return_yards": 114.0,
+      "rushing_yards": -3.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Derrick Henry",
+    "label": "Derrick Henry",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 13.0,
+      "rushing_touchdowns": 2.0,
+      "rushing_yards": 169.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Derrick Henry",
+    "label": "Derrick Henry",
+    "season": 2025,
+    "stats": {
+      "rushing_touchdowns": 1.0,
+      "rushing_yards": 33.0,
+      "tackle_solo": 1.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Derrick Henry",
+    "label": "Derrick Henry",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 2.0,
+      "rushing_yards": 119.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Derrick Henry",
+    "label": "Derrick Henry",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 44.0,
+      "rushing_touchdowns": 1.0,
+      "rushing_yards": 60.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Devin Neal",
+    "label": "Devin Neal",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 22.0,
+      "rushing_yards": 47.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Drake London",
+    "label": "Drake London",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 55.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Drake London",
+    "label": "Drake London",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 3.0,
+      "receiving_yards": 118.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Drake Maye",
+    "label": "Drake Maye",
+    "season": 2025,
+    "stats": {
+      "interceptions_thrown": 1.0,
+      "passing_touchdowns": 1.0,
+      "passing_yards": 287.0,
+      "receiving_yards": 2.0,
+      "rushing_yards": 11.0,
+      "sacks_taken": 4.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Drake Maye",
+    "label": "Drake Maye",
+    "season": 2025,
+    "stats": {
+      "passing_yards": 273.0,
+      "rushing_yards": 12.0,
+      "sacks_taken": 4.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Drake Maye",
+    "label": "Drake Maye",
+    "season": 2025,
+    "stats": {
+      "interceptions_thrown": 1.0,
+      "passing_touchdowns": 2.0,
+      "passing_yards": 259.0,
+      "rushing_yards": 20.0,
+      "sacks_taken": 6.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Drake Maye",
+    "label": "Drake Maye",
+    "season": 2025,
+    "stats": {
+      "passing_touchdowns": 2.0,
+      "passing_yards": 282.0,
+      "rushing_yards": 12.0,
+      "sacks_taken": 3.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Emanuel Wilson",
+    "label": "Emanuel Wilson",
+    "season": 2025,
+    "stats": {
+      "rushing_yards": 14.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Emari Demercado",
+    "label": "Emari Demercado",
+    "season": 2025,
+    "stats": {
+      "rushing_yards": 81.0,
+      "tackle_solo": 1.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Emeka Egbuka",
+    "label": "Emeka Egbuka",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 2.0,
+      "receiving_yards": 67.0,
+      "rushing_yards": 9.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Emeka Egbuka",
+    "label": "Emeka Egbuka",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 1.0,
+      "receiving_yards": 163.0,
+      "two_point_conversions": 1.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Emeka Egbuka",
+    "label": "Emeka Egbuka",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 42.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Evan Engram",
+    "label": "Evan Engram",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 21.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Garrett Wilson",
+    "label": "Garrett Wilson",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 1.0,
+      "receiving_yards": 95.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Garrett Wilson",
+    "label": "Garrett Wilson",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 1.0,
+      "receiving_yards": 71.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "George Kittle",
+    "label": "George Kittle",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 1.0,
+      "receiving_yards": 25.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "George Kittle",
+    "label": "George Kittle",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 32.0,
+      "rushing_yards": -3.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "George Kittle",
+    "label": "George Kittle",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 67.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "George Pickens",
+    "label": "George Pickens",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 30.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "George Pickens",
+    "label": "George Pickens",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 1.0,
+      "receiving_yards": 57.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "George Pickens",
+    "label": "George Pickens",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 79.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "George Pickens",
+    "label": "George Pickens",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 88.0,
+      "two_point_conversions": 1.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Harold Fannin Jr.",
+    "label": "Harold Fannin Jr.",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 1.0,
+      "receiving_yards": 43.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Hunter Henry",
+    "label": "Hunter Henry",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 66.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Hunter Henry",
+    "label": "Hunter Henry",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 46.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Hunter Henry",
+    "label": "Hunter Henry",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 51.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Hunter Henry",
+    "label": "Hunter Henry",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 73.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Isaiah Likely",
+    "label": "Isaiah Likely",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 60.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Isiah Pacheco",
+    "label": "Isiah Pacheco",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 3.0,
+      "rushing_yards": 25.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Isiah Pacheco",
+    "label": "Isiah Pacheco",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 20.0,
+      "rushing_yards": 36.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Isiah Pacheco",
+    "label": "Isiah Pacheco",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 17.0,
+      "rushing_yards": 16.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "J.J. McCarthy",
+    "label": "J.J. McCarthy",
+    "season": 2025,
+    "stats": {
+      "interceptions_thrown": 1.0,
+      "passing_touchdowns": 2.0,
+      "passing_yards": 143.0,
+      "rushing_touchdowns": 1.0,
+      "rushing_yards": 25.0,
+      "sacks_taken": 3.0,
+      "two_point_conversions": 1.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "J.K. Dobbins",
+    "label": "J.K. Dobbins",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 5.0,
+      "rushing_touchdowns": 1.0,
+      "rushing_yards": 63.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "J.K. Dobbins",
+    "label": "J.K. Dobbins",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 5.0,
+      "rushing_touchdowns": 1.0,
+      "rushing_yards": 79.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "J.K. Dobbins",
+    "label": "J.K. Dobbins",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": -2.0,
+      "rushing_yards": 61.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Ja'Marr Chase",
+    "label": "Ja'Marr Chase",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 26.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Ja'Marr Chase",
+    "label": "Ja'Marr Chase",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 2.0,
+      "receiving_yards": 110.0,
+      "tackle_solo": 3.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Ja'Marr Chase",
+    "label": "Ja'Marr Chase",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 111.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Ja'Marr Chase",
+    "label": "Ja'Marr Chase",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 110.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Jacoby Brissett",
+    "label": "Jacoby Brissett",
+    "season": 2025,
+    "stats": {
+      "interceptions_thrown": 1.0,
+      "passing_touchdowns": 2.0,
+      "passing_yards": 301.0,
+      "rushing_yards": 16.0,
+      "sacks_taken": 2.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Jacory Croskey-Merritt",
+    "label": "Jacory Croskey-Merritt",
+    "season": 2025,
+    "stats": {
+      "rushing_touchdowns": 1.0,
+      "rushing_yards": 82.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Jacory Croskey-Merritt",
+    "label": "Jacory Croskey-Merritt",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 3.0,
+      "rushing_yards": 38.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Jacory Croskey-Merritt",
+    "label": "Jacory Croskey-Merritt",
+    "season": 2025,
+    "stats": {
+      "rushing_yards": 20.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Jahmyr Gibbs",
+    "label": "Jahmyr Gibbs",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 31.0,
+      "rushing_yards": 19.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Jahmyr Gibbs",
+    "label": "Jahmyr Gibbs",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 1.0,
+      "receiving_yards": 33.0,
+      "rushing_yards": 54.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Jahmyr Gibbs",
+    "label": "Jahmyr Gibbs",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 3.0,
+      "rushing_yards": 25.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Jahmyr Gibbs",
+    "label": "Jahmyr Gibbs",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 18.0,
+      "rushing_yards": 68.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Jake Ferguson",
+    "label": "Jake Ferguson",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 23.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Jake Ferguson",
+    "label": "Jake Ferguson",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 2.0,
+      "receiving_yards": 49.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Jake Ferguson",
+    "label": "Jake Ferguson",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 50.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Jake Ferguson",
+    "label": "Jake Ferguson",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 36.0,
+      "tackle_solo": 1.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Jakobi Meyers",
+    "label": "Jakobi Meyers",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 97.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Jakobi Meyers",
+    "label": "Jakobi Meyers",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 32.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Jakobi Meyers",
+    "label": "Jakobi Meyers",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 23.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Jakobi Meyers",
+    "label": "Jakobi Meyers",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 1.0,
+      "receiving_yards": 90.0,
+      "rushing_yards": 3.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Jalen Hurts",
+    "label": "Jalen Hurts",
+    "season": 2025,
+    "stats": {
+      "passing_yards": 152.0,
+      "rushing_touchdowns": 2.0,
+      "rushing_yards": 62.0,
+      "sacks_taken": 1.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Jalen Hurts",
+    "label": "Jalen Hurts",
+    "season": 2025,
+    "stats": {
+      "passing_touchdowns": 2.0,
+      "passing_yards": 280.0,
+      "rushing_yards": 3.0,
+      "sacks_taken": 6.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Jalen Hurts",
+    "label": "Jalen Hurts",
+    "season": 2025,
+    "stats": {
+      "interceptions_thrown": 1.0,
+      "passing_touchdowns": 2.0,
+      "passing_yards": 230.0,
+      "rushing_yards": 31.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "James Conner",
+    "label": "James Conner",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 1.0,
+      "receiving_yards": 5.0,
+      "rushing_yards": 39.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "James Cook III",
+    "label": "James Cook III",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 58.0,
+      "rushing_touchdowns": 1.0,
+      "rushing_yards": 44.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "James Cook III",
+    "label": "James Cook III",
+    "season": 2025,
+    "stats": {
+      "rushing_yards": 49.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "James Cook III",
+    "label": "James Cook III",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 11.0,
+      "rushing_yards": 114.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "James Cook III",
+    "label": "James Cook III",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 33.0,
+      "rushing_yards": 144.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Jameson Williams",
+    "label": "Jameson Williams",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 23.0,
+      "rushing_yards": 3.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Jameson Williams",
+    "label": "Jameson Williams",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 9.0,
+      "rushing_yards": 1.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Jameson Williams",
+    "label": "Jameson Williams",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 1.0,
+      "receiving_yards": 66.0,
+      "tackle_solo": 1.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Jameson Williams",
+    "label": "Jameson Williams",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 1.0,
+      "receiving_yards": 144.0,
+      "rushing_yards": -5.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Jared Goff",
+    "label": "Jared Goff",
+    "season": 2025,
+    "stats": {
+      "interceptions_thrown": 1.0,
+      "passing_touchdowns": 1.0,
+      "passing_yards": 225.0,
+      "rushing_yards": -1.0,
+      "sacks_taken": 4.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Jared Goff",
+    "label": "Jared Goff",
+    "season": 2025,
+    "stats": {
+      "passing_touchdowns": 3.0,
+      "passing_yards": 258.0,
+      "rushing_yards": -2.0,
+      "sacks_taken": 4.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Jared Goff",
+    "label": "Jared Goff",
+    "season": 2025,
+    "stats": {
+      "passing_touchdowns": 2.0,
+      "passing_yards": 284.0,
+      "sacks_taken": 5.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Jared Goff",
+    "label": "Jared Goff",
+    "season": 2025,
+    "stats": {
+      "passing_touchdowns": 2.0,
+      "passing_yards": 256.0,
+      "rushing_yards": 24.0,
+      "sacks_taken": 3.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Jauan Jennings",
+    "label": "Jauan Jennings",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 16.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Jauan Jennings",
+    "label": "Jauan Jennings",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 1.0,
+      "receiving_yards": 41.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Jauan Jennings",
+    "label": "Jauan Jennings",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 1.0,
+      "receiving_yards": 39.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Javonte Williams",
+    "label": "Javonte Williams",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 10.0,
+      "rushing_touchdowns": 2.0,
+      "rushing_yards": 54.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Javonte Williams",
+    "label": "Javonte Williams",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 1.0,
+      "receiving_yards": 4.0,
+      "rushing_touchdowns": 1.0,
+      "rushing_yards": 135.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Javonte Williams",
+    "label": "Javonte Williams",
+    "season": 2025,
+    "stats": {
+      "rushing_yards": 83.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Javonte Williams",
+    "label": "Javonte Williams",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 1.0,
+      "receiving_yards": 21.0,
+      "rushing_yards": 59.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Jaxon Smith-Njigba",
+    "label": "Jaxon Smith-Njigba",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 124.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Jaxon Smith-Njigba",
+    "label": "Jaxon Smith-Njigba",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 1.0,
+      "receiving_yards": 132.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Jaxon Smith-Njigba",
+    "label": "Jaxon Smith-Njigba",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 129.0,
+      "rushing_yards": 11.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Jaxon Smith-Njigba",
+    "label": "Jaxon Smith-Njigba",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 23.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Jaxson Dart",
+    "label": "Jaxson Dart",
+    "season": 2025,
+    "stats": {
+      "passing_touchdowns": 2.0,
+      "passing_yards": 191.0,
+      "rushing_touchdowns": 1.0,
+      "rushing_yards": 56.0,
+      "sacks_taken": 2.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Jayden Daniels",
+    "label": "Jayden Daniels",
+    "season": 2025,
+    "stats": {
+      "passing_touchdowns": 1.0,
+      "passing_yards": 233.0,
+      "rushing_yards": 68.0,
+      "sacks_taken": 3.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Jayden Daniels",
+    "label": "Jayden Daniels",
+    "season": 2025,
+    "stats": {
+      "passing_touchdowns": 1.0,
+      "passing_yards": 231.0,
+      "rushing_yards": 39.0,
+      "sacks_taken": 1.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Jayden Daniels",
+    "label": "Jayden Daniels",
+    "season": 2025,
+    "stats": {
+      "interceptions_thrown": 1.0,
+      "passing_yards": 153.0,
+      "rushing_touchdowns": 1.0,
+      "rushing_yards": 51.0,
+      "sacks_taken": 4.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Jayden Higgins",
+    "label": "Jayden Higgins",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 4.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Jaylen Waddle",
+    "label": "Jaylen Waddle",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 30.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Jaylen Waddle",
+    "label": "Jaylen Waddle",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 1.0,
+      "receiving_yards": 110.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Jaylen Waddle",
+    "label": "Jaylen Waddle",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 82.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Jaylen Waddle",
+    "label": "Jaylen Waddle",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 40.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Jaylen Warren",
+    "label": "Jaylen Warren",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 1.0,
+      "receiving_yards": 22.0,
+      "rushing_yards": 37.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Jaylen Warren",
+    "label": "Jaylen Warren",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": -2.0,
+      "rushing_touchdowns": 2.0,
+      "rushing_yards": 31.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Jaylen Warren",
+    "label": "Jaylen Warren",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 9.0,
+      "rushing_touchdowns": 1.0,
+      "rushing_yards": 35.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Jerome Ford",
+    "label": "Jerome Ford",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": -3.0,
+      "rushing_yards": 8.0,
+      "tackle_solo": 1.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Jerry Jeudy",
+    "label": "Jerry Jeudy",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 66.0,
+      "tackle_solo": 1.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Jerry Jeudy",
+    "label": "Jerry Jeudy",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 15.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Jerry Jeudy",
+    "label": "Jerry Jeudy",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 26.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Joe Burrow",
+    "label": "Joe Burrow",
+    "season": 2025,
+    "stats": {
+      "passing_touchdowns": 1.0,
+      "passing_yards": 113.0,
+      "rushing_yards": 3.0,
+      "sacks_taken": 3.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Joe Burrow",
+    "label": "Joe Burrow",
+    "season": 2025,
+    "stats": {
+      "passing_touchdowns": 2.0,
+      "passing_yards": 261.0,
+      "rushing_yards": 8.0,
+      "sacks_taken": 1.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Joe Flacco",
+    "label": "Joe Flacco",
+    "season": 2025,
+    "stats": {
+      "interceptions_thrown": 2.0,
+      "passing_touchdowns": 4.0,
+      "passing_yards": 470.0,
+      "rushing_yards": -1.0,
+      "sacks_taken": 3.0,
+      "two_point_conversions": 1.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Jonathan Taylor",
+    "label": "Jonathan Taylor",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 27.0,
+      "rushing_yards": 71.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Jonathan Taylor",
+    "label": "Jonathan Taylor",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 20.0,
+      "rushing_touchdowns": 3.0,
+      "rushing_yards": 66.0,
+      "two_point_conversions": 1.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Jonathan Taylor",
+    "label": "Jonathan Taylor",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 12.0,
+      "rushing_yards": 45.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Jonathan Taylor",
+    "label": "Jonathan Taylor",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 36.0,
+      "rushing_yards": 85.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Jonnu Smith",
+    "label": "Jonnu Smith",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 1.0,
+      "receiving_yards": 15.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Jordan Addison",
+    "label": "Jordan Addison",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 1.0,
+      "receiving_yards": 41.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Jordan Addison",
+    "label": "Jordan Addison",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 48.0,
+      "rushing_yards": 16.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Jordan Addison",
+    "label": "Jordan Addison",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 36.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Jordan Love",
+    "label": "Jordan Love",
+    "season": 2025,
+    "stats": {
+      "passing_touchdowns": 2.0,
+      "passing_yards": 188.0,
+      "rushing_yards": 4.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Jordan Love",
+    "label": "Jordan Love",
+    "season": 2025,
+    "stats": {
+      "interceptions_thrown": 1.0,
+      "passing_yards": 273.0,
+      "rushing_yards": 1.0,
+      "sacks_taken": 1.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Jordan Love",
+    "label": "Jordan Love",
+    "season": 2025,
+    "stats": {
+      "passing_touchdowns": 4.0,
+      "passing_yards": 234.0,
+      "rushing_yards": 4.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Jordan Mason",
+    "label": "Jordan Mason",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 7.0,
+      "rushing_yards": 68.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Jordan Mason",
+    "label": "Jordan Mason",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 4.0,
+      "rushing_touchdowns": 1.0,
+      "rushing_yards": 52.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Jordan Mason",
+    "label": "Jordan Mason",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 1.0,
+      "rushing_yards": 36.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Jordan Mason",
+    "label": "Jordan Mason",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 1.0,
+      "rushing_yards": 47.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Josh Allen",
+    "label": "Josh Allen",
+    "season": 2025,
+    "stats": {
+      "passing_touchdowns": 2.0,
+      "passing_yards": 394.0,
+      "rushing_touchdowns": 2.0,
+      "rushing_yards": 30.0,
+      "sacks_taken": 1.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Josh Allen",
+    "label": "Josh Allen",
+    "season": 2025,
+    "stats": {
+      "interceptions_thrown": 1.0,
+      "passing_touchdowns": 2.0,
+      "passing_yards": 253.0,
+      "rushing_yards": 53.0,
+      "sacks_taken": 1.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Josh Allen",
+    "label": "Josh Allen",
+    "season": 2025,
+    "stats": {
+      "passing_touchdowns": 1.0,
+      "passing_yards": 273.0,
+      "rushing_touchdowns": 2.0,
+      "rushing_yards": 19.0,
+      "sacks_taken": 3.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Josh Allen",
+    "label": "Josh Allen",
+    "season": 2025,
+    "stats": {
+      "interceptions_thrown": 1.0,
+      "passing_touchdowns": 1.0,
+      "passing_yards": 123.0,
+      "rushing_touchdowns": 1.0,
+      "rushing_yards": 38.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Josh Downs",
+    "label": "Josh Downs",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 12.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Josh Downs",
+    "label": "Josh Downs",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 54.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Josh Jacobs",
+    "label": "Josh Jacobs",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 4.0,
+      "rushing_touchdowns": 1.0,
+      "rushing_yards": 66.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Josh Jacobs",
+    "label": "Josh Jacobs",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 13.0,
+      "rushing_touchdowns": 1.0,
+      "rushing_yards": 87.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Josh Jacobs",
+    "label": "Josh Jacobs",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 8.0,
+      "rushing_yards": 83.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Justin Fields",
+    "label": "Justin Fields",
+    "season": 2025,
+    "stats": {
+      "passing_touchdowns": 1.0,
+      "passing_yards": 218.0,
+      "rushing_touchdowns": 2.0,
+      "rushing_yards": 48.0,
+      "sacks_taken": 1.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Justin Fields",
+    "label": "Justin Fields",
+    "season": 2025,
+    "stats": {
+      "passing_touchdowns": 2.0,
+      "passing_yards": 283.0,
+      "rushing_yards": 26.0,
+      "sacks_taken": 5.0,
+      "two_point_conversions": 2.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Justin Herbert",
+    "label": "Justin Herbert",
+    "season": 2025,
+    "stats": {
+      "passing_touchdowns": 3.0,
+      "passing_yards": 318.0,
+      "rushing_yards": 32.0,
+      "sacks_taken": 3.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Justin Herbert",
+    "label": "Justin Herbert",
+    "season": 2025,
+    "stats": {
+      "interceptions_thrown": 1.0,
+      "passing_touchdowns": 1.0,
+      "passing_yards": 166.0,
+      "rushing_yards": 60.0,
+      "sacks_taken": 4.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Justin Herbert",
+    "label": "Justin Herbert",
+    "season": 2025,
+    "stats": {
+      "interceptions_thrown": 1.0,
+      "passing_touchdowns": 2.0,
+      "passing_yards": 250.0,
+      "rushing_touchdowns": 1.0,
+      "rushing_yards": 57.0,
+      "sacks_taken": 6.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Justin Herbert",
+    "label": "Justin Herbert",
+    "season": 2025,
+    "stats": {
+      "interceptions_thrown": 1.0,
+      "passing_touchdowns": 2.0,
+      "passing_yards": 151.0,
+      "rushing_yards": 8.0,
+      "sacks_taken": 3.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Justin Jefferson",
+    "label": "Justin Jefferson",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 1.0,
+      "receiving_yards": 44.0,
+      "rushing_yards": 4.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Justin Jefferson",
+    "label": "Justin Jefferson",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 123.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Justin Jefferson",
+    "label": "Justin Jefferson",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 1.0,
+      "receiving_yards": 47.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Justin Jefferson",
+    "label": "Justin Jefferson",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 4.0,
+      "tackle_assist": 1.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Juwan Johnson",
+    "label": "Juwan Johnson",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 17.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Juwan Johnson",
+    "label": "Juwan Johnson",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 1.0,
+      "receiving_yards": 31.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Juwan Johnson",
+    "label": "Juwan Johnson",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 39.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Kaleb Johnson",
+    "label": "Kaleb Johnson",
+    "season": 2025,
+    "stats": {
+      "return_yards": 132.0,
+      "rushing_yards": -2.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Kareem Hunt",
+    "label": "Kareem Hunt",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 6.0,
+      "rushing_touchdowns": 1.0,
+      "rushing_yards": 49.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Kareem Hunt",
+    "label": "Kareem Hunt",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 22.0,
+      "rushing_yards": 58.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Keenan Allen",
+    "label": "Keenan Allen",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 58.0,
+      "tackle_solo": 1.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Keenan Allen",
+    "label": "Keenan Allen",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 41.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Keenan Allen",
+    "label": "Keenan Allen",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 30.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Kendre Miller",
+    "label": "Kendre Miller",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 8.0,
+      "return_yards": 18.0,
+      "rushing_yards": 41.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Kendrick Bourne",
+    "label": "Kendrick Bourne",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 34.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Kenneth Walker III",
+    "label": "Kenneth Walker III",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 4.0,
+      "rushing_yards": 20.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Kenneth Walker III",
+    "label": "Kenneth Walker III",
+    "season": 2025,
+    "stats": {
+      "rushing_yards": 86.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Kenneth Walker III",
+    "label": "Kenneth Walker III",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 19.0,
+      "rushing_yards": 42.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Kenneth Walker III",
+    "label": "Kenneth Walker III",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 18.0,
+      "rushing_yards": 56.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Kenny Gainwell",
+    "label": "Kenny Gainwell",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 35.0,
+      "rushing_yards": -1.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Kenny Gainwell",
+    "label": "Kenny Gainwell",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 25.0,
+      "return_yards": 26.0,
+      "rushing_yards": 20.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Keon Coleman",
+    "label": "Keon Coleman",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 1.0,
+      "receiving_yards": 112.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Keon Coleman",
+    "label": "Keon Coleman",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 1.0,
+      "receiving_yards": 23.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Keon Coleman",
+    "label": "Keon Coleman",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 17.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Keon Coleman",
+    "label": "Keon Coleman",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 1.0,
+      "receiving_yards": 9.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Khalil Shakir",
+    "label": "Khalil Shakir",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 64.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Khalil Shakir",
+    "label": "Khalil Shakir",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 45.0,
+      "rushing_yards": 5.0,
+      "tackle_solo": 1.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Khalil Shakir",
+    "label": "Khalil Shakir",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 43.0,
+      "return_yards": 14.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Khalil Shakir",
+    "label": "Khalil Shakir",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 5.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Kimani Vidal",
+    "label": "Kimani Vidal",
+    "season": 2025,
+    "stats": {
+      "rushing_yards": 30.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Kimani Vidal",
+    "label": "Kimani Vidal",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 11.0,
+      "rushing_touchdowns": 1.0,
+      "rushing_yards": 126.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Kyle Monangai",
+    "label": "Kyle Monangai",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 22.0,
+      "rushing_yards": 176.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Kyle Pitts Sr.",
+    "label": "Kyle Pitts Sr.",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 59.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Kyle Pitts Sr.",
+    "label": "Kyle Pitts Sr.",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 38.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Kyle Pitts Sr.",
+    "label": "Kyle Pitts Sr.",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 82.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Kyler Murray",
+    "label": "Kyler Murray",
+    "season": 2025,
+    "stats": {
+      "passing_touchdowns": 2.0,
+      "passing_yards": 163.0,
+      "rushing_yards": 38.0,
+      "sacks_taken": 5.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Kyler Murray",
+    "label": "Kyler Murray",
+    "season": 2025,
+    "stats": {
+      "passing_yards": 220.0,
+      "rushing_touchdowns": 1.0,
+      "rushing_yards": 25.0,
+      "sacks_taken": 3.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Kyren Williams",
+    "label": "Kyren Williams",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 3.0,
+      "rushing_touchdowns": 1.0,
+      "rushing_yards": 66.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Kyren Williams",
+    "label": "Kyren Williams",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 2.0,
+      "receiving_yards": 66.0,
+      "rushing_yards": 65.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Kyren Williams",
+    "label": "Kyren Williams",
+    "season": 2025,
+    "stats": {
+      "rushing_touchdowns": 1.0,
+      "rushing_yards": 114.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Kyren Williams",
+    "label": "Kyren Williams",
+    "season": 2025,
+    "stats": {
+      "rushing_touchdowns": 1.0,
+      "rushing_yards": 72.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Ladd McConkey",
+    "label": "Ladd McConkey",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 74.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Ladd McConkey",
+    "label": "Ladd McConkey",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 1.0,
+      "receiving_yards": 39.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Ladd McConkey",
+    "label": "Ladd McConkey",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 56.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Ladd McConkey",
+    "label": "Ladd McConkey",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 1.0,
+      "receiving_yards": 39.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Lamar Jackson",
+    "label": "Lamar Jackson",
+    "season": 2025,
+    "stats": {
+      "passing_touchdowns": 2.0,
+      "passing_yards": 209.0,
+      "rushing_touchdowns": 1.0,
+      "rushing_yards": 70.0,
+      "sacks_taken": 2.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Lamar Jackson",
+    "label": "Lamar Jackson",
+    "season": 2025,
+    "stats": {
+      "passing_touchdowns": 4.0,
+      "passing_yards": 204.0,
+      "rushing_yards": 14.0,
+      "sacks_taken": 2.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Lamar Jackson",
+    "label": "Lamar Jackson",
+    "season": 2025,
+    "stats": {
+      "interceptions_thrown": 1.0,
+      "passing_yards": 246.0,
+      "rushing_yards": 27.0,
+      "sacks_taken": 3.0,
+      "tackle_solo": 1.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Mac Jones",
+    "label": "Mac Jones",
+    "season": 2025,
+    "stats": {
+      "passing_touchdowns": 2.0,
+      "passing_yards": 342.0,
+      "rushing_yards": 5.0,
+      "sacks_taken": 1.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Malik Nabers",
+    "label": "Malik Nabers",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 71.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Malik Washington",
+    "label": "Malik Washington",
+    "season": 2025,
+    "stats": {
+      "return_yards": 127.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Malik Washington",
+    "label": "Malik Washington",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 48.0,
+      "return_yards": 38.0,
+      "rushing_yards": 13.0,
+      "tackle_solo": 1.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Mark Andrews",
+    "label": "Mark Andrews",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 5.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Mark Andrews",
+    "label": "Mark Andrews",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 22.0,
+      "tackle_solo": 1.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Mark Andrews",
+    "label": "Mark Andrews",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 2.0,
+      "receiving_yards": 22.0,
+      "rushing_yards": 4.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Mark Andrews",
+    "label": "Mark Andrews",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 47.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Marvin Harrison Jr.",
+    "label": "Marvin Harrison Jr.",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 1.0,
+      "receiving_yards": 71.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Marvin Harrison Jr.",
+    "label": "Marvin Harrison Jr.",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 98.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Marvin Harrison Jr.",
+    "label": "Marvin Harrison Jr.",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 1.0,
+      "receiving_yards": 96.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Marvin Harrison Jr.",
+    "label": "Marvin Harrison Jr.",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 69.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Marvin Mims Jr.",
+    "label": "Marvin Mims Jr.",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 12.0,
+      "return_yards": 129.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Mason Taylor",
+    "label": "Mason Taylor",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 20.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Mason Taylor",
+    "label": "Mason Taylor",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 67.0,
+      "two_point_conversions": 1.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Matthew Golden",
+    "label": "Matthew Golden",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 16.0,
+      "return_yards": 11.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Matthew Stafford",
+    "label": "Matthew Stafford",
+    "season": 2025,
+    "stats": {
+      "passing_touchdowns": 3.0,
+      "passing_yards": 389.0,
+      "sacks_taken": 1.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Matthew Stafford",
+    "label": "Matthew Stafford",
+    "season": 2025,
+    "stats": {
+      "passing_touchdowns": 4.0,
+      "passing_yards": 281.0,
+      "rushing_yards": -4.0,
+      "sacks_taken": 2.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Matthew Stafford",
+    "label": "Matthew Stafford",
+    "season": 2025,
+    "stats": {
+      "interceptions_thrown": 2.0,
+      "passing_touchdowns": 2.0,
+      "passing_yards": 243.0,
+      "rushing_yards": -1.0,
+      "sacks_taken": 2.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Michael Carter",
+    "label": "Michael Carter",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 47.0,
+      "rushing_yards": 17.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Michael Penix Jr.",
+    "label": "Michael Penix Jr.",
+    "season": 2025,
+    "stats": {
+      "passing_touchdowns": 1.0,
+      "passing_yards": 298.0,
+      "rushing_touchdowns": 1.0,
+      "rushing_yards": 21.0,
+      "sacks_taken": 1.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Michael Pittman Jr.",
+    "label": "Michael Pittman Jr.",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 1.0,
+      "receiving_yards": 39.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Michael Pittman Jr.",
+    "label": "Michael Pittman Jr.",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 115.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Michael Pittman Jr.",
+    "label": "Michael Pittman Jr.",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 13.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Michael Wilson",
+    "label": "Michael Wilson",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 36.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Mike Evans",
+    "label": "Mike Evans",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 51.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Nick Chubb",
+    "label": "Nick Chubb",
+    "season": 2025,
+    "stats": {
+      "rushing_yards": 60.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Nick Chubb",
+    "label": "Nick Chubb",
+    "season": 2025,
+    "stats": {
+      "rushing_touchdowns": 1.0,
+      "rushing_yards": 61.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Nick Chubb",
+    "label": "Nick Chubb",
+    "season": 2025,
+    "stats": {
+      "rushing_yards": 34.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Nick Chubb",
+    "label": "Nick Chubb",
+    "season": 2025,
+    "stats": {
+      "rushing_touchdowns": 1.0,
+      "rushing_yards": 34.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Nico Collins",
+    "label": "Nico Collins",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 25.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Nico Collins",
+    "label": "Nico Collins",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 1.0,
+      "receiving_yards": 52.0,
+      "rushing_yards": 8.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Nico Collins",
+    "label": "Nico Collins",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 75.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Nico Collins",
+    "label": "Nico Collins",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 98.0,
+      "rushing_touchdowns": 1.0,
+      "rushing_yards": 7.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Omarion Hampton",
+    "label": "Omarion Hampton",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 13.0,
+      "rushing_yards": 48.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Omarion Hampton",
+    "label": "Omarion Hampton",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 26.0,
+      "rushing_yards": 44.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Oronde Gadsden",
+    "label": "Oronde Gadsden",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 14.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Oronde Gadsden",
+    "label": "Oronde Gadsden",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 68.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Oronde Gadsden",
+    "label": "Oronde Gadsden",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 27.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Patrick Mahomes",
+    "label": "Patrick Mahomes",
+    "season": 2025,
+    "stats": {
+      "passing_touchdowns": 1.0,
+      "passing_yards": 258.0,
+      "rushing_touchdowns": 1.0,
+      "rushing_yards": 57.0,
+      "sacks_taken": 2.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Patrick Mahomes",
+    "label": "Patrick Mahomes",
+    "season": 2025,
+    "stats": {
+      "interceptions_thrown": 1.0,
+      "passing_touchdowns": 1.0,
+      "passing_yards": 318.0,
+      "rushing_touchdowns": 1.0,
+      "rushing_yards": 60.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Patrick Mahomes",
+    "label": "Patrick Mahomes",
+    "season": 2025,
+    "stats": {
+      "interceptions_thrown": 1.0,
+      "passing_yards": 250.0,
+      "rushing_yards": 5.0,
+      "sacks_taken": 3.0,
+      "two_point_conversions": 1.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Patrick Mahomes",
+    "label": "Patrick Mahomes",
+    "season": 2025,
+    "stats": {
+      "passing_touchdowns": 4.0,
+      "passing_yards": 261.0,
+      "rushing_yards": 30.0,
+      "sacks_taken": 3.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Puka Nacua",
+    "label": "Puka Nacua",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 130.0,
+      "rushing_yards": 1.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Puka Nacua",
+    "label": "Puka Nacua",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 1.0,
+      "receiving_yards": 85.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Puka Nacua",
+    "label": "Puka Nacua",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 1.0,
+      "receiving_yards": 95.0,
+      "rushing_yards": 3.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Puka Nacua",
+    "label": "Puka Nacua",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 72.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Quentin Johnston",
+    "label": "Quentin Johnston",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 40.0,
+      "rushing_yards": 9.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Quentin Johnston",
+    "label": "Quentin Johnston",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 1.0,
+      "receiving_yards": 53.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Quentin Johnston",
+    "label": "Quentin Johnston",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 1.0,
+      "receiving_yards": 23.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Quinshon Judkins",
+    "label": "Quinshon Judkins",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 18.0,
+      "rushing_yards": 110.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Quinshon Judkins",
+    "label": "Quinshon Judkins",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 18.0,
+      "rushing_yards": 91.0,
+      "two_point_conversions": 1.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "RJ Harvey",
+    "label": "RJ Harvey",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": -1.0,
+      "rushing_yards": 70.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "RJ Harvey",
+    "label": "RJ Harvey",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 18.0,
+      "return_yards": 83.0,
+      "rushing_yards": 12.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "RJ Harvey",
+    "label": "RJ Harvey",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 1.0,
+      "receiving_yards": 51.0,
+      "return_yards": 54.0,
+      "rushing_yards": 5.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "RJ Harvey",
+    "label": "RJ Harvey",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 27.0,
+      "rushing_touchdowns": 2.0,
+      "rushing_yards": 35.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Rachaad White",
+    "label": "Rachaad White",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 30.0,
+      "rushing_touchdowns": 2.0,
+      "rushing_yards": 41.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Rachaad White",
+    "label": "Rachaad White",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 22.0,
+      "rushing_yards": 7.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Rashee Rice",
+    "label": "Rashee Rice",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 80.0,
+      "rushing_touchdowns": 1.0,
+      "rushing_yards": 6.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Rashee Rice",
+    "label": "Rashee Rice",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 2.0,
+      "receiving_yards": 92.0,
+      "rushing_yards": 2.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Rashid Shaheed",
+    "label": "Rashid Shaheed",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 33.0,
+      "return_yards": 18.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Rashid Shaheed",
+    "label": "Rashid Shaheed",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 1.0,
+      "receiving_yards": 114.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Rashid Shaheed",
+    "label": "Rashid Shaheed",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 68.0,
+      "return_yards": 38.0,
+      "tackle_solo": 1.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Rashid Shaheed",
+    "label": "Rashid Shaheed",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 7.0,
+      "return_yards": 43.0,
+      "rushing_yards": 9.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Rashod Bateman",
+    "label": "Rashod Bateman",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 10.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Rhamondre Stevenson",
+    "label": "Rhamondre Stevenson",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 12.0,
+      "rushing_yards": 15.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Rhamondre Stevenson",
+    "label": "Rhamondre Stevenson",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 13.0,
+      "return_yards": 40.0,
+      "rushing_touchdowns": 2.0,
+      "rushing_yards": 14.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Rhamondre Stevenson",
+    "label": "Rhamondre Stevenson",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 40.0,
+      "rushing_yards": 40.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Ricky Pearsall",
+    "label": "Ricky Pearsall",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 108.0,
+      "tackle_solo": 1.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Rico Dowdle",
+    "label": "Rico Dowdle",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 28.0,
+      "rushing_touchdowns": 1.0,
+      "rushing_yards": 206.0,
+      "tackle_solo": 1.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Rico Dowdle",
+    "label": "Rico Dowdle",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 11.0,
+      "rushing_touchdowns": 2.0,
+      "rushing_yards": 130.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Rico Dowdle",
+    "label": "Rico Dowdle",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 21.0,
+      "rushing_yards": 58.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Rome Odunze",
+    "label": "Rome Odunze",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 1.0,
+      "receiving_yards": 37.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Rome Odunze",
+    "label": "Rome Odunze",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 8.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Romeo Doubs",
+    "label": "Romeo Doubs",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 91.0,
+      "return_yards": 6.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Romeo Doubs",
+    "label": "Romeo Doubs",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 1.0,
+      "receiving_yards": 20.0,
+      "return_yards": 2.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Sam Darnold",
+    "label": "Sam Darnold",
+    "season": 2025,
+    "stats": {
+      "interceptions_thrown": 1.0,
+      "passing_touchdowns": 4.0,
+      "passing_yards": 341.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Sam Darnold",
+    "label": "Sam Darnold",
+    "season": 2025,
+    "stats": {
+      "interceptions_thrown": 1.0,
+      "passing_touchdowns": 4.0,
+      "passing_yards": 330.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Sam Darnold",
+    "label": "Sam Darnold",
+    "season": 2025,
+    "stats": {
+      "passing_yards": 128.0,
+      "sacks_taken": 4.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Sam LaPorta",
+    "label": "Sam LaPorta",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 79.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Sam LaPorta",
+    "label": "Sam LaPorta",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 1.0,
+      "receiving_yards": 92.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Sam LaPorta",
+    "label": "Sam LaPorta",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 1.0,
+      "receiving_yards": 97.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Saquon Barkley",
+    "label": "Saquon Barkley",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 24.0,
+      "rushing_touchdowns": 1.0,
+      "rushing_yards": 60.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Saquon Barkley",
+    "label": "Saquon Barkley",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 1.0,
+      "receiving_yards": 58.0,
+      "rushing_yards": 30.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Saquon Barkley",
+    "label": "Saquon Barkley",
+    "season": 2025,
+    "stats": {
+      "rushing_yards": 56.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Stefon Diggs",
+    "label": "Stefon Diggs",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 57.0,
+      "tackle_solo": 1.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Stefon Diggs",
+    "label": "Stefon Diggs",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 146.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Stefon Diggs",
+    "label": "Stefon Diggs",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 1.0,
+      "receiving_yards": 38.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Stefon Diggs",
+    "label": "Stefon Diggs",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 26.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "T.J. Hockenson",
+    "label": "T.J. Hockenson",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 15.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "T.J. Hockenson",
+    "label": "T.J. Hockenson",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 38.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "T.J. Hockenson",
+    "label": "T.J. Hockenson",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 1.0,
+      "receiving_yards": 11.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "T.J. Hockenson",
+    "label": "T.J. Hockenson",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 59.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Tank Bigsby",
+    "label": "Tank Bigsby",
+    "season": 2025,
+    "stats": {
+      "return_yards": 20.0,
+      "rushing_yards": 12.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Tee Higgins",
+    "label": "Tee Higgins",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 33.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Tee Higgins",
+    "label": "Tee Higgins",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 1.0,
+      "receiving_yards": 22.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Tee Higgins",
+    "label": "Tee Higgins",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 2.0,
+      "receiving_yards": 121.0,
+      "two_point_conversions": 1.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Terry McLaurin",
+    "label": "Terry McLaurin",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 27.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Terry McLaurin",
+    "label": "Terry McLaurin",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 1.0,
+      "receiving_yards": 96.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Tetairoa McMillan",
+    "label": "Tetairoa McMillan",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 68.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Tetairoa McMillan",
+    "label": "Tetairoa McMillan",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 73.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Tetairoa McMillan",
+    "label": "Tetairoa McMillan",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 46.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Tetairoa McMillan",
+    "label": "Tetairoa McMillan",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 1.0,
+      "receiving_yards": 43.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Theo Johnson",
+    "label": "Theo Johnson",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 29.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Tommy Tremble",
+    "label": "Tommy Tremble",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 7.0,
+      "tackle_solo": 1.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Tony Pollard",
+    "label": "Tony Pollard",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 29.0,
+      "rushing_yards": 60.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Tony Pollard",
+    "label": "Tony Pollard",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 11.0,
+      "rushing_touchdowns": 1.0,
+      "rushing_yards": 67.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Tony Pollard",
+    "label": "Tony Pollard",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 12.0,
+      "rushing_yards": 56.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Tony Pollard",
+    "label": "Tony Pollard",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 3.0,
+      "rushing_yards": 60.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Travis Etienne Jr.",
+    "label": "Travis Etienne Jr.",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 13.0,
+      "rushing_yards": 143.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Travis Etienne Jr.",
+    "label": "Travis Etienne Jr.",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 9.0,
+      "rushing_yards": 49.0,
+      "tackle_solo": 1.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Travis Etienne Jr.",
+    "label": "Travis Etienne Jr.",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 31.0,
+      "rushing_yards": 84.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Travis Etienne Jr.",
+    "label": "Travis Etienne Jr.",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 13.0,
+      "rushing_yards": 28.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Travis Hunter",
+    "label": "Travis Hunter",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 33.0,
+      "tackle_assist": 1.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Travis Hunter",
+    "label": "Travis Hunter",
+    "season": 2025,
+    "stats": {
+      "passes_defended": 1.0,
+      "receiving_yards": 64.0,
+      "tackle_solo": 2.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Travis Kelce",
+    "label": "Travis Kelce",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 1.0,
+      "receiving_yards": 47.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Travis Kelce",
+    "label": "Travis Kelce",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 1.0,
+      "receiving_yards": 61.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Travis Kelce",
+    "label": "Travis Kelce",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 66.0,
+      "two_point_conversions": 1.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Travis Kelce",
+    "label": "Travis Kelce",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 1.0,
+      "receiving_yards": 45.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Tre Tucker",
+    "label": "Tre Tucker",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 62.0,
+      "rushing_yards": 9.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Tre Tucker",
+    "label": "Tre Tucker",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 38.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Tre Tucker",
+    "label": "Tre Tucker",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 20.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "TreVeyon Henderson",
+    "label": "TreVeyon Henderson",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 24.0,
+      "return_yards": 43.0,
+      "rushing_yards": 27.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "TreVeyon Henderson",
+    "label": "TreVeyon Henderson",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 3.0,
+      "return_yards": 23.0,
+      "rushing_yards": 24.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "TreVeyon Henderson",
+    "label": "TreVeyon Henderson",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 32.0,
+      "rushing_yards": 55.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "TreVeyon Henderson",
+    "label": "TreVeyon Henderson",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 19.0,
+      "rushing_yards": 67.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Trevor Lawrence",
+    "label": "Trevor Lawrence",
+    "season": 2025,
+    "stats": {
+      "interceptions_thrown": 1.0,
+      "passing_touchdowns": 1.0,
+      "passing_yards": 178.0,
+      "rushing_yards": 12.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Trevor Lawrence",
+    "label": "Trevor Lawrence",
+    "season": 2025,
+    "stats": {
+      "interceptions_thrown": 1.0,
+      "passing_touchdowns": 1.0,
+      "passing_yards": 221.0,
+      "rushing_touchdowns": 2.0,
+      "rushing_yards": 54.0,
+      "sacks_taken": 3.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Trevor Lawrence",
+    "label": "Trevor Lawrence",
+    "season": 2025,
+    "stats": {
+      "passing_touchdowns": 2.0,
+      "passing_yards": 229.0,
+      "rushing_yards": 25.0,
+      "sacks_taken": 3.0,
+      "two_point_conversions": 1.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Trey McBride",
+    "label": "Trey McBride",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 61.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Trey McBride",
+    "label": "Trey McBride",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 41.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Trey McBride",
+    "label": "Trey McBride",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 1.0,
+      "receiving_yards": 55.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Trey McBride",
+    "label": "Trey McBride",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 1.0,
+      "receiving_yards": 82.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Troy Franklin",
+    "label": "Troy Franklin",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 21.0,
+      "tackle_solo": 1.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Tua Tagovailoa",
+    "label": "Tua Tagovailoa",
+    "season": 2025,
+    "stats": {
+      "interceptions_thrown": 2.0,
+      "passing_touchdowns": 1.0,
+      "passing_yards": 114.0,
+      "rushing_yards": 7.0,
+      "sacks_taken": 3.0,
+      "two_point_conversions": 1.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Tua Tagovailoa",
+    "label": "Tua Tagovailoa",
+    "season": 2025,
+    "stats": {
+      "passing_touchdowns": 3.0,
+      "passing_yards": 256.0,
+      "rushing_yards": 5.0,
+      "sacks_taken": 3.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Tua Tagovailoa",
+    "label": "Tua Tagovailoa",
+    "season": 2025,
+    "stats": {
+      "interceptions_thrown": 1.0,
+      "passing_yards": 261.0,
+      "rushing_yards": 1.0,
+      "sacks_taken": 2.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Tucker Kraft",
+    "label": "Tucker Kraft",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 1.0,
+      "receiving_yards": 16.0,
+      "rushing_yards": 3.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Tucker Kraft",
+    "label": "Tucker Kraft",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 20.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Tyjae Spears",
+    "label": "Tyjae Spears",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 36.0,
+      "rushing_yards": 26.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Tyjae Spears",
+    "label": "Tyjae Spears",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 25.0,
+      "rushing_yards": -1.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Tyler Allgeier",
+    "label": "Tyler Allgeier",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 35.0,
+      "rushing_touchdowns": 1.0,
+      "rushing_yards": 20.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Tyler Warren",
+    "label": "Tyler Warren",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 76.0,
+      "rushing_yards": 3.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Tyler Warren",
+    "label": "Tyler Warren",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 1.0,
+      "receiving_yards": 44.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Tyler Warren",
+    "label": "Tyler Warren",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 26.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Tyler Warren",
+    "label": "Tyler Warren",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 1.0,
+      "receiving_yards": 22.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Tyreek Hill",
+    "label": "Tyreek Hill",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 40.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Tyrone Tracy Jr.",
+    "label": "Tyrone Tracy Jr.",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 11.0,
+      "rushing_yards": 24.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Tyrone Tracy Jr.",
+    "label": "Tyrone Tracy Jr.",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 19.0,
+      "rushing_yards": 18.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Tyrone Tracy Jr.",
+    "label": "Tyrone Tracy Jr.",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": -3.0,
+      "rushing_yards": 36.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Wan'Dale Robinson",
+    "label": "Wan'Dale Robinson",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 30.0,
+      "rushing_yards": 2.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Wan'Dale Robinson",
+    "label": "Wan'Dale Robinson",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 46.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Wan'Dale Robinson",
+    "label": "Wan'Dale Robinson",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 34.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Woody Marks",
+    "label": "Woody Marks",
+    "season": 2025,
+    "stats": {
+      "rushing_yards": 24.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Woody Marks",
+    "label": "Woody Marks",
+    "season": 2025,
+    "stats": {
+      "rushing_yards": 27.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Woody Marks",
+    "label": "Woody Marks",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 3.0,
+      "rushing_yards": 64.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Xavier Legette",
+    "label": "Xavier Legette",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 10.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Xavier Worthy",
+    "label": "Xavier Worthy",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 42.0,
+      "rushing_yards": 9.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Xavier Worthy",
+    "label": "Xavier Worthy",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 23.0,
+      "rushing_yards": 7.0,
+      "tackle_solo": 1.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Xavier Worthy",
+    "label": "Xavier Worthy",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 61.0,
+      "rushing_yards": 13.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Zach Charbonnet",
+    "label": "Zach Charbonnet",
+    "season": 2025,
+    "stats": {
+      "rushing_touchdowns": 1.0,
+      "rushing_yards": 47.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Zach Charbonnet",
+    "label": "Zach Charbonnet",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 12.0,
+      "rushing_touchdowns": 1.0,
+      "rushing_yards": 36.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Zach Charbonnet",
+    "label": "Zach Charbonnet",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 21.0,
+      "rushing_yards": 25.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Zach Charbonnet",
+    "label": "Zach Charbonnet",
+    "season": 2025,
+    "stats": {
+      "rushing_touchdowns": 1.0,
+      "rushing_yards": 52.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "Zach Ertz",
+    "label": "Zach Ertz",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 1.0,
+      "receiving_yards": 26.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Zach Ertz",
+    "label": "Zach Ertz",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 46.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Zay Flowers",
+    "label": "Zay Flowers",
+    "season": 2025,
+    "stats": {
+      "receiving_touchdowns": 1.0,
+      "receiving_yards": 143.0,
+      "rushing_yards": 8.0
+    },
+    "unit": "offense",
+    "week": 1
+  },
+  {
+    "entity_id": "Zay Flowers",
+    "label": "Zay Flowers",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 72.0
+    },
+    "unit": "offense",
+    "week": 5
+  },
+  {
+    "entity_id": "Zay Flowers",
+    "label": "Zay Flowers",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 64.0
+    },
+    "unit": "offense",
+    "week": 9
+  },
+  {
+    "entity_id": "Zay Flowers",
+    "label": "Zay Flowers",
+    "season": 2025,
+    "stats": {
+      "receiving_yards": 6.0
+    },
+    "unit": "offense",
+    "week": 13
+  },
+  {
+    "entity_id": "49ers",
+    "label": "49ers",
+    "season": 2025,
+    "stats": {
+      "points_allowed": 24.0,
+      "return_yards": 126.0,
+      "sacks": 2.0,
+      "tackles_for_loss": 3.0
+    },
+    "unit": "team_defense",
+    "week": 9
+  },
+  {
+    "entity_id": "Bears",
+    "label": "Bears",
+    "season": 2025,
+    "stats": {
+      "fumble_recoveries": 1.0,
+      "interceptions": 2.0,
+      "points_allowed": 40.0,
+      "return_yards": 134.0,
+      "sacks": 3.0,
+      "tackles_for_loss": 4.0
+    },
+    "unit": "team_defense",
+    "week": 9
+  },
+  {
+    "entity_id": "Bengals",
+    "label": "Bengals",
+    "season": 2025,
+    "stats": {
+      "interceptions": 2.0,
+      "points_allowed": 17.0,
+      "return_yards": 93.0,
+      "sacks": 2.0,
+      "tackles_for_loss": 4.0
+    },
+    "unit": "team_defense",
+    "week": 1
+  },
+  {
+    "entity_id": "Bills",
+    "label": "Bills",
+    "season": 2025,
+    "stats": {
+      "fumble_recoveries": 1.0,
+      "points_allowed": 40.0,
+      "return_yards": 193.0,
+      "sacks": 2.0,
+      "tackles_for_loss": 5.0
+    },
+    "unit": "team_defense",
+    "week": 1
+  },
+  {
+    "entity_id": "Bills",
+    "label": "Bills",
+    "season": 2025,
+    "stats": {
+      "fumble_recoveries": 1.0,
+      "points_allowed": 24.0,
+      "return_yards": 127.0,
+      "sacks": 4.0,
+      "tackles_for_loss": 6.0
+    },
+    "unit": "team_defense",
+    "week": 5
+  },
+  {
+    "entity_id": "Bills",
+    "label": "Bills",
+    "season": 2025,
+    "stats": {
+      "defensive_touchdowns": 1.0,
+      "fumble_recoveries": 1.0,
+      "interceptions": 1.0,
+      "points_allowed": 10.0,
+      "return_yards": 36.0,
+      "sacks": 1.0,
+      "tackles_for_loss": 4.0
+    },
+    "unit": "team_defense",
+    "week": 13
+  },
+  {
+    "entity_id": "Broncos",
+    "label": "Broncos",
+    "season": 2025,
+    "stats": {
+      "fumble_recoveries": 2.0,
+      "points_allowed": 10.0,
+      "return_yards": 129.0,
+      "sacks": 6.0,
+      "tackles_for_loss": 7.0
+    },
+    "unit": "team_defense",
+    "week": 1
+  },
+  {
+    "entity_id": "Broncos",
+    "label": "Broncos",
+    "season": 2025,
+    "stats": {
+      "points_allowed": 17.0,
+      "return_yards": 125.0,
+      "sacks": 6.0,
+      "tackles_for_loss": 5.0
+    },
+    "unit": "team_defense",
+    "week": 5
+  },
+  {
+    "entity_id": "Broncos",
+    "label": "Broncos",
+    "season": 2025,
+    "stats": {
+      "points_allowed": 17.0,
+      "return_yards": 106.0,
+      "sacks": 4.0,
+      "tackles_for_loss": 4.0
+    },
+    "unit": "team_defense",
+    "week": 9
+  },
+  {
+    "entity_id": "Broncos",
+    "label": "Broncos",
+    "season": 2025,
+    "stats": {
+      "interceptions": 1.0,
+      "points_allowed": 24.0,
+      "return_yards": 128.0,
+      "sacks": 2.0,
+      "tackles_for_loss": 8.0
+    },
+    "unit": "team_defense",
+    "week": 13
+  },
+  {
+    "entity_id": "Browns",
+    "label": "Browns",
+    "season": 2025,
+    "stats": {
+      "fumble_recoveries": 2.0,
+      "points_allowed": 24.0,
+      "return_yards": 109.0,
+      "sacks": 3.0,
+      "tackles_for_loss": 6.0
+    },
+    "unit": "team_defense",
+    "week": 5
+  },
+  {
+    "entity_id": "Browns",
+    "label": "Browns",
+    "season": 2025,
+    "stats": {
+      "points_allowed": 24.0,
+      "return_yards": 76.0,
+      "sacks": 1.0,
+      "tackles_for_loss": 4.0
+    },
+    "unit": "team_defense",
+    "week": 13
+  },
+  {
+    "entity_id": "Buccaneers",
+    "label": "Buccaneers",
+    "season": 2025,
+    "stats": {
+      "fumble_recoveries": 1.0,
+      "interceptions": 1.0,
+      "points_allowed": 17.0,
+      "return_yards": 69.0,
+      "sacks": 2.0,
+      "tackles_for_loss": 3.0
+    },
+    "unit": "team_defense",
+    "week": 13
+  },
+  {
+    "entity_id": "Cardinals",
+    "label": "Cardinals",
+    "season": 2025,
+    "stats": {
+      "points_allowed": 10.0,
+      "return_yards": 103.0,
+      "sacks": 1.0,
+      "tackles_for_loss": 3.0
+    },
+    "unit": "team_defense",
+    "week": 1
+  },
+  {
+    "entity_id": "Cardinals",
+    "label": "Cardinals",
+    "season": 2025,
+    "stats": {
+      "fumble_recoveries": 1.0,
+      "interceptions": 1.0,
+      "points_allowed": 17.0,
+      "return_yards": 106.0,
+      "sacks": 2.0,
+      "tackles_for_loss": 4.0
+    },
+    "unit": "team_defense",
+    "week": 5
+  },
+  {
+    "entity_id": "Chargers",
+    "label": "Chargers",
+    "season": 2025,
+    "stats": {
+      "points_allowed": 24.0,
+      "return_yards": 67.0,
+      "sacks": 2.0,
+      "tackles_for_loss": 3.0
+    },
+    "unit": "team_defense",
+    "week": 1
+  },
+  {
+    "entity_id": "Chargers",
+    "label": "Chargers",
+    "season": 2025,
+    "stats": {
+      "fumble_recoveries": 1.0,
+      "points_allowed": 24.0,
+      "return_yards": 88.0,
+      "sacks": 1.0,
+      "tackles_for_loss": 6.0
+    },
+    "unit": "team_defense",
+    "week": 5
+  },
+  {
+    "entity_id": "Chargers",
+    "label": "Chargers",
+    "season": 2025,
+    "stats": {
+      "points_allowed": 17.0,
+      "return_yards": 81.0,
+      "sacks": 4.0,
+      "tackles_for_loss": 4.0
+    },
+    "unit": "team_defense",
+    "week": 9
+  },
+  {
+    "entity_id": "Chargers",
+    "label": "Chargers",
+    "season": 2025,
+    "stats": {
+      "interceptions": 1.0,
+      "points_allowed": 17.0,
+      "return_yards": 106.0,
+      "sacks": 5.0,
+      "tackles_for_loss": 8.0
+    },
+    "unit": "team_defense",
+    "week": 13
+  },
+  {
+    "entity_id": "Colts",
+    "label": "Colts",
+    "season": 2025,
+    "stats": {
+      "blocked_kicks": 1.0,
+      "interceptions": 2.0,
+      "points_allowed": 3.0,
+      "return_yards": 74.0,
+      "sacks": 4.0,
+      "tackles_for_loss": 6.0
+    },
+    "unit": "team_defense",
+    "week": 5
+  },
+  {
+    "entity_id": "Colts",
+    "label": "Colts",
+    "season": 2025,
+    "stats": {
+      "fumble_recoveries": 1.0,
+      "points_allowed": 24.0,
+      "return_yards": 123.0,
+      "sacks": 3.0,
+      "tackles_for_loss": 6.0
+    },
+    "unit": "team_defense",
+    "week": 9
+  },
+  {
+    "entity_id": "Colts",
+    "label": "Colts",
+    "season": 2025,
+    "stats": {
+      "interceptions": 1.0,
+      "points_allowed": 17.0,
+      "return_yards": 79.0,
+      "sacks": 2.0,
+      "tackles_for_loss": 4.0
+    },
+    "unit": "team_defense",
+    "week": 13
+  },
+  {
+    "entity_id": "Commanders",
+    "label": "Commanders",
+    "season": 2025,
+    "stats": {
+      "points_allowed": 3.0,
+      "return_yards": 86.0,
+      "sacks": 2.0,
+      "tackles_for_loss": 7.0
+    },
+    "unit": "team_defense",
+    "week": 1
+  },
+  {
+    "entity_id": "Cowboys",
+    "label": "Cowboys",
+    "season": 2025,
+    "stats": {
+      "blocked_kicks": 1.0,
+      "defensive_touchdowns": 1.0,
+      "points_allowed": 24.0,
+      "return_yards": 157.0,
+      "sacks": 5.0,
+      "tackles_for_loss": 8.0
+    },
+    "unit": "team_defense",
+    "week": 9
+  },
+  {
+    "entity_id": "Eagles",
+    "label": "Eagles",
+    "season": 2025,
+    "stats": {
+      "fumble_recoveries": 1.0,
+      "points_allowed": 17.0,
+      "return_yards": 32.0,
+      "tackles_for_loss": 3.0
+    },
+    "unit": "team_defense",
+    "week": 1
+  },
+  {
+    "entity_id": "Falcons",
+    "label": "Falcons",
+    "season": 2025,
+    "stats": {
+      "points_allowed": 24.0,
+      "return_yards": 104.0,
+      "sacks": 2.0,
+      "tackles_for_loss": 7.0
+    },
+    "unit": "team_defense",
+    "week": 13
+  },
+  {
+    "entity_id": "Jaguars",
+    "label": "Jaguars",
+    "season": 2025,
+    "stats": {
+      "interceptions": 1.0,
+      "points_allowed": 31.0,
+      "return_yards": 159.0,
+      "sacks": 2.0,
+      "tackles_for_loss": 5.0
+    },
+    "unit": "team_defense",
+    "week": 9
+  },
+  {
+    "entity_id": "Jaguars",
+    "label": "Jaguars",
+    "season": 2025,
+    "stats": {
+      "fumble_recoveries": 2.0,
+      "points_allowed": 3.0,
+      "return_yards": 72.0,
+      "sacks": 3.0,
+      "tackles_for_loss": 4.0
+    },
+    "unit": "team_defense",
+    "week": 13
+  },
+  {
+    "entity_id": "Jets",
+    "label": "Jets",
+    "season": 2025,
+    "stats": {
+      "points_allowed": 31.0,
+      "return_yards": 225.0,
+      "sacks": 4.0,
+      "tackles_for_loss": 7.0
+    },
+    "unit": "team_defense",
+    "week": 1
+  },
+  {
+    "entity_id": "Jets",
+    "label": "Jets",
+    "season": 2025,
+    "stats": {
+      "points_allowed": 40.0,
+      "return_yards": 196.0,
+      "sacks": 1.0,
+      "tackles_for_loss": 3.0
+    },
+    "unit": "team_defense",
+    "week": 5
+  },
+  {
+    "entity_id": "Lions",
+    "label": "Lions",
+    "season": 2025,
+    "stats": {
+      "points_allowed": 24.0,
+      "return_yards": 135.0,
+      "tackles_for_loss": 2.0
+    },
+    "unit": "team_defense",
+    "week": 1
+  },
+  {
+    "entity_id": "Lions",
+    "label": "Lions",
+    "season": 2025,
+    "stats": {
+      "interceptions": 3.0,
+      "points_allowed": 24.0,
+      "return_yards": 98.0,
+      "sacks": 2.0,
+      "safeties": 1.0,
+      "tackles_for_loss": 5.0
+    },
+    "unit": "team_defense",
+    "week": 5
+  },
+  {
+    "entity_id": "Lions",
+    "label": "Lions",
+    "season": 2025,
+    "stats": {
+      "interceptions": 1.0,
+      "points_allowed": 24.0,
+      "return_yards": 185.0,
+      "sacks": 5.0,
+      "tackles_for_loss": 7.0
+    },
+    "unit": "team_defense",
+    "week": 9
+  },
+  {
+    "entity_id": "Packers",
+    "label": "Packers",
+    "season": 2025,
+    "stats": {
+      "interceptions": 1.0,
+      "points_allowed": 10.0,
+      "return_yards": 71.0,
+      "sacks": 4.0,
+      "tackles_for_loss": 9.0
+    },
+    "unit": "team_defense",
+    "week": 1
+  },
+  {
+    "entity_id": "Packers",
+    "label": "Packers",
+    "season": 2025,
+    "stats": {
+      "interceptions": 1.0,
+      "points_allowed": 17.0,
+      "return_yards": 74.0,
+      "sacks": 1.0,
+      "tackles_for_loss": 1.0
+    },
+    "unit": "team_defense",
+    "week": 9
+  },
+  {
+    "entity_id": "Packers",
+    "label": "Packers",
+    "season": 2025,
+    "stats": {
+      "points_allowed": 24.0,
+      "return_yards": 97.0,
+      "sacks": 3.0,
+      "tackles_for_loss": 7.0
+    },
+    "unit": "team_defense",
+    "week": 13
+  },
+  {
+    "entity_id": "Panthers",
+    "label": "Panthers",
+    "season": 2025,
+    "stats": {
+      "defensive_touchdowns": 1.0,
+      "fumble_recoveries": 1.0,
+      "interceptions": 2.0,
+      "points_allowed": 31.0,
+      "return_yards": 104.0,
+      "sacks": 2.0,
+      "tackles_for_loss": 3.0
+    },
+    "unit": "team_defense",
+    "week": 13
+  },
+  {
+    "entity_id": "Patriots",
+    "label": "Patriots",
+    "season": 2025,
+    "stats": {
+      "points_allowed": 24.0,
+      "return_yards": 94.0,
+      "sacks": 1.0,
+      "tackles_for_loss": 2.0
+    },
+    "unit": "team_defense",
+    "week": 9
+  },
+  {
+    "entity_id": "Patriots",
+    "label": "Patriots",
+    "season": 2025,
+    "stats": {
+      "defensive_touchdowns": 1.0,
+      "fumble_recoveries": 1.0,
+      "points_allowed": 17.0,
+      "return_yards": 203.0,
+      "sacks": 2.0,
+      "tackles_for_loss": 5.0
+    },
+    "unit": "team_defense",
+    "week": 13
+  },
+  {
+    "entity_id": "Rams",
+    "label": "Rams",
+    "season": 2025,
+    "stats": {
+      "points_allowed": 24.0,
+      "return_yards": 143.0,
+      "sacks": 1.0,
+      "tackles_for_loss": 3.0
+    },
+    "unit": "team_defense",
+    "week": 5
+  },
+  {
+    "entity_id": "Rams",
+    "label": "Rams",
+    "season": 2025,
+    "stats": {
+      "fumble_recoveries": 1.0,
+      "interceptions": 1.0,
+      "points_allowed": 10.0,
+      "return_yards": 11.0,
+      "sacks": 1.0,
+      "tackles_for_loss": 2.0
+    },
+    "unit": "team_defense",
+    "week": 9
+  },
+  {
+    "entity_id": "Rams",
+    "label": "Rams",
+    "season": 2025,
+    "stats": {
+      "points_allowed": 24.0,
+      "return_yards": 135.0,
+      "sacks": 2.0,
+      "tackles_for_loss": 3.0
+    },
+    "unit": "team_defense",
+    "week": 13
+  },
+  {
+    "entity_id": "Ravens",
+    "label": "Ravens",
+    "season": 2025,
+    "stats": {
+      "points_allowed": 40.0,
+      "return_yards": 173.0,
+      "sacks": 1.0,
+      "tackles_for_loss": 3.0
+    },
+    "unit": "team_defense",
+    "week": 1
+  },
+  {
+    "entity_id": "Ravens",
+    "label": "Ravens",
+    "season": 2025,
+    "stats": {
+      "fumble_recoveries": 1.0,
+      "points_allowed": 31.0,
+      "return_yards": 162.0,
+      "sacks": 1.0,
+      "tackles_for_loss": 4.0
+    },
+    "unit": "team_defense",
+    "week": 13
+  },
+  {
+    "entity_id": "Saints",
+    "label": "Saints",
+    "season": 2025,
+    "stats": {
+      "defensive_touchdowns": 1.0,
+      "fumble_recoveries": 3.0,
+      "interceptions": 2.0,
+      "points_allowed": 17.0,
+      "return_yards": 27.0,
+      "sacks": 1.0,
+      "tackles_for_loss": 2.0
+    },
+    "unit": "team_defense",
+    "week": 5
+  },
+  {
+    "entity_id": "Seahawks",
+    "label": "Seahawks",
+    "season": 2025,
+    "stats": {
+      "defensive_touchdowns": 1.0,
+      "fumble_recoveries": 1.0,
+      "interceptions": 4.0,
+      "points_allowed": 0.0,
+      "return_yards": 43.0,
+      "sacks": 4.0,
+      "tackles_for_loss": 4.0
+    },
+    "unit": "team_defense",
+    "week": 13
+  },
+  {
+    "entity_id": "Steelers",
+    "label": "Steelers",
+    "season": 2025,
+    "stats": {
+      "fumble_recoveries": 1.0,
+      "points_allowed": 31.0,
+      "return_yards": 165.0,
+      "sacks": 1.0,
+      "tackles_for_loss": 6.0
+    },
+    "unit": "team_defense",
+    "week": 1
+  },
+  {
+    "entity_id": "Texans",
+    "label": "Texans",
+    "season": 2025,
+    "stats": {
+      "fumble_recoveries": 1.0,
+      "points_allowed": 17.0,
+      "return_yards": 31.0,
+      "sacks": 3.0,
+      "tackles_for_loss": 5.0
+    },
+    "unit": "team_defense",
+    "week": 1
+  },
+  {
+    "entity_id": "Texans",
+    "label": "Texans",
+    "season": 2025,
+    "stats": {
+      "interceptions": 3.0,
+      "points_allowed": 10.0,
+      "return_yards": 70.0,
+      "sacks": 1.0,
+      "tackles_for_loss": 3.0
+    },
+    "unit": "team_defense",
+    "week": 5
+  },
+  {
+    "entity_id": "Texans",
+    "label": "Texans",
+    "season": 2025,
+    "stats": {
+      "blocked_kicks": 1.0,
+      "fumble_recoveries": 1.0,
+      "interceptions": 1.0,
+      "points_allowed": 17.0,
+      "return_yards": 147.0,
+      "sacks": 1.0,
+      "tackles_for_loss": 4.0
+    },
+    "unit": "team_defense",
+    "week": 9
+  },
+  {
+    "entity_id": "Texans",
+    "label": "Texans",
+    "season": 2025,
+    "stats": {
+      "points_allowed": 17.0,
+      "return_yards": 143.0,
+      "sacks": 1.0,
+      "tackles_for_loss": 5.0
+    },
+    "unit": "team_defense",
+    "week": 13
+  },
+  {
+    "entity_id": "Vikings",
+    "label": "Vikings",
+    "season": 2025,
+    "stats": {
+      "fumble_recoveries": 1.0,
+      "points_allowed": 17.0,
+      "return_yards": 201.0,
+      "sacks": 2.0,
+      "tackles_for_loss": 6.0
+    },
+    "unit": "team_defense",
+    "week": 1
+  },
+  {
+    "entity_id": "Vikings",
+    "label": "Vikings",
+    "season": 2025,
+    "stats": {
+      "points_allowed": 17.0,
+      "return_yards": 117.0,
+      "sacks": 2.0,
+      "tackles_for_loss": 5.0
+    },
+    "unit": "team_defense",
+    "week": 5
+  },
+  {
+    "entity_id": "Vikings",
+    "label": "Vikings",
+    "season": 2025,
+    "stats": {
+      "blocked_kicks": 1.0,
+      "fumble_recoveries": 1.0,
+      "points_allowed": 24.0,
+      "return_yards": 171.0,
+      "sacks": 5.0,
+      "tackles_for_loss": 10.0
+    },
+    "unit": "team_defense",
+    "week": 9
+  },
+  {
+    "entity_id": "Vikings",
+    "label": "Vikings",
+    "season": 2025,
+    "stats": {
+      "fumble_recoveries": 2.0,
+      "points_allowed": 17.0,
+      "return_yards": 169.0,
+      "sacks": 4.0,
+      "tackles_for_loss": 7.0
+    },
+    "unit": "team_defense",
+    "week": 13
+  }
+]

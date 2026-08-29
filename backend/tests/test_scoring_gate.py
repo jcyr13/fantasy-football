@@ -1,15 +1,16 @@
 from __future__ import annotations
 
-from pathlib import Path
+import json
 
 import pytest
 
 from deadparrots.scoring import RIP_TIDE_RULESET, ScoringUnit, score_player_weeks
 from deadparrots.scoring.oracle import (
-    ORACLE_FIXTURE_PATH,
-    STAT_ROWS_FIXTURE_PATH,
+    BOX_SCORE_RAW_PATH,
     load_oracle_fixture,
     load_stat_rows_fixture,
+    records_from_box_scores,
+    stat_rows_to_json,
 )
 
 # THE VALIDATION GATE (spec issue #1, "Validation gate (hard)").
@@ -17,30 +18,24 @@ from deadparrots.scoring.oracle import (
 # The scoring engine is not trusted, and nothing in the app is built on it,
 # until its output reproduces real 2025 Yahoo per-player weekly fantasy points
 # *exactly* (0.00) for every offense / kicker / team-DEF player-week in the RIP
-# TIDE League. This is the highest-weight test in the repo.
+# TIDE League. This is the highest-weight test in the repo and runs as its own
+# CI step (`pytest -m gate`).
 #
-# The golden fixtures are captured once from Yahoo via ``yfpy`` and are not
-# checked in until that capture runs — see docs/scoring-oracle-capture.md and
-# ``python -m deadparrots.scoring.oracle``. Until both fixture files exist this
-# test SKIPS (loudly), so CI stays green while making the outstanding gate
-# visible in every run's summary.
+# The oracle is the golden fixture ``yahoo_2025_oracle.json`` — Yahoo's own
+# per-player weekly totals scraped from the archived 2025 league's box scores,
+# for weeks 1 / 5 / 9 / 13, all 12 teams. ``yahoo_2025_stat_rows.json`` holds
+# the matching stat lines the engine scores. Both are regenerated from
+# ``yahoo_2025_box_scores.raw.json`` by ``python -m deadparrots.scoring.oracle
+# build`` (see docs/scoring-oracle-capture.md).
 
 pytestmark = pytest.mark.gate
 
-_FIXTURES_PRESENT = ORACLE_FIXTURE_PATH.exists() and STAT_ROWS_FIXTURE_PATH.exists()
-_SKIP_REASON = (
-    "2025 Yahoo golden fixtures not captured yet: "
-    f"expected {ORACLE_FIXTURE_PATH.name} and {STAT_ROWS_FIXTURE_PATH.name} in "
-    f"{Path(ORACLE_FIXTURE_PATH).parent}. Run `python -m deadparrots.scoring.oracle` "
-    "(see docs/scoring-oracle-capture.md)."
-)
-
-# Offense, kicker, and team defense must match to the cent. (IDP, when it lands,
-# gets a ±1.0 tolerance and its own outlier catalogue — a separate ticket.)
+# Offense, kicker, and team defense must match to the cent. Pure individual
+# defenders (the D slot) are not in the fixture — that surface, with its ±1.0
+# tolerance and outlier catalogue, is a separate ticket.
 _EXACT_UNITS = {ScoringUnit.OFFENSE, ScoringUnit.KICKER, ScoringUnit.TEAM_DEFENSE}
 
 
-@pytest.mark.skipif(not _FIXTURES_PRESENT, reason=_SKIP_REASON)
 def test_engine_reproduces_2025_yahoo_actuals_exactly():
     stat_rows = load_stat_rows_fixture()
     oracle = load_oracle_fixture()
@@ -52,8 +47,7 @@ def test_engine_reproduces_2025_yahoo_actuals_exactly():
     mismatches: list[str] = []
     checked = 0
     for record in oracle:
-        if record.unit not in _EXACT_UNITS:
-            continue
+        assert record.unit in _EXACT_UNITS, f"unexpected unit in oracle: {record.unit}"
         result = scored.get(record.key)
         who = record.label or record.entity_id
         if result is None:
@@ -76,4 +70,23 @@ def test_engine_reproduces_2025_yahoo_actuals_exactly():
         report.append(f"{len(mismatches)} of {checked} scored player-week(s) did not match Yahoo:")
         report += [f"  - {m}" for m in mismatches[:50]]
     assert not report, "2025 validation gate FAILED\n" + "\n".join(report)
-    assert checked > 0, "gate ran but checked zero offense/kicker/DEF player-weeks"
+    assert checked > 300, f"gate only checked {checked} player-weeks — fixture looks truncated"
+
+
+def test_committed_fixtures_match_a_fresh_transform_of_the_raw_scrape():
+    """The two fixtures are generated from ``yahoo_2025_box_scores.raw.json``;
+    they must never drift from what ``oracle build`` would write today.
+    """
+    raw = json.loads(BOX_SCORE_RAW_PATH.read_text())
+    oracle, stat_rows = records_from_box_scores(raw)
+
+    fresh_oracle = {(r.entity_id, r.week): r.yahoo_points for r in oracle}
+    committed_oracle = {(r.entity_id, r.week): r.yahoo_points for r in load_oracle_fixture()}
+    assert fresh_oracle == committed_oracle
+
+    def _sorted(rows):
+        return sorted(
+            stat_rows_to_json(rows), key=lambda d: (d["unit"], d["entity_id"], d["week"])
+        )
+
+    assert _sorted(stat_rows) == _sorted(load_stat_rows_fixture())

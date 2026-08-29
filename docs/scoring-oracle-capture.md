@@ -1,147 +1,103 @@
-# Capturing the 2025 Yahoo scoring oracle
+# The 2025 Yahoo scoring oracle
 
 The RIP TIDE scoring engine (`deadparrots.scoring`) is a pure function and is
 **not trusted** until it reproduces real 2025 Yahoo per-player weekly fantasy
 points *exactly* for every offense / kicker / team-DEF player-week (spec issue
-\#1, "Validation gate (hard)"). That comparison lives in
-`backend/tests/test_scoring_gate.py` and it **skips** until two golden-fixture
-files exist:
+\#1, "Validation gate (hard)"). That check is `backend/tests/test_scoring_gate.py`
+(`pytest -m gate`), and it runs against three committed fixtures:
 
-| File | What it holds | Produced by |
-| --- | --- | --- |
-| `backend/tests/fixtures/scoring/yahoo_2025_oracle.json` | Yahoo's own weekly fantasy-point total per scoring entity | `yfpy`, step 2 below |
-| `backend/tests/fixtures/scoring/nflverse_2025_stat_rows.json` | the counting-stat rows the engine scores | the parquet cache, step 3 below |
+| File | What it holds |
+| --- | --- |
+| `tests/fixtures/scoring/yahoo_2025_box_scores.raw.json` | the raw scrape — `{"<name>\|<week>": [yahoo_total, [[stat label, count], …]]}` |
+| `tests/fixtures/scoring/yahoo_2025_oracle.json` | Yahoo's own weekly total per scoring entity (derived) |
+| `tests/fixtures/scoring/yahoo_2025_stat_rows.json` | the matching stat lines the engine scores (derived) |
 
-This is a **one-off manual capture**. It needs a Yahoo account in the RIP TIDE
-League (ID `735806`) and a Yahoo developer app; it cannot run in CI.
+The two derived files are regenerated from the raw one by:
+
+```bash
+cd backend
+uv run python -m deadparrots.scoring.oracle build
+```
+
+A gate test asserts the committed derived files always match a fresh `build`, so
+they cannot drift.
 
 ---
 
-## Step 0 — one-time Yahoo app credentials
+## Why a scrape, not `yfpy`
 
-1. Create an app at <https://developer.yahoo.com/apps/create/> — OAuth 2.0,
-   read-only Fantasy Sports scope (`fspt-r`). Redirect URI can be
-   `https://localhost:8080`.
-2. Note the **Client ID (consumer key)** and **Client secret**.
-3. Install the capture-only dependency (kept out of `pyproject.toml` so CI never
-   pulls it):
+Yahoo's Fantasy Sports API needs a developer app with the **Fantasy Sports**
+permission. That permission is **not offered** on the league owner's Yahoo
+developer account (only "OpenID Connect" and a regional auction scope appear on
+the app-creation form), and an OAuth token minted without it is rejected with
+`oauth_problem="additional_authorization_required"`. So the oracle is captured by
+reading Yahoo's own rendered box scores instead.
 
-   ```bash
-   cd backend
-   uv pip install yfpy
-   ```
+## What was captured
 
-## Step 1 — authenticate
+The **archived 2025 league** — Yahoo assigns a new league id per season; 2025 is
+`195010` (2026 is `735806`). Reach it from the league page's season dropdown, or
+directly:
 
-From `backend/`, with the credentials in the environment:
-
-```bash
-export YAHOO_CONSUMER_KEY=...      # PowerShell: $env:YAHOO_CONSUMER_KEY = "..."
-export YAHOO_CONSUMER_SECRET=...
+```
+https://football.fantasysports.yahoo.com/2025/f1/195010/<teamId 1-12>?week=<N>
 ```
 
-The first `yfpy` call opens a browser consent page and caches an OAuth token
-next to `--auth-dir` (default: the current directory). Keep that token file out
-of git — `data/` or a scratch dir is a good home for it.
+Each team-week page lists every rostered player (starters **and** bench) with a
+stat-by-stat breakdown — stat label, count, points-per, fantasy points — plus
+Yahoo's total. The scrape records `[total, [[label, count], …]]` per player-week.
 
-## Step 2 — capture the oracle
+**Sample scope:** weeks **1, 5, 9, 13**, all 12 teams — 597 offense / kicker /
+team-DEF player-weeks, spanning every position and scoring situation (all FG
+bands, every points-allowed tier, 2-point conversions, sacks, INTs, return
+yards, defensive TDs, safeties, blocked kicks). Enough to pin the ruleset. Pure
+individual defenders (the "D" slot) are dropped — that surface is ticket #5.
 
-```bash
-cd backend
-uv run python -m deadparrots.scoring.oracle capture \
-    --season 2025 \
-    --auth-dir ../data \
-    --out tests/fixtures/scoring/yahoo_2025_oracle.json
-```
+## Widening the sample
 
-This walks every team's weekly roster for weeks 1–17 and records each rostered
-player's `player_points.total`. Rows are tagged:
+1. Scrape more team-week pages the same way and merge them into
+   `yahoo_2025_box_scores.raw.json` (key `"<name>|<week>"`, value
+   `[total, [[label, count], …]]`).
+2. `uv run python -m deadparrots.scoring.oracle build`
+3. `uv run pytest -m gate -v`
 
-- `offense` — Yahoo position QB / RB / WR / TE, keyed by Yahoo `player_id`
-- `kicker` — Yahoo position K, keyed by Yahoo `player_id`
-- `team_defense` — Yahoo position DEF, keyed by the team abbreviation (e.g. `BUF`)
-- IDP ("D" slot) players are **skipped** — that surface is a separate ticket.
+The transform (`records_from_box_scores`) classifies each line — team defense by
+nickname, kicker by a Field-Goal/PAT line, offense by an offensive stat, else a
+pure defender it skips — maps Yahoo's stat labels to the engine's canonical keys,
+and raises `UnmappedStatLabelError` if the scrape used a label the engine does
+not cover yet.
 
-The script prints a per-unit count when it finishes.
+## What the 2025 scrape established about the ruleset
 
-## Step 3 — build the matching stat rows
+Beyond the PRD list, Yahoo's own per-stat "points per" column confirmed:
 
-The engine scores `nflverse_2025_stat_rows.json`, so every oracle key must have
-a stat row under the **same** `entity_id`. Because the oracle is keyed by Yahoo
-`player_id` and nflverse is keyed by its own `player_id`, the stat-row builder
-must join through `nflverse_rosters.yahoo_id`:
+- **Return yards** (kick/punt) score **1 point per 25 yards for any player** —
+  offensive players and team defense alike. The PRD omits this; the gate caught it.
+- RIP TIDE scores **individual defensive plays for every player**, not just the
+  D slot: **solo tackle 1.0, assisted tackle 0.5, pass defended 1.0**. An
+  offensive player or kicker who makes a tackle on a return is credited. (These
+  live on `IndividualDefenseRules`, shared by the offense and kicker rules.)
+- The **points-allowed 21-27 band is worth 0** and Yahoo simply omits the line;
+  the transform supplies a representative value (24) for a defense with no
+  "Points Allowed" line so the engine buckets it correctly.
+- Everything else matched the transcribed `RIP_TIDE_RULESET`: 25 / 10 / 10
+  yards-per-point, 6-point TDs, −1 INT / sack taken, +2 two-point conversions;
+  FG bands 3 / 3 / 3 / 4 / 5; PAT ±1; team DEF sack/INT/FR/TD/safety/block =
+  2/2/1/6/2/2, TFL 1, points-allowed schedule 10/7/4/1/0/−1/−4.
 
-1. Make sure the 2025 nflverse pull is in the cache (ticket #3):
+## Interpreting a gate failure
 
-   ```bash
-   DEADPARROTS_NFLVERSE_SEASONS='[2025]' uv run python -m deadparrots.ingest
-   ```
+A systematic offset across many player-weeks is a **ruleset** gap — fix it in
+`deadparrots.scoring.ruleset.RIP_TIDE_RULESET` and re-run. Still-open questions:
 
-2. Build the **offense + kicker** rows straight from the cached
-   `player_stats.parquet` (routes by `position` through
-   `deadparrots.scoring.adapters`):
+- **Offensive fumble lost.** `OffenseRules.fumble_lost` defaults to `0.0` (the
+  PRD lists no such penalty and no fumble-lost line appeared in the sample). If a
+  wider scrape shows kept players reading `2 × fumbles` low, set it to `-2.0`.
+- **Points-allowed tier edges.** The PRD gives only the seven bonus values; the
+  bucket edges (0 / 6 / 13 / 20 / 27 / 34) are the standard Yahoo defaults and
+  every band the sample exercised matched. Confirm against the league settings
+  PDF if a wider scrape disagrees.
 
-   ```bash
-   uv run python -m deadparrots.scoring.oracle build-rows \
-       ../data/nflverse/<pull-id>/player_stats.parquet --season 2025
-   ```
-
-3. **Append the team-defense rows.** Team defense is not in `player_stats`; roll
-   it up from `nflverse_pbp` — sacks / INTs / fumble recoveries / defensive TDs /
-   safeties / blocked kicks / TFL by `defteam`, and points allowed from the
-   schedule — build each with
-   `deadparrots.scoring.adapters.team_defense_stat_row(...)`, concatenate with
-   the rows from step 2, and re-write with
-   `deadparrots.scoring.oracle.write_stat_rows_fixture(all_rows)`.
-
-   This roll-up is the part most likely to need iteration against real column
-   names; a first pass may legitimately land `offense` + `kicker` only and add
-   `team_defense` in a follow-up — the gate checks whatever units are present
-   and fails only on a mismatch.
-
-4. **Reconcile the ids.** The oracle is keyed by Yahoo `player_id` (and team
-   abbreviation for DEF); the stat rows from step 2 are keyed by nflverse
-   `player_id`. Re-key one side to the other through `nflverse_rosters.yahoo_id`
-   before the gate can line them up. (Team-DEF entity ids — the abbreviation —
-   must match between the two files too.)
-
-## Step 4 — run the gate
-
-```bash
-cd backend
-uv run pytest -m gate -v
-```
-
-- **Skips** — a fixture file is still missing.
-- **Passes** — every offense/kicker/DEF player-week matches Yahoo to `0.00`.
-- **Fails** — the output lists each mismatch as
-  `unit name wkN: engine ±X.XX vs Yahoo ±Y.YY (delta ±Z.ZZ)` plus any oracle
-  keys with no stat row.
-
-## Interpreting a failure
-
-A systematic offset across many players points at a **ruleset** gap, not an
-engine bug — fix it in `deadparrots.scoring.ruleset.RIP_TIDE_RULESET` and re-run.
-Known candidates:
-
-- **Offensive fumble lost.** The PRD scoring list does not mention one, so
-  `OffenseRules.fumble_lost` defaults to `0.0`. If kept players with lost
-  fumbles read exactly `2 * fumbles` low, set it to `-2.0`.
-- **Points-allowed tier edges.** The PRD gives only the seven bonus values
-  (`10/7/4/1/0/-1/-4`); `RIP_TIDE_RULESET` assumes the standard Yahoo bucket
-  edges (0 / 1-6 / 7-13 / 14-20 / 21-27 / 28-34 / 35+). Confirm these against
-  John's league settings PDF — a whole defense's bonus off by one tier points
-  straight here.
-- **Field-goal band edges / missed-FG rules** beyond the 0–19 penalty.
-- **Points-allowed** definition for team defense (does Yahoo include
-  defensive/special-teams TDs the offense allowed, pick-sixes, etc.).
-
-A one-off per-player discrepancy that does not generalise is an NFL
-gamebook-vs-Yahoo scorer difference; catalogue it in the PR that lands the
-fixtures, don't bend the ruleset to it.
-
-## Refreshing
-
-The fixtures are frozen golden data — regenerate only if Yahoo restates 2025
-scoring or the league's settings are corrected. Re-run steps 2–4 and commit the
-new files with a note on what changed.
+A lone player-week that does not generalise is an NFL-gamebook-vs-Yahoo scorer
+difference — catalogue it in the PR that widens the fixture; don't bend the
+ruleset to it.

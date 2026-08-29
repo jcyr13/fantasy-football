@@ -1,32 +1,41 @@
 from __future__ import annotations
 
 import json
-from collections.abc import Iterable, Sequence
+from collections.abc import Iterable, Mapping, Sequence
 from dataclasses import dataclass
 from pathlib import Path
 
 from .rows import STATS_BY_UNIT, ScoringUnit, StatRow
 
 # The 2025 validation "oracle": real Yahoo per-player weekly fantasy points for
-# the RIP TIDE League, captured once via ``yfpy`` and frozen as golden fixtures.
-# The scoring engine is not trusted until its output reproduces these exactly
-# for every offense / kicker / team-DEF player-week (spec issue #1).
+# the RIP TIDE League, captured once from Yahoo's own box scores and frozen as
+# golden fixtures. The scoring engine is not trusted until its output reproduces
+# these exactly for every offense / kicker / team-DEF player-week (spec issue #1).
 #
-# This module is a one-off capture tool and fixture (de)serialiser. It is the
-# ONLY file in ``deadparrots.scoring`` that touches the network or disk; the
-# engine never imports it. ``yfpy`` / ``duckdb`` are imported lazily so the
-# package has no hard dependency on them.
+# How the raw file is captured: Yahoo's Fantasy API is not reachable for this
+# league (the developer account cannot attach the Fantasy Sports permission), so
+# the source is a browser scrape of the archived 2025 league's per-team weekly
+# box scores — each of which lists every player's stat-by-stat breakdown and
+# Yahoo's own fantasy total. That raw scrape lives at ``BOX_SCORE_RAW_PATH``;
+# this module transforms it into the two gate fixtures. See
+# docs/scoring-oracle-capture.md.
 #
-# Run:  python -m deadparrots.scoring.oracle --help
-# Docs: docs/scoring-oracle-capture.md
+# Sample scope: weeks 1, 5, 9 and 13, all 12 teams (starters + bench). Enough
+# player-weeks across every position and scoring situation to pin the ruleset;
+# widen the scrape and re-run ``build`` to grow it.
+#
+# This module is the ONLY file in ``deadparrots.scoring`` that touches disk; the
+# engine never imports it.
+#
+# Run:  python -m deadparrots.scoring.oracle build
 
-RIP_TIDE_LEAGUE_ID = 735806
+RIP_TIDE_LEAGUE_ID_2025 = 195010  # the archived 2025 instance (2026 is 735806)
 ORACLE_SEASON = 2025
 
-# Default fixture locations, relative to the backend package root.
 _FIXTURE_DIR = Path(__file__).resolve().parents[3] / "tests" / "fixtures" / "scoring"
+BOX_SCORE_RAW_PATH = _FIXTURE_DIR / "yahoo_2025_box_scores.raw.json"
 ORACLE_FIXTURE_PATH = _FIXTURE_DIR / "yahoo_2025_oracle.json"
-STAT_ROWS_FIXTURE_PATH = _FIXTURE_DIR / "nflverse_2025_stat_rows.json"
+STAT_ROWS_FIXTURE_PATH = _FIXTURE_DIR / "yahoo_2025_stat_rows.json"
 
 
 @dataclass(frozen=True)
@@ -74,7 +83,7 @@ def _sort_key(d: Jsonable) -> tuple[object, object, object]:
 def _write_fixture(items: Iterable[object], path: Path, to_json) -> Path:
     path.parent.mkdir(parents=True, exist_ok=True)
     payload = sorted((to_json(it) for it in items), key=_sort_key)
-    path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n")
+    path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", newline="\n")
     return path
 
 
@@ -161,184 +170,200 @@ def load_stat_rows_fixture(path: Path = STAT_ROWS_FIXTURE_PATH) -> list[StatRow]
 
 
 # --------------------------------------------------------------------------- #
-# Yahoo capture — network. Lazy ``yfpy`` import; not covered by unit tests.
+# Box-score transform: raw Yahoo scrape -> (oracle records, stat rows).
+#
+# The raw file is ``{"<player name>|<week>": [yahoo_total, [[stat label, count],
+# ...]]}``. Yahoo's stat labels are mapped to the engine's canonical keys here.
 # --------------------------------------------------------------------------- #
 
-_OFFENSE_POSITIONS = {"QB", "RB", "WR", "TE"}
+# A team defense is entered under the team nickname; an individual defender is
+# always a person's name. That is the only reliable split — IDP box scores carry
+# "Sack", "Tackles for Loss" etc. too.
+TEAM_NICKNAMES = frozenset(
+    {
+        "49ers", "Bears", "Bengals", "Bills", "Broncos", "Browns", "Buccaneers",
+        "Cardinals", "Chargers", "Chiefs", "Colts", "Commanders", "Cowboys",
+        "Dolphins", "Eagles", "Falcons", "Giants", "Jaguars", "Jets", "Lions",
+        "Packers", "Panthers", "Patriots", "Raiders", "Rams", "Ravens", "Saints",
+        "Seahawks", "Steelers", "Texans", "Titans", "Vikings",
+    }
+)
+
+# Yahoo prints one "Points Allowed <band> points" line per team defense, except
+# the 21-27 band (worth 0), which it omits. The engine takes an exact points-
+# allowed count and buckets it, so map each band to a representative value.
+_POINTS_ALLOWED_REP: Mapping[str, int] = {
+    "Points Allowed 0 points": 0,
+    "Points Allowed 1-6 points": 3,
+    "Points Allowed 7-13 points": 10,
+    "Points Allowed 14-20 points": 17,
+    "Points Allowed 21-27 points": 24,
+    "Points Allowed 28-34 points": 31,
+    "Points Allowed 35+ points": 40,
+}
+_POINTS_ALLOWED_ABSENT = 24  # the omitted 21-27 band
+
+# Individual-defense stats RIP TIDE scores for any player (offense/kicker too).
+_IDP_SHARED: Mapping[str, str] = {
+    "Tackle Solo": "tackle_solo",
+    "Tackle Assist": "tackle_assist",
+    "Pass Defended": "passes_defended",
+}
+_OFFENSE_LABELS: Mapping[str, str] = {
+    "Passing Yards": "passing_yards",
+    "Passing Touchdowns": "passing_touchdowns",
+    "Interceptions": "interceptions_thrown",
+    "Sacks": "sacks_taken",
+    "Rushing Yards": "rushing_yards",
+    "Rushing Touchdowns": "rushing_touchdowns",
+    "Receiving Yards": "receiving_yards",
+    "Receiving Touchdowns": "receiving_touchdowns",
+    "2-Point Conversions": "two_point_conversions",
+    "Return Yards": "return_yards",
+    **_IDP_SHARED,
+}
+_KICKER_LABELS: Mapping[str, str] = {
+    "Field Goals 0-19 Yards": "fg_made_0_19",
+    "Field Goals 20-29 Yards": "fg_made_20_29",
+    "Field Goals 30-39 Yards": "fg_made_30_39",
+    "Field Goals 40-49 Yards": "fg_made_40_49",
+    "Field Goals 50+ Yards": "fg_made_50_plus",
+    "Field Goals Missed 0-19 Yards": "fg_missed_0_19",
+    "Point After Attempt Made": "pat_made",
+    "Point After Attempt Missed": "pat_missed",
+    **_IDP_SHARED,
+}
+_TEAM_DEFENSE_LABELS: Mapping[str, str] = {
+    "Sack": "sacks",
+    "Interception": "interceptions",
+    "Fumble Recovery": "fumble_recoveries",
+    "Touchdown": "defensive_touchdowns",
+    "Kickoff and Punt Return Touchdowns": "defensive_touchdowns",
+    "Safety": "safeties",
+    "Block Kick": "blocked_kicks",
+    "Tackles for Loss": "tackles_for_loss",
+    "Return Yards": "return_yards",
+}
+_LABELS_BY_UNIT: Mapping[ScoringUnit, Mapping[str, str]] = {
+    ScoringUnit.OFFENSE: _OFFENSE_LABELS,
+    ScoringUnit.KICKER: _KICKER_LABELS,
+    ScoringUnit.TEAM_DEFENSE: _TEAM_DEFENSE_LABELS,
+}
+
+# Labels that only an offensive player accrues (a tackle or return-yard line
+# does not distinguish offense from defense).
+_OFFENSE_MARKERS = frozenset(
+    {
+        "Passing Yards", "Passing Touchdowns", "Rushing Yards", "Rushing Touchdowns",
+        "Receiving Yards", "Receiving Touchdowns", "2-Point Conversions", "Interceptions",
+    }
+)
 
 
-def capture_oracle_records(
-    *,
-    league_id: int = RIP_TIDE_LEAGUE_ID,
-    season: int = ORACLE_SEASON,
-    weeks: Iterable[int] = range(1, 18),
-    yahoo_consumer_key: str | None = None,
-    yahoo_consumer_secret: str | None = None,
-    auth_dir: Path | None = None,
-) -> list[OracleRecord]:
-    """Pull every rostered player's weekly fantasy-point total for ``season``.
+class UnmappedStatLabelError(ValueError):
+    """A raw box score used a Yahoo stat label the transform does not recognise."""
 
-    Uses ``yfpy``; credentials come from the arguments or, if omitted, from
-    ``yfpy``'s own ``YAHOO_CONSUMER_KEY`` / ``YAHOO_CONSUMER_SECRET`` env vars
-    and cached OAuth token in ``auth_dir`` (default: the current directory).
 
-    Kicker rows are tagged ``KICKER``; team-defense rows (Yahoo position ``DEF``)
-    are tagged ``TEAM_DEFENSE`` with the editorial team abbreviation as the
-    entity id; everything else with an offensive position is ``OFFENSE``.
-    Players whose Yahoo position is none of those (IDP "D" slot) are skipped —
-    that surface is a separate ticket.
+def _classify(name: str, labels: set[str]) -> ScoringUnit | None:
+    """Which scoring unit a box-score line belongs to, or ``None`` to skip it
+    (a pure individual defender — the D-slot surface is a separate ticket).
     """
-    from yfpy.query import YahooFantasySportsQuery  # type: ignore[import-untyped]
-
-    query = YahooFantasySportsQuery(
-        league_id=str(league_id),
-        game_code="nfl",
-        game_id=None,
-        yahoo_consumer_key=yahoo_consumer_key,
-        yahoo_consumer_secret=yahoo_consumer_secret,
-        env_file_location=auth_dir,
-        save_token_data_to_env_file=bool(auth_dir),
-    )
-
-    teams = query.get_league_teams()
-    records: dict[tuple[str, int, int], OracleRecord] = {}
-
-    for week in weeks:
-        for team in teams:
-            roster = query.get_team_roster_player_stats_by_week(team.team_id, chosen_week=week)
-            for player in roster:
-                unit = _yahoo_unit(player)
-                if unit is None:
-                    continue
-                points = getattr(getattr(player, "player_points", None), "total", None)
-                if points is None:
-                    continue
-                entity_id = _yahoo_entity_id(player, unit)
-                rec = OracleRecord(
-                    entity_id=entity_id,
-                    season=season,
-                    week=int(week),
-                    unit=unit,
-                    yahoo_points=round(float(points), 2),
-                    label=getattr(player, "full_name", None) or entity_id,
-                )
-                records[rec.key] = rec
-
-    return sorted(records.values(), key=lambda r: (r.unit.value, r.entity_id, r.week))
-
-
-def _yahoo_unit(player: object) -> ScoringUnit | None:
-    position = (
-        getattr(player, "primary_position", None)
-        or getattr(player, "display_position", None)
-        or ""
-    ).upper()
-    if position == "K":
-        return ScoringUnit.KICKER
-    if position in {"DEF", "DST"}:
+    if name in TEAM_NICKNAMES:
         return ScoringUnit.TEAM_DEFENSE
-    if position in _OFFENSE_POSITIONS:
+    if any(label.startswith(("Field Goal", "Point After")) for label in labels):
+        return ScoringUnit.KICKER
+    if labels & _OFFENSE_MARKERS:
         return ScoringUnit.OFFENSE
-    return None
+    if "Return Yards" in labels and labels <= {"Return Yards", *_IDP_SHARED}:
+        return ScoringUnit.OFFENSE  # a returner rostered on offense, no box stats
+    return None  # only tackles etc. -> a pure individual defender
 
 
-def _yahoo_entity_id(player: object, unit: ScoringUnit) -> str:
-    if unit is ScoringUnit.TEAM_DEFENSE:
-        abbr = getattr(player, "editorial_team_abbr", None)
-        if abbr:
-            return str(abbr).upper()
-    return str(getattr(player, "player_id", "") or getattr(player, "player_key", ""))
+def records_from_box_scores(
+    raw: Mapping[str, Sequence], *, season: int = ORACLE_SEASON
+) -> tuple[list[OracleRecord], list[StatRow]]:
+    """Turn the raw box-score scrape into aligned oracle records and stat rows.
 
-
-def build_offense_kicker_stat_rows(
-    parquet_path: Path, *, season: int = ORACLE_SEASON
-) -> list[StatRow]:
-    """Read an nflverse ``player_stats`` parquet and return offense + kicker rows.
-
-    This is the mechanical half of the stat-row fixture. Team-defense rows are
-    rolled up from play-by-play separately and appended by the capture operator
-    (docs/scoring-oracle-capture.md); ``entity_id`` here is the nflverse
-    ``player_id``, which the operator must reconcile with the Yahoo-keyed oracle.
+    Both lists are keyed by ``(player/team name, season, week)``. Pure
+    individual defenders are dropped. Raises ``UnmappedStatLabelError`` if a
+    Yahoo label has no canonical mapping — that means the scrape widened into
+    territory the engine does not cover yet.
     """
-    import polars as pl
+    oracle: list[OracleRecord] = []
+    stat_rows: list[StatRow] = []
 
-    from .adapters import stat_rows_from_player_stats
+    for key, (total, lines) in raw.items():
+        name, week_str = key.rsplit("|", 1)
+        week = int(week_str)
+        labels = {str(label) for label, _ in lines}
+        unit = _classify(name, labels)
+        if unit is None:
+            continue
 
-    frame = pl.read_parquet(parquet_path)
-    if "season" in frame.columns:
-        frame = frame.filter(pl.col("season") == season)
-    return stat_rows_from_player_stats(frame.iter_rows(named=True))
+        label_map = _LABELS_BY_UNIT[unit]
+        stats: dict[str, float] = {}
+        for label, count in lines:
+            label = str(label)
+            if unit is ScoringUnit.TEAM_DEFENSE and label in _POINTS_ALLOWED_REP:
+                stats["points_allowed"] = float(_POINTS_ALLOWED_REP[label])
+                continue
+            canonical = label_map.get(label)
+            if canonical is None:
+                raise UnmappedStatLabelError(
+                    f"{unit.value}: {name} wk{week}: unmapped Yahoo label {label!r}"
+                )
+            stats[canonical] = stats.get(canonical, 0.0) + float(count)
+
+        if unit is ScoringUnit.TEAM_DEFENSE and "points_allowed" not in stats:
+            stats["points_allowed"] = float(_POINTS_ALLOWED_ABSENT)
+
+        oracle.append(
+            OracleRecord(name, season, week, unit, round(float(total), 2), label=name)
+        )
+        stat_rows.append(StatRow(name, season, week, unit, stats, label=name))
+
+    oracle.sort(key=lambda r: (r.unit.value, r.entity_id, r.week))
+    stat_rows.sort(key=lambda r: (r.unit.value, r.entity_id, r.week))
+    return oracle, stat_rows
 
 
-def _summarise(rows: Sequence[object], path: Path, kind: str) -> None:
-    by_unit: dict[str, int] = {}
-    for row in rows:
-        unit = row.unit.value  # type: ignore[attr-defined]
-        by_unit[unit] = by_unit.get(unit, 0) + 1
-    print(f"wrote {len(rows)} {kind} to {path}")
-    for unit, count in sorted(by_unit.items()):
-        print(f"  {unit}: {count}")
+def load_box_scores(path: Path = BOX_SCORE_RAW_PATH) -> dict[str, list]:
+    return json.loads(path.read_text())
 
 
-def _build_arg_parser():
+def build_fixtures(
+    raw_path: Path = BOX_SCORE_RAW_PATH,
+    *,
+    oracle_path: Path = ORACLE_FIXTURE_PATH,
+    stat_rows_path: Path = STAT_ROWS_FIXTURE_PATH,
+) -> tuple[list[OracleRecord], list[StatRow]]:
+    """Read the raw scrape, write both gate fixtures, return what was written."""
+    oracle, stat_rows = records_from_box_scores(load_box_scores(raw_path))
+    write_oracle_fixture(oracle, oracle_path)
+    write_stat_rows_fixture(stat_rows, stat_rows_path)
+    return oracle, stat_rows
+
+
+def main(argv: Sequence[str] | None = None) -> int:
     import argparse
 
     parser = argparse.ArgumentParser(
         prog="python -m deadparrots.scoring.oracle",
-        description="Build the 2025 scoring golden fixtures (spec issue #1 validation gate).",
+        description="Rebuild the 2025 scoring golden fixtures from the Yahoo box-score scrape.",
     )
-    sub = parser.add_subparsers(dest="command", required=True)
+    parser.add_argument("command", choices=["build"], help="build: raw scrape -> gate fixtures")
+    parser.add_argument("--raw", type=Path, default=BOX_SCORE_RAW_PATH)
+    args = parser.parse_args(argv)
 
-    cap = sub.add_parser("capture", help="pull the Yahoo oracle (needs yfpy + OAuth)")
-    cap.add_argument("--league-id", type=int, default=RIP_TIDE_LEAGUE_ID)
-    cap.add_argument("--season", type=int, default=ORACLE_SEASON)
-    cap.add_argument(
-        "--auth-dir",
-        type=Path,
-        default=Path.cwd(),
-        help="Directory holding the yfpy .env / token file (default: cwd).",
-    )
-    cap.add_argument("--out", type=Path, default=ORACLE_FIXTURE_PATH)
-
-    rows = sub.add_parser(
-        "build-rows",
-        help="build the offense+kicker stat rows from a cached nflverse player_stats parquet",
-    )
-    rows.add_argument("parquet", type=Path, help="path to a player_stats.parquet in the cache")
-    rows.add_argument("--season", type=int, default=ORACLE_SEASON)
-    rows.add_argument("--out", type=Path, default=STAT_ROWS_FIXTURE_PATH)
-
-    return parser
-
-
-def main(argv: Sequence[str] | None = None) -> int:
-    args = _build_arg_parser().parse_args(argv)
-
-    if args.command == "capture":
-        records = capture_oracle_records(
-            league_id=args.league_id,
-            season=args.season,
-            auth_dir=args.auth_dir,
-        )
-        path = write_oracle_fixture(records, args.out)
-        _summarise(records, path, "oracle records")
-        print(
-            "\nNext: `build-rows` for the offense+kicker stat rows, then append the "
-            "team-defense roll-up — see docs/scoring-oracle-capture.md."
-        )
-        return 0
-
-    if args.command == "build-rows":
-        rows = build_offense_kicker_stat_rows(args.parquet, season=args.season)
-        path = write_stat_rows_fixture(rows, args.out)
-        _summarise(rows, path, "stat rows")
-        print(
-            "\nThis is offense + kicker only. Append the team-defense rows "
-            "(deadparrots.scoring.adapters.team_defense_stat_row) before running the gate."
-        )
-        return 0
-
-    return 2  # pragma: no cover — argparse rejects an unknown command first
+    oracle, stat_rows = build_fixtures(args.raw)
+    by_unit: dict[str, int] = {}
+    for r in oracle:
+        by_unit[r.unit.value] = by_unit.get(r.unit.value, 0) + 1
+    print(f"wrote {len(oracle)} oracle records + {len(stat_rows)} stat rows")
+    for unit, count in sorted(by_unit.items()):
+        print(f"  {unit}: {count}")
+    print("\nRun `uv run pytest -m gate -v` to check the engine against them.")
+    return 0
 
 
 if __name__ == "__main__":  # pragma: no cover

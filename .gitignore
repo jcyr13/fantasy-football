@@ -17,3 +17,6 @@ __pycache__/
 /data/*
 !/data/.gitkeep
 !/data/README.md
+
+# App data when the backend is run from ./backend
+/backend/data/

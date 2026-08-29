@@ -4,7 +4,7 @@ from collections.abc import Iterable, Mapping
 from decimal import ROUND_HALF_UP, Decimal
 
 from .rows import PlayerWeekKey, ScoredPlayerWeek, ScoringUnit, StatRow
-from .ruleset import LeagueRuleset
+from .ruleset import IndividualDefenseRules, LeagueRuleset
 
 # The scoring engine: one pure function, ``score_player_weeks``, mapping
 # ``(stat rows, ruleset) -> {player-week: scored player-week}``. No network, no
@@ -18,12 +18,22 @@ def round_points(value: float) -> float:
     return float(Decimal(str(value)).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP))
 
 
+def _idp_points(row: StatRow, idp: IndividualDefenseRules) -> dict[str, float]:
+    """Individual-defense points RIP TIDE awards to any player who records them."""
+    return {
+        "tackle_solo": row.stat("tackle_solo") * idp.solo_tackle,
+        "tackle_assist": row.stat("tackle_assist") * idp.assisted_tackle,
+        "passes_defended": row.stat("passes_defended") * idp.pass_defended,
+    }
+
+
 def _score_offense(row: StatRow, ruleset: LeagueRuleset) -> dict[str, float]:
     r = ruleset.offense
     return {
         "passing_yards": row.stat("passing_yards") / r.passing_yards_per_point,
         "rushing_yards": row.stat("rushing_yards") / r.rushing_yards_per_point,
         "receiving_yards": row.stat("receiving_yards") / r.receiving_yards_per_point,
+        "return_yards": row.stat("return_yards") / r.return_yards_per_point,
         "passing_touchdowns": row.stat("passing_touchdowns") * r.passing_touchdown,
         "rushing_touchdowns": row.stat("rushing_touchdowns") * r.rushing_touchdown,
         "receiving_touchdowns": row.stat("receiving_touchdowns") * r.receiving_touchdown,
@@ -31,6 +41,7 @@ def _score_offense(row: StatRow, ruleset: LeagueRuleset) -> dict[str, float]:
         "sacks_taken": row.stat("sacks_taken") * r.sack_taken,
         "two_point_conversions": row.stat("two_point_conversions") * r.two_point_conversion,
         "fumbles_lost": row.stat("fumbles_lost") * r.fumble_lost,
+        **_idp_points(row, r.individual_defense),
     }
 
 
@@ -45,6 +56,7 @@ def _score_kicker(row: StatRow, ruleset: LeagueRuleset) -> dict[str, float]:
         "fg_missed_0_19": row.stat("fg_missed_0_19") * r.fg_missed_0_19,
         "pat_made": row.stat("pat_made") * r.pat_made,
         "pat_missed": row.stat("pat_missed") * r.pat_missed,
+        **_idp_points(row, r.individual_defense),
     }
 
 
@@ -58,6 +70,7 @@ def _score_team_defense(row: StatRow, ruleset: LeagueRuleset) -> dict[str, float
         "safeties": row.stat("safeties") * r.safety,
         "blocked_kicks": row.stat("blocked_kicks") * r.blocked_kick,
         "tackles_for_loss": row.stat("tackles_for_loss") * r.tackle_for_loss,
+        "return_yards": row.stat("return_yards") / r.return_yards_per_point,
         "points_allowed": r.points_allowed_bonus(row.stat("points_allowed")),
     }
 

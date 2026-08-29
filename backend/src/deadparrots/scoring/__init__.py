@@ -22,6 +22,7 @@ from .rows import (
 )
 from .ruleset import (
     RIP_TIDE_RULESET,
+    IndividualDefenseRules,
     KickerRules,
     LeagueRuleset,
     OffenseRules,
@@ -34,6 +35,7 @@ __all__ = [
     "OFFENSE_STATS",
     "RIP_TIDE_RULESET",
     "TEAM_DEFENSE_STATS",
+    "IndividualDefenseRules",
     "KickerRules",
     "LeagueRuleset",
     "OffenseRules",

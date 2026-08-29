@@ -17,6 +17,9 @@ def test_offense_rules_match_the_spec():
     assert o.passing_yards_per_point == 25.0
     assert o.rushing_yards_per_point == 10.0
     assert o.receiving_yards_per_point == 10.0
+    # Kick/punt return yards, confirmed at 1 point / 25 yards by Yahoo's 2025
+    # box scores (they score for offensive players on returns too).
+    assert o.return_yards_per_point == 25.0
     assert o.passing_touchdown == 6.0
     assert o.rushing_touchdown == 6.0
     assert o.receiving_touchdown == 6.0
@@ -26,6 +29,13 @@ def test_offense_rules_match_the_spec():
     # The PRD scoring list enumerates no offensive fumble-lost penalty; the knob
     # defaults to zero pending the 2025 golden gate.
     assert o.fumble_lost == 0.0
+
+
+def test_individual_defense_rules_are_shared_by_offense_and_kicker():
+    idp = RIP_TIDE_RULESET.offense.individual_defense
+    assert (idp.solo_tackle, idp.assisted_tackle, idp.pass_defended) == (1.0, 0.5, 1.0)
+    # Same object on the kicker rules — RIP TIDE scores these for any player.
+    assert RIP_TIDE_RULESET.kicker.individual_defense is idp
 
 
 def test_kicker_rules_match_the_spec():
@@ -47,6 +57,7 @@ def test_team_defense_event_rules_match_the_spec():
     assert d.safety == 2.0
     assert d.blocked_kick == 2.0
     assert d.tackle_for_loss == 1.0
+    assert d.return_yards_per_point == 25.0
 
 
 def test_points_allowed_schedule_is_10_7_4_1_0_minus1_minus4():

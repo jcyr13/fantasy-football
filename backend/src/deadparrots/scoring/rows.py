@@ -35,7 +35,14 @@ OFFENSE_STATS: frozenset[str] = frozenset(
         "rushing_touchdowns",
         "receiving_yards",
         "receiving_touchdowns",
+        "return_yards",
         "fumbles_lost",
+        # RIP TIDE scores individual defensive plays for *any* player who records
+        # one, not only the D slot — an offensive player who makes a tackle after
+        # a turnover is credited. (The D-slot IDP surface proper is ticket #5.)
+        "tackle_solo",
+        "tackle_assist",
+        "passes_defended",
     }
 )
 
@@ -49,6 +56,11 @@ KICKER_STATS: frozenset[str] = frozenset(
         "fg_missed_0_19",
         "pat_made",
         "pat_missed",
+        # A kicker who makes a tackle on the return is credited the same
+        # individual-defense points as anyone else (see OFFENSE_STATS).
+        "tackle_solo",
+        "tackle_assist",
+        "passes_defended",
     }
 )
 
@@ -61,6 +73,7 @@ TEAM_DEFENSE_STATS: frozenset[str] = frozenset(
         "safeties",
         "blocked_kicks",
         "tackles_for_loss",
+        "return_yards",
         "points_allowed",
     }
 )

@@ -82,6 +82,18 @@ def test_offense_two_point_conversions_score_two_each():
     assert score_row(offense(two_point_conversions=2), RULES).points == 4.0
 
 
+def test_offense_return_yards_score_one_per_twenty_five():
+    # A WR with 33 receiving yards and a 129-yard return: 3.3 + 5.16
+    row = offense(receiving_yards=33, return_yards=129)
+    assert score_row(row, RULES).points == 8.46
+
+
+def test_offense_player_who_makes_a_tackle_is_credited_individual_defense():
+    # 45 receiving yards + 1 solo tackle: RIP TIDE scores the tackle for anyone.
+    assert score_row(offense(receiving_yards=45, tackle_solo=1), RULES).points == 5.5
+    assert score_row(offense(tackle_assist=3, passes_defended=1), RULES).points == 2.5
+
+
 def test_offense_fumbles_lost_are_zero_under_current_ruleset():
     assert score_row(offense(rushing_yards=100, fumbles_lost=3), RULES).points == 10.0
 
@@ -121,6 +133,11 @@ def test_kicker_missed_pat_is_minus_one():
     assert score_row(kicker(pat_made=2, pat_missed=1), RULES).points == 1.0
 
 
+def test_kicker_who_makes_a_tackle_on_the_return_is_credited():
+    # 4 PATs + 1 assisted tackle = 4 + 0.5
+    assert score_row(kicker(pat_made=4, tackle_assist=1), RULES).points == 4.5
+
+
 # --------------------------------------------------------------------------- #
 # Team defense
 # --------------------------------------------------------------------------- #
@@ -142,6 +159,12 @@ def test_team_defense_events_plus_points_allowed_bonus():
 
 def test_team_defense_shutout_bonus():
     assert score_row(defense(points_allowed=0), RULES).points == 10.0
+
+
+def test_team_defense_return_yards_score_one_per_twenty_five():
+    # 2 sacks + 86 return yards + points_allowed 3 (tier +7): 4 + 3.44 + 7
+    row = defense(sacks=2, return_yards=86, points_allowed=3)
+    assert score_row(row, RULES).points == 14.44
 
 
 def test_team_defense_blowout_allowed_is_minus_four():
@@ -184,8 +207,8 @@ def test_total_points_sums_a_lineup():
 
 def test_unknown_stat_key_is_rejected_at_row_construction():
     with pytest.raises(UnknownStatError) as excinfo:
-        StatRow("p1", 2025, 3, ScoringUnit.OFFENSE, {"return_yards": 40})
-    assert "return_yards" in str(excinfo.value)
+        StatRow("p1", 2025, 3, ScoringUnit.OFFENSE, {"punt_yards": 40})
+    assert "punt_yards" in str(excinfo.value)
 
 
 def test_missing_stats_default_to_zero():
