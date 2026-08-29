@@ -1,0 +1,10 @@
+{
+  "entries": [
+    {"name": "Jaylen Waddle", "team": "Mia", "position": "WR", "status": "Questionable", "detail": "Shoulder", "updated": "Fri"},
+    {"name": "Christian McCaffrey", "team": "SF", "position": "RB", "status": "Injured Reserve", "detail": "Achilles / PCL", "updated": "Wed"},
+    {"name": "George Kittle", "team": "SF", "position": "TE", "status": "Questionable", "detail": "Hamstring", "updated": "Fri"},
+    {"name": "Tank Dell", "team": "Hou", "position": "WR", "status": "Out", "detail": "Knee", "updated": "Thu"},
+    {"name": "J.K. Dobbins", "team": "LAC", "position": "RB", "status": "Out", "detail": "Knee", "updated": "Fri"},
+    {"name": "Trey McBride", "team": "Ari", "position": "TE", "status": "Probable", "detail": null, "updated": "Fri"}
+  ]
+}

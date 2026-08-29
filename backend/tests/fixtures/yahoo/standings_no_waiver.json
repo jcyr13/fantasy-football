@@ -1,0 +1,16 @@
+{
+  "rows": [
+    {"rank": "1", "team_name": "Norwegian Blues", "manager": "Praline", "division": "RIP", "wins": "3", "losses": "0", "ties": "0", "points_for": "372.4", "points_against": "301.8", "waiver_priority": null},
+    {"rank": "2", "team_name": "Dead Parrots", "manager": "John", "division": "RIP", "wins": "2", "losses": "1", "ties": "0", "points_for": "351.1", "points_against": "318.6", "waiver_priority": null},
+    {"rank": "3", "team_name": "Spanish Inquisition", "manager": "Ximenez", "division": "TIDE", "wins": "2", "losses": "1", "ties": "0", "points_for": "344.7", "points_against": "322.0", "waiver_priority": null},
+    {"rank": "4", "team_name": "Lumberjacks", "manager": "Bevis", "division": "TIDE", "wins": "2", "losses": "1", "ties": "0", "points_for": "339.2", "points_against": "330.5", "waiver_priority": null},
+    {"rank": "5", "team_name": "Ministry of Walks", "manager": "Teabag", "division": "RIP", "wins": "2", "losses": "1", "ties": "0", "points_for": "333.9", "points_against": "319.4", "waiver_priority": null},
+    {"rank": "6", "team_name": "Killer Rabbits", "manager": "Tim", "division": "TIDE", "wins": "1", "losses": "2", "ties": "0", "points_for": "328.0", "points_against": "330.1", "waiver_priority": null},
+    {"rank": "7", "team_name": "Spam Vikings", "manager": "Hngh", "division": "RIP", "wins": "1", "losses": "2", "ties": "0", "points_for": "321.5", "points_against": "334.7", "waiver_priority": null},
+    {"rank": "8", "team_name": "Ex-Parrots", "manager": "Polly", "division": "TIDE", "wins": "1", "losses": "2", "ties": "0", "points_for": "318.8", "points_against": "339.9", "waiver_priority": null},
+    {"rank": "9", "team_name": "Nudge Nudge", "manager": "Norman", "division": "RIP", "wins": "1", "losses": "2", "ties": "0", "points_for": "312.6", "points_against": "341.2", "waiver_priority": null},
+    {"rank": "10", "team_name": "Gumbys", "manager": "D.P.", "division": "TIDE", "wins": "1", "losses": "2", "ties": "0", "points_for": "305.3", "points_against": "348.0", "waiver_priority": null},
+    {"rank": "11", "team_name": "Argument Clinic", "manager": "Barnard", "division": "RIP", "wins": "1", "losses": "2", "ties": "0", "points_for": "299.7", "points_against": "352.6", "waiver_priority": null},
+    {"rank": "12", "team_name": "Fish Slappers", "manager": "Michael", "division": "TIDE", "wins": "0", "losses": "3", "ties": "0", "points_for": "281.4", "points_against": "371.9", "waiver_priority": null}
+  ]
+}

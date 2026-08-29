@@ -1,0 +1,12 @@
+{
+  "players": [
+    {"name": "Jauan Jennings", "team": "SF", "position": "WR", "availability": "FA", "waiver_claim_date": null, "percent_rostered": "61%", "projected_points": "12.4", "opponent": "@LAR", "injury_status": null},
+    {"name": "Tyrone Tracy Jr.", "team": "NYG", "position": "RB", "availability": "W", "waiver_claim_date": "Wed", "percent_rostered": "48%", "projected_points": "11.1", "opponent": "vs Cle", "injury_status": null},
+    {"name": "Cade Otton", "team": "TB", "position": "TE", "availability": "FA", "waiver_claim_date": null, "percent_rostered": "33%", "projected_points": "8.7", "opponent": "@Den", "injury_status": "Q"},
+    {"name": "Jordan Mason", "team": "SF", "position": "RB", "availability": "W", "waiver_claim_date": "Wed", "percent_rostered": "27%", "projected_points": "9.6", "opponent": "@LAR", "injury_status": null},
+    {"name": "Cardinals", "team": "Ari", "position": "DEF", "availability": "FA", "waiver_claim_date": null, "percent_rostered": "19%", "projected_points": "7.2", "opponent": "@Det", "injury_status": null},
+    {"name": "Cam Little", "team": "Jax", "position": "K", "availability": "FA", "waiver_claim_date": null, "percent_rostered": "12%", "projected_points": "8.4", "opponent": "vs Buf", "injury_status": null},
+    {"name": "Zaire Franklin", "team": "Ind", "position": "LB", "availability": "FA", "waiver_claim_date": null, "percent_rostered": "8%", "projected_points": "9.1", "opponent": "@Chi", "injury_status": null},
+    {"name": "Marvin Mims Jr.", "team": "Den", "position": "WR", "availability": "W", "waiver_claim_date": "Wed", "percent_rostered": "-", "projected_points": "-", "opponent": "vs TB", "injury_status": null}
+  ]
+}
