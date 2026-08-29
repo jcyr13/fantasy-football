@@ -47,6 +47,7 @@ def test_weekly_view_endpoint_full_contract(client: TestClient):
     assert body["opponent_assumption"] == "yahoo-set"
     assert len(body["opponent_likely_lineup"]) == 10
     assert len(body["recommended_lineup"]) == 10
+    assert len(body["dead_parrots_current_lineup"]) == 10
     assert len(body["gap_drivers"]) == 10
     assert len(body["swing_players"]) == 10
     assert {n["label"] for n in body["named_lineups"]} == {
@@ -169,7 +170,9 @@ def test_news_and_history_and_freshness(client: TestClient):
     assert news["all_sources_failed"] is False
 
     hist = client.get("/api/history").json()
-    assert hist["pending"] is True
+    # Since issue #17 the history screen is no longer "pending"; it is just
+    # empty until a week is captured.
+    assert hist["pending"] is False
     assert hist["snapshots"] == []
 
     fresh = client.get("/api/freshness").json()

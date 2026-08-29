@@ -82,6 +82,10 @@ class WeeklyViewResponse(BaseModel):
     # the two are the same ten players.
     dead_parrots_totals: SideTotals
     dead_parrots_current_totals: SideTotals | None
+    # The Dead Parrots lineup Yahoo currently has set, per-slot with projections
+    # — frozen alongside the recommendation so a weekly snapshot (issue #17) can
+    # score both "what the model said" and "what John actually started".
+    dead_parrots_current_lineup: list[LineupSlotProjection]
     opponent_totals: SideTotals
     favored: bool
     win_probability: float
@@ -301,10 +305,56 @@ class NewsResponse(BaseModel):
     items: list[NewsItemOut]
 
 
+class PlayerActualOut(BaseModel):
+    player_id: str
+    name: str
+    projected_points: float
+    actual_points: float
+    delta: float
+
+
+class SnapshotOutcomeOut(BaseModel):
+    backfilled_at: datetime
+    dead_parrots_total: float
+    opponent_total: float
+    result: str
+    player_actuals: list[PlayerActualOut]
+
+
+class HistoryRecordOut(BaseModel):
+    snapshot_id: str
+    season: int
+    week: int
+    created_at: datetime
+    rng_seed: int
+    # The frozen JSON of GET /api/weekly + /api/team-outlook + /api/trade-desk +
+    # /api/free-agents for the week, keyed weekly / team_outlook / trade_desk /
+    # free_agents (ADR-0014 §1).
+    captured: dict
+    outcome: SnapshotOutcomeOut | None
+
+
+class OutcomeBackfillRequest(BaseModel):
+    dead_parrots_total: float
+    opponent_total: float
+    # Dead Parrots player_id -> RIP TIDE points he actually scored. Players in
+    # the frozen recommended lineup that are omitted here score 0.0.
+    player_actuals: dict[str, float] = {}
+
+
 class HistoryResponse(BaseModel):
+    # ``pending`` was ``true`` with an empty list until issue #17 (ADR-0014 §5);
+    # it is now always ``false`` and ``snapshots`` carries the real records.
     pending: bool
     reason: str
-    snapshots: list[dict]
+    snapshots: list[HistoryRecordOut]
+
+
+class CaptureResponse(BaseModel):
+    # ``created`` is false when the week already had a snapshot — the original
+    # is returned unchanged.
+    created: bool
+    record: HistoryRecordOut
 
 
 class SourceFreshnessOut(BaseModel):

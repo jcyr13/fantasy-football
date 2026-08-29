@@ -20,7 +20,6 @@ from ..yahoo.status import last_successful_pull_at as yahoo_last_success
 from ..yahoo.status import recent_yahoo_pull_statuses
 from .schemas import (
     FreshnessResponse,
-    HistoryResponse,
     NewsItemOut,
     NewsResponse,
     NewsTagOut,
@@ -33,8 +32,9 @@ logger = logging.getLogger(__name__)
 
 router = APIRouter(tags=["ops"])
 
-# The ticker, the (pending) history screen, the data-freshness header, and the
-# "refresh now" / per-source triggers (spec issue #16).
+# The ticker, the data-freshness header, and the "refresh now" / per-source
+# triggers (spec issue #16). The history screen has its own router
+# (``api/history.py``) since issue #17.
 
 
 # --- news ----------------------------------------------------------------
@@ -70,21 +70,6 @@ def news(request: Request) -> NewsResponse:
             )
             for i in feed.items
         ],
-    )
-
-
-# --- history (issue #17) ----------------------------------------------
-
-
-@router.get("/history", response_model=HistoryResponse)
-def history() -> HistoryResponse:
-    """Past weekly snapshots, model-said vs what-happened. Empty until issue #17
-    (weekly snapshot persistence) lands; the shape is stable now so the History
-    screen can build against it."""
-    return HistoryResponse(
-        pending=True,
-        reason="Weekly snapshot persistence is issue #17; no snapshots are stored yet.",
-        snapshots=[],
     )
 
 
