@@ -29,6 +29,7 @@ from .montecarlo import (
     SideSummary,
     sample_lineup_totals,
     simulate_head_to_head,
+    summarise_side,
 )
 from .seed import seed_from_snapshot_id
 
@@ -46,4 +47,5 @@ __all__ = [
     "seed_from_snapshot_id",
     "sim_player_from_projection",
     "simulate_head_to_head",
+    "summarise_side",
 ]
