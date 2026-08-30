@@ -223,6 +223,72 @@ export function fetchFreshness(): Promise<FreshnessResponse> {
   return getJSON<FreshnessResponse>("/freshness");
 }
 
+// --- Yahoo assisted pull (POST /api/yahoo/pull) -------------------
+
+export type YahooPageStatus = "ok" | "failed";
+
+export interface YahooPageResult {
+  page: string;
+  status: YahooPageStatus;
+  error: string | null;
+}
+
+export interface YahooPullResponse {
+  pull_id: string;
+  ok: boolean;
+  pages: YahooPageResult[];
+  waiver_priority_needs_manual_entry: boolean | null;
+}
+
+/** The endpoint answered 503 — no assisted-pull source is wired (a bare backend
+ * with no desktop shell). The control degrades to a short notice, not an error
+ * (ADR-0016 §3; issue #46). */
+export class YahooPullUnavailableError extends Error {
+  constructor() {
+    super("This backend has no Yahoo assisted-pull source wired.");
+    this.name = "YahooPullUnavailableError";
+  }
+}
+
+/** The reason-phrase fragment the desktop shell puts on an expired-session
+ * `401` from `/scrape` (ADR-0016 §3 names the signal `401 Yahoo sign-in
+ * required`). It rides through urllib's `HTTPError` into every per-page `error`
+ * on the pull response, so a substring match is the contract (issue #45;
+ * `backend/tests/test_yahoo_scrape_wiring.py`). */
+export const YAHOO_SIGNIN_REQUIRED_PHRASE = "Yahoo sign-in required";
+
+/** Whether the whole pull failed because the signed-in Yahoo session expired,
+ * as opposed to any other scrape error. Per ADR-0016 §3 that is *every* page
+ * failed, each `error` carrying the sign-in phrase — a partial failure, even
+ * one whose error mentions the phrase, is not a session expiry. */
+export function isExpiredYahooSession(pages: YahooPageResult[]): boolean {
+  return (
+    pages.length > 0 &&
+    pages.every(
+      (p) =>
+        p.status === "failed" &&
+        (p.error ?? "").includes(YAHOO_SIGNIN_REQUIRED_PHRASE),
+    )
+  );
+}
+
+// Not `postJSON`: this POST carries no body and has to tell a 503 (no source
+// wired) apart from any other non-2xx, which `postJSON` collapses into one
+// generic throw.
+export async function triggerYahooPull(): Promise<YahooPullResponse> {
+  const res = await fetch(`${API_BASE}/yahoo/pull`, {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+  });
+  if (res.status === 503) {
+    throw new YahooPullUnavailableError();
+  }
+  if (!res.ok) {
+    throw new Error(`POST /yahoo/pull failed: ${res.status}`);
+  }
+  return (await res.json()) as YahooPullResponse;
+}
+
 // --- Waiver / Free Agents (GET /api/free-agents) -------------------
 
 export interface FreeAgent {
