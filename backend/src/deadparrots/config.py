@@ -15,9 +15,28 @@ class Settings(BaseSettings):
     )
 
     # Root of the data directory: parquet cache, the SQLite app DB, weekly
-    # snapshots. Gitignored. Defaults to ``./data`` for local runs; the
-    # container sets it to ``/data``.
+    # snapshots. Gitignored. Defaults to ``./data`` for local runs; the desktop
+    # app (issue #41) points it at a per-user app-data directory.
     data_dir: Path = Path("data")
+
+    # The Yahoo assisted-pull page extractor (issue #41, supersedes the VPS
+    # deployment of #20/ADR-0015). The dashboard now ships as a desktop app whose
+    # main process signs into Yahoo in an embedded browser view and exposes a
+    # local HTTP endpoint that scrapes one page on demand. When this URL is set,
+    # the app wires a ``BrowserYahooSource`` backed by that endpoint into
+    # ``app.state.yahoo_source`` and ``POST /api/yahoo/pull`` works; left unset
+    # (a bare backend with no desktop shell), the endpoint answers 503 as before.
+    yahoo_extractor_url: str | None = None
+    yahoo_extractor_timeout_seconds: float = 90.0
+
+    # Catch-up scheduling on launch (issue #41). The APScheduler crons only run
+    # while the desktop app is open, so on startup the app re-runs any scheduled
+    # pull whose window has already passed since its last successful run — the
+    # nflverse refresh, the consensus re-score, the news poll, and the weekly
+    # snapshot capture for a week whose games are already final but that has no
+    # snapshot (a closed-on-Sunday app must not lose the week on the History
+    # screen). ``catchup_on_launch`` turns the whole sweep off.
+    catchup_on_launch: bool = True
 
     # The NFL season the dashboard is modelling. Used by the assembled weekly
     # view (issue #16) when a request does not pin one; the current week comes

@@ -9,37 +9,62 @@ recommendations only; it never executes a roster move.
 See `CONTEXT.md` for domain vocabulary, `docs/adr/` for architecture decisions,
 `PRD.md` for the original requirements, and GitHub issue #1 for the v1 spec.
 
+## How it ships
+
+The dashboard is a **desktop app** that runs on the owner's own computer
+(`docs/adr/0016`). An Electron shell launches the FastAPI backend as a local
+child process, serves the built SPA, and stores data in a per-user app-data
+directory. A signed-in **embedded browser view** does the one-click Yahoo
+assisted pull. There is no server and no phone access; the scheduled jobs run
+while the app is open and **catch up on the next launch** when a window was
+missed.
+
+> The previous VPS + Tailscale + Cloudflare deployment (`docs/adr/0015`) is
+> **retired**. Its runbook survives as the "old VPS deployment" appendix in
+> `deploy/README.md` for history only.
+
 ## Layout
 
 | Path         | What                                                                    |
 | ------------ | ---------------------------------------------------------------------- |
 | `backend/`   | FastAPI service — all ingestion, scoring, projection, simulation logic |
 | `frontend/`  | React + Vite + TypeScript SPA — presentation and interaction only     |
-| `rsidecar/`  | R sidecar for the `ffanalytics` consensus feed (stub until ticket #8) |
+| `rsidecar/`  | Standalone R image for the `ffanalytics` consensus feed               |
 | `data/`      | Local parquet cache, SQLite app DB, snapshots — gitignored            |
 | `docs/`      | ADRs, methodology, agent guides                                       |
 
-## Run the whole stack
+## Run it for development
+
+Two processes, the same way the desktop shell launches them:
 
 ```sh
-docker compose up --build
+# backend — http://localhost:8000
+cd backend && uv sync && uv run uvicorn deadparrots.app:app --reload
+
+# frontend — http://localhost:5173 (proxies /api to :8000)
+cd frontend && npm install && npm run dev
 ```
 
-- `web`  → http://localhost:8080 (SPA; proxies `/api` to `api`)
-- `api`  → http://localhost:8000 (FastAPI; `GET /api/health`)
-- `rsidecar` → one-shot consensus scrape, only with `--profile sidecar`
+`GET /api/health` reports the SQLite app DB, the DuckDB connection, and the
+APScheduler instance. Data lives under `./data/` by default
+(`DEADPARROTS_DATA_DIR` to move it). Copy `.env.example` to `.env` only if you
+want to override a default.
 
-Published ports bind to `127.0.0.1` by default (`WEB_BIND` / `API_BIND` in
-`.env` — see `.env.example`), so nothing is exposed beyond the host until you
-say so.
+Seed the data the schedulers would otherwise wait days for:
 
-## Deploy to the VPS
+```sh
+cd backend
+uv run python -m deadparrots.ingest                       # nflverse now
+uv run python -m deadparrots.consensus --week <current>   # consensus now
+uv run python -m deadparrots.yahoo --replay <pull_id>     # re-normalize an archived Yahoo pull
+```
 
-The full stack runs on the Hostinger VPS as one `docker compose up -d`,
-reachable over Tailscale and not the public internet, with Cloudflare Tunnel as
-the fallback. Runbook: **`deploy/README.md`**. Decision record:
-`docs/adr/0015-vps-deployment-over-tailscale.md`.
+The live Yahoo assisted pull needs the desktop shell's signed-in browser view
+(`docs/adr/0016 §3`); until that ships, develop the Yahoo-fed layers with
+`--replay` against an archived pull.
 
-## Develop a service
+## More
 
-See `backend/README.md` and `frontend/README.md`.
+- `backend/README.md`, `frontend/README.md` — per-service dev notes
+- `rsidecar/README.md` — the consensus-feed R image
+- `deploy/README.md` — packaging the desktop installer, plus the retired VPS runbook

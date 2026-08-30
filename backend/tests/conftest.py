@@ -26,6 +26,21 @@ CONSENSUS_FIXTURE_DIR = Path(__file__).parent / "fixtures" / "consensus"
 NEWS_FIXTURE_DIR = Path(__file__).parent / "fixtures" / "news"
 
 
+@pytest.fixture(autouse=True)
+def _no_launch_catchup(monkeypatch) -> None:
+    """Neutralize the on-launch catch-up sweep (issue #41) for tests.
+
+    The real sweep bumps ``next_run_time`` on the nflverse / consensus / news
+    jobs, which would fire live network pulls the instant a ``TestClient``
+    enters the app lifespan. ``app.py`` imports ``deadparrots.catchup`` lazily,
+    so patching the function on the module is enough. The catch-up tests call
+    the real functions directly.
+    """
+    monkeypatch.setattr(
+        "deadparrots.catchup.run_catchup_on_launch", lambda *a, **k: []
+    )
+
+
 @pytest.fixture
 def data_dir(tmp_path) -> Path:
     """Where the app-state and analytics stores live for a test."""

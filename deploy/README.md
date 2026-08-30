@@ -1,16 +1,85 @@
-# Deploying the Dead Parrots Dashboard to the VPS
+# Delivering the Dead Parrots Dashboard
 
-The whole stack runs on the Hostinger VPS as one `docker compose up -d`,
-reachable from John's devices over **Tailscale** and not from the public
-internet. **Cloudflare Tunnel** is the fallback access path. Decision record:
-`../docs/adr/0015-vps-deployment-over-tailscale.md`.
-
-Everything below is a one-time setup except [Bring the stack up](#4-bring-the-stack-up)
-and [Updating](#8-updating-a-deployed-box), which you repeat.
+The dashboard ships as a **desktop app** that runs on the owner's computer
+(`../docs/adr/0016`). This document covers packaging that app, and keeps the
+**retired** VPS runbook as a historical appendix.
 
 ---
 
-## 0. What runs where
+## Desktop app
+
+### What runs where
+
+| Piece | Where | Trigger |
+| --- | --- | --- |
+| FastAPI backend + APScheduler | local child process of the Electron shell | — |
+| SPA | the shell's main window | — |
+| nflverse refresh / consensus re-score / news poll / Sunday snapshot | inside the backend | APScheduler crons **+ catch-up on launch** |
+| Yahoo assisted pull | the shell's embedded, signed-in browser view | the "Pull from Yahoo" control |
+| `ffanalytics` consensus scrape | standalone `rsidecar` image, run by hand | none — Sleeper is the default fallback |
+
+The crons pin `America/New_York` in code. Because the app is not always on, the
+backend also runs a **catch-up sweep on startup** (`deadparrots.catchup`): any
+job whose last successful run predates its most recent scheduled window is fired
+immediately, and a finished NFL week with no weekly snapshot is captured so the
+History screen never loses a week the app was closed for. Misfire grace on the
+four jobs is 6 hours (`DEADPARROTS_CATCHUP_ON_LAUNCH=false` disables the sweep).
+
+### Building the installer
+
+> The Electron shell (main process, preload, the Yahoo `PageExtractor`, and the
+> `electron-builder` config) lands in a follow-up sub-issue of #41. The backend
+> seam it plugs into is already here:
+> `DEADPARROTS_YAHOO_EXTRACTOR_URL` → `build_yahoo_source` →
+> `BrowserYahooSource` on `app.state.yahoo_source`.
+
+When the shell exists, packaging is:
+
+```sh
+cd frontend && npm ci && npm run build      # SPA into frontend/dist
+cd ../desktop && npm ci && npm run make     # electron-builder -> NSIS installer (Windows)
+```
+
+The v1 installer is **unsigned** — Windows SmartScreen warns on first run; click
+"More info" → "Run anyway". Signing is a later nicety, not a blocker for one
+known user (`../docs/adr/0016 §5`).
+
+### First run
+
+1. Install and launch. The backend child process comes up on a loopback port;
+   data goes to the per-user app-data directory.
+2. Open the embedded **Yahoo** window and sign in once. The session persists in
+   a dedicated browser partition between launches.
+3. Click **Pull from Yahoo**. All four pages scrape in one action; per-page
+   success/failure is shown, and the Yahoo-fed screens populate.
+4. Seed nflverse + consensus if the freshness header shows them as "never" —
+   the catch-up sweep does this automatically on the next launch, or run
+   `python -m deadparrots.ingest` / `deadparrots.consensus` in the checkout.
+
+### Running for development
+
+See the root `README.md` — two processes (`uvicorn` + `npm run dev`), no
+container.
+
+### The consensus R sidecar
+
+`ffanalytics` is easier to run in a container. With the VPS gone there is no
+timer; run it by hand when you want a fresh drop, otherwise the backend falls
+back to the Sleeper public API on its own. See `../rsidecar/README.md`.
+
+---
+
+## Appendix: old VPS deployment (retired)
+
+> **Retired by `../docs/adr/0016` (issue #41).** The stack below is no longer
+> deployed anywhere. Kept for history: how the dashboard ran on a Hostinger VPS
+> as one `docker compose up -d`, reachable over Tailscale with Cloudflare Tunnel
+> as a fallback, before it became a desktop app. `docker-compose.yml`, the
+> Dockerfiles, `deploy/preflight.sh`, and the `WEB_BIND` / `API_BIND` /
+> `TUNNEL_TOKEN` knobs it relied on have been removed from the repo. Decision
+> record: `../docs/adr/0015-vps-deployment-over-tailscale.md`.
+
+### 0. What ran where
 
 | Piece | Where | Trigger |
 | --- | --- | --- |
@@ -20,68 +89,24 @@ and [Updating](#8-updating-a-deployed-box), which you repeat.
 | consensus re-score | inside `api` | APScheduler cron, Wed 06:00 ET |
 | news poll / Sunday snapshot capture | inside `api` | APScheduler |
 | `ffanalytics` consensus scrape | `rsidecar` one-shot container | systemd timer, Wed 05:30 ET |
-| Yahoo assisted pull | **manual, from a signed-in browser** | not on the VPS |
+| Yahoo assisted pull | manual, from a signed-in browser | not on the VPS |
 
-The APScheduler crons pin `America/New_York` in code, so they are right no
-matter the host clock. The rsidecar timer uses the system timezone — step 1
-sets it.
+### 1. One-time VPS prep
 
----
+Set the timezone (`sudo timedatectl set-timezone America/New_York`), install
+Docker Engine + the Compose plugin (`curl -fsSL https://get.docker.com | sudo
+sh`), `sudo systemctl enable --now docker` so a reboot brings the stack back,
+and clone the repo to `/opt/fantasy-football` (the path the rsidecar systemd
+unit expects).
 
-## 1. One-time VPS prep
+### 2. Tailscale (primary access path)
 
-SSH in as a sudo user.
+`curl -fsSL https://tailscale.com/install.sh | sudo sh`, `sudo tailscale up
+--ssh`, note `tailscale ip -4`. In the admin console: disable key expiry for the
+node, keep MagicDNS on. On the phone: install Tailscale, stay signed in; the
+dashboard was `http://<vps-hostname>:8080`.
 
-### Timezone
-
-```sh
-sudo timedatectl set-timezone America/New_York
-```
-
-### Docker Engine + Compose plugin
-
-```sh
-curl -fsSL https://get.docker.com | sudo sh
-sudo usermod -aG docker "$USER"    # log out/in for this to take effect
-sudo systemctl enable --now docker # <-- makes "a restart brings services back" work
-docker compose version             # expect v2.x
-```
-
-### The checkout
-
-```sh
-sudo mkdir -p /opt/fantasy-football
-sudo chown "$USER" /opt/fantasy-football
-git clone https://github.com/jcyr13/fantasy-football /opt/fantasy-football
-cd /opt/fantasy-football
-```
-
-The systemd unit in `rsidecar/deploy/` expects this exact path
-(`/opt/fantasy-football`). Adjust `WorkingDirectory` if you clone elsewhere.
-
----
-
-## 2. Tailscale (primary access path)
-
-```sh
-curl -fsSL https://tailscale.com/install.sh | sudo sh
-sudo tailscale up --ssh          # opens an auth URL; approve it in your account
-tailscale ip -4                  # note this 100.x.y.z address
-```
-
-In the Tailscale admin console:
-
-- Confirm the VPS shows up and (optionally) **disable key expiry** for it so the
-  tailnet connection does not drop after 180 days.
-- Make sure **MagicDNS** is on, so devices can reach the box by hostname.
-
-On John's **phone**: install the Tailscale app, sign in to the same account,
-leave it connected. The dashboard will be `http://<vps-hostname>:8080`.
-
-### Firewall — defence in depth
-
-Binding to the tailnet IP (step 3) already keeps the port off the public
-interface. `ufw` makes a `WEB_BIND` mistake harmless too:
+Firewall — defence in depth:
 
 ```sh
 sudo ufw allow OpenSSH
@@ -89,180 +114,80 @@ sudo ufw allow in on tailscale0
 sudo ufw default deny incoming
 sudo ufw default allow outgoing
 sudo ufw enable
-sudo ufw status verbose
 ```
 
-If you use the Cloudflare fallback (step 6), outbound 443 is all it needs — no
-inbound rule.
+### 3. `.env`
 
----
+`cp .env.example .env`, then set `WEB_BIND` to the `tailscale ip -4` address
+(this is what kept the dashboard on the tailnet and nowhere else), leave
+`API_BIND=127.0.0.1`, set `TZ=America/New_York`, optionally the
+`DEADPARROTS_SMTP_*` App Password, and `TUNNEL_TOKEN` only for the Cloudflare
+fallback.
 
-## 3. Configure `.env`
-
-```sh
-cp .env.example .env
-```
-
-Edit `.env`:
-
-- **`WEB_BIND`** → the `tailscale ip -4` address from step 2. This is what makes
-  the dashboard reachable over the tailnet and nowhere else.
-- **`API_BIND`** → leave `127.0.0.1`.
-- **`TZ`** → `America/New_York` (matches step 1).
-- **`DEADPARROTS_SMTP_*`** → a Gmail App Password if you want the
-  nflverse-failure email (user story #42). Leave blank to log the failure at
-  ERROR instead.
-- **`TUNNEL_TOKEN`** → only for the Cloudflare fallback (step 6).
-
-`.env` is gitignored — it never leaves the box.
-
----
-
-## 4. Bring the stack up
+### 4. Bring the stack up
 
 ```sh
 cd /opt/fantasy-football
-./deploy/preflight.sh            # sanity-checks docker, .env, and the compose config
+./deploy/preflight.sh
 docker compose build
 docker compose up -d
-docker compose ps               # api + web should become "healthy" within ~30s
-```
-
-Seed the data the schedulers will otherwise wait days for:
-
-```sh
-docker compose exec api python -m deadparrots.ingest          # nflverse now
+docker compose ps               # api + web -> "healthy" within ~30s
+docker compose exec api python -m deadparrots.ingest
 docker compose exec api python -m deadparrots.consensus --week <current-week>
 ```
 
-The Yahoo assisted pull stays manual — run it from a signed-in browser as
-usual; it is not part of the VPS stack.
+### 5. Verify it is not public
 
----
+From a device on the tailnet: `http://<vps-hostname>:8080` and
+`.../api/health`. From off the tailnet: `curl --max-time 5
+http://<vps-public-ip>:8080/` must hang or refuse.
 
-## 5. Verify
+### 6. Cloudflare Tunnel — the fallback access path
 
-From a device **on the tailnet** (John's phone, with Tailscale connected):
-
-```
-http://<vps-hostname>:8080         # dashboard
-http://<vps-hostname>:8080/api/health   # {"status":"ok", ...}
-```
-
-Confirm it is **not** public — from a machine off the tailnet, or over cellular
-with the Tailscale app disabled:
+Used when Tailscale was unavailable (captive portal, restricted network). In the
+Cloudflare Zero Trust dashboard: **Networks → Tunnels → Create a tunnel**
+(`cloudflared`), copy the tunnel token, add a public hostname routing to
+`web:80`. Put the token in `.env` as `TUNNEL_TOKEN`, then:
 
 ```sh
-curl --max-time 5 http://<vps-public-ip>:8080/    # must hang / refuse
+docker compose --profile cloudflare up -d
 ```
 
----
+**Lock it down** with a Cloudflare **Access** policy (Zero Trust → Access →
+Applications → Add → Self-hosted), one *Allow* rule on the owner's email
+(one-time PIN). Without it the hostname was open to anyone with the URL.
 
-## 6. Cloudflare Tunnel — the fallback access path
-
-Use this when Tailscale is unavailable (captive portal, restricted network).
-The tunnel is the transport; a **Cloudflare Access** policy is what keeps the
-public hostname restricted to John.
-
-1. In the **Cloudflare Zero Trust** dashboard → **Networks → Tunnels →
-   Create a tunnel** (type `cloudflared`). Name it, then copy the **tunnel
-   token** from the "Install and run a connector" step.
-2. Add a **Public hostname** on the tunnel: e.g.
-   `parrots.example.com` → service `HTTP` → `web:80`.
-3. Put the token in `.env`:
-   ```sh
-   TUNNEL_TOKEN=eyJ...        # the long token from step 1
-   ```
-4. Start the connector (profile-gated — a plain `docker compose up` never runs
-   it):
-   ```sh
-   docker compose --profile cloudflare up -d
-   docker compose logs -f cloudflared    # expect "Registered tunnel connection"
-   ```
-5. **Lock it down** — **Zero Trust → Access → Applications → Add → Self-hosted**,
-   domain `parrots.example.com`, one policy: *Allow* when **email** is
-   `johncyrboston@gmail.com` (one-time PIN). Without this the dashboard is open
-   to anyone with the URL.
-
-To stop the fallback: `docker compose --profile cloudflare down`. The rest of
-the stack is unaffected.
-
----
-
-## 7. The consensus sidecar timer
-
-The `ffanalytics` scrape is a one-shot container run weekly from the host
-(`../docs/adr/0005`). The units ship in `../rsidecar/deploy/`:
+### 7. The consensus sidecar timer
 
 ```sh
-sudo cp rsidecar/deploy/consensus-feed.service /etc/systemd/system/
-sudo cp rsidecar/deploy/consensus-feed.timer   /etc/systemd/system/
+sudo cp rsidecar/deploy/consensus-feed.{service,timer} /etc/systemd/system/
 sudo systemctl daemon-reload
-sudo systemctl enable --now consensus-feed.timer
-systemctl list-timers consensus-feed.timer      # next run: Wed 05:30 ET
-```
-
-Build the image once so the first fire is fast:
-
-```sh
+sudo systemctl enable --now consensus-feed.timer   # Wed 05:30 ET
 docker compose --profile sidecar build rsidecar
 ```
 
-Test it end to end without waiting for Wednesday:
+If no fresh drop existed on Wednesday, the api's re-score job fell back to the
+Sleeper public API on its own.
 
-```sh
-sudo systemctl start consensus-feed.service
-docker compose run --rm rsidecar                # or run it directly
-ls data/consensus/rsidecar/                     # a fresh <timestamp>.json
-```
-
-If no fresh drop exists on Wednesday, the api's re-score job falls back to the
-Sleeper public API on its own — the sidecar failing degrades the cross-check,
-it does not break the week.
-
----
-
-## 8. Updating a deployed box
+### 8. Updating a deployed box
 
 ```sh
 cd /opt/fantasy-football
 git pull
 ./deploy/preflight.sh
 docker compose build
-docker compose up -d                 # recreates only what changed
-docker compose --profile cloudflare up -d    # only if you run the fallback
+docker compose up -d
+docker compose --profile cloudflare up -d     # only if the fallback ran
 ```
 
-`./data/` is a bind mount — the SQLite app DB, the DuckDB file, the parquet
-cache, and the weekly snapshots survive rebuilds and `docker compose down`.
+`./data/` was a bind mount, so the SQLite DB, the DuckDB file, the parquet
+cache, and the weekly snapshots survived rebuilds and `docker compose down`.
 
----
+### 9. Restart & recovery
 
-## 9. Restart & recovery
-
-| Situation | What happens / what to do |
+| Situation | What happened |
 | --- | --- |
-| VPS reboots | `docker` starts at boot; `api` and `web` are `restart: unless-stopped` and come back; APScheduler restarts its crons. The systemd timer re-arms. Nothing to do. The `web`-waits-for-`api`-healthy ordering only applies to `docker compose up`, not the boot path — after a cold reboot `web` may return 502 on `/api` for a few seconds until `api` passes its healthcheck, then self-heals. |
-| A container crashes | Restarted automatically. `docker compose ps` shows restart counts; `docker compose logs <svc>` for why. |
-| Full manual bounce | `docker compose down && docker compose up -d`. |
-| Missed the Tue 08:00 nflverse window (long outage) | `docker compose exec api python -m deadparrots.ingest`. |
-| `api` stuck "unhealthy" | `docker compose logs api`; check `./data/` is writable by the container (uid in the image) and not full. |
-| Locked out of Tailscale | Use the Cloudflare fallback (step 6), or Hostinger's web console to `sudo tailscale up` again. |
-
----
-
-## Troubleshooting
-
-- **`preflight.sh` says the compose config is invalid** — run
-  `docker compose config` to see the parse error. Usually a stray quote in
-  `.env`.
-- **Phone can't load the dashboard** — is the Tailscale app connected? Does
-  `tailscale status` on the VPS list the phone? Is `WEB_BIND` in `.env` the
-  current `tailscale ip -4` (it changes if you log the node out and back in)?
-- **`web` healthy, dashboard 502s on `/api`** — `api` isn't healthy yet or
-  crashed; `docker compose logs api`.
-- **No nflverse email on failure** — `DEADPARROTS_SMTP_*` unset, or Gmail
-  rejecting a non-App-Password. Check `docker compose logs api` for the ERROR
-  line that replaces the email.
-- **`cloudflared` won't register** — token wrong or missing; outbound 443
-  blocked by `ufw` (it shouldn't be — `default allow outgoing`).
+| VPS reboots | Docker started at boot; `api`/`web` were `restart: unless-stopped` and came back; APScheduler restarted its crons; the systemd timer re-armed. |
+| A container crashed | Restarted automatically; `docker compose logs <svc>` for why. |
+| Missed the Tue 08:00 nflverse window | `docker compose exec api python -m deadparrots.ingest`. |
+| Locked out of Tailscale | Use the Cloudflare fallback, or Hostinger's web console to `sudo tailscale up` again. |

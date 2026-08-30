@@ -9,6 +9,7 @@ from apscheduler.schedulers.base import BaseScheduler
 from apscheduler.triggers.cron import CronTrigger
 
 from ..config import Settings
+from ..scheduler import RECURRING_JOB_MISFIRE_GRACE_SECONDS
 from .alerts import EmailAlerter, build_email_alerter
 from .cache import NflverseParquetCache
 from .runner import NflverseSource, run_nflverse_pull
@@ -70,7 +71,7 @@ def register_weekly_nflverse_pull(
         id=WEEKLY_JOB_ID,
         name="nflverse weekly parquet refresh",
         replace_existing=True,
-        misfire_grace_time=3600,
+        misfire_grace_time=RECURRING_JOB_MISFIRE_GRACE_SECONDS,
         coalesce=True,
         max_instances=1,
     )

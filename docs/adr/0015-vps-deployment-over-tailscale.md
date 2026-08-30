@@ -1,5 +1,12 @@
 # VPS deployment: one `docker compose up`, reachable only over Tailscale, Cloudflare Tunnel as the fallback
 
+> **Status: superseded by [ADR-0016](0016-desktop-app-with-embedded-yahoo-browser.md) (issue #41).**
+> The dashboard now ships as a desktop app that runs on the owner's own
+> computer; the VPS, Tailscale, Cloudflare Tunnel, `docker compose`, and the
+> `WEB_BIND` / `API_BIND` bind-address knobs described below are retired. This
+> record is kept for history only. The runbook lives on as the "old VPS
+> deployment" appendix in `deploy/README.md`.
+
 Issue #20 asks for the full stack deployed to the Hostinger VPS as a single
 `docker compose up`, reachable from John's phone but **not on the public
 internet**, with the nflverse weekly cron and the consensus sidecar running on

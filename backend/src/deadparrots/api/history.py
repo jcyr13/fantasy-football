@@ -11,6 +11,7 @@ from apscheduler.triggers.cron import CronTrigger
 from fastapi import APIRouter, HTTPException, Request
 
 from ..config import Settings
+from ..scheduler import RECURRING_JOB_MISFIRE_GRACE_SECONDS
 from ..snapshot import (
     SnapshotRecord,
     WeeklySnapshot,
@@ -230,7 +231,7 @@ def register_weekly_snapshot_capture(
         id=SNAPSHOT_JOB_ID,
         name="weekly snapshot capture",
         replace_existing=True,
-        misfire_grace_time=3600,
+        misfire_grace_time=RECURRING_JOB_MISFIRE_GRACE_SECONDS,
         coalesce=True,
         max_instances=1,
     )
