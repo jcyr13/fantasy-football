@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import logging
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
@@ -22,7 +23,10 @@ from deadparrots.ingest.schedule import register_weekly_nflverse_pull
 from deadparrots.news.schedule import register_news_poll
 from deadparrots.news.targets import build_yahoo_targets_provider
 from deadparrots.scheduler import build_scheduler
+from deadparrots.yahoo.scrape import build_yahoo_source
 from deadparrots.yahoo.source import YahooSource
+
+logger = logging.getLogger(__name__)
 
 
 @asynccontextmanager
@@ -32,6 +36,13 @@ async def lifespan(app: FastAPI):
     app.state.sqlite = init_sqlite(settings.sqlite_path)
     app.state.duckdb = connect_duckdb(settings.duckdb_path)
     register_nflverse_views(app.state.duckdb, NflverseParquetCache(settings.data_dir))
+
+    # The assisted-pull source. A test may have injected one via create_app;
+    # otherwise, if the desktop app pointed us at its Yahoo extractor endpoint
+    # (issue #41), wire a browser-backed source so POST /api/yahoo/pull works.
+    # With no extractor configured this stays None and the endpoint is 503.
+    if getattr(app.state, "yahoo_source", None) is None:
+        app.state.yahoo_source = build_yahoo_source(settings)
 
     # The assembled weekly view (issue #16). Unless a test injected its own,
     # read the latest Yahoo pull + nflverse parquet on demand; "refresh now"
@@ -79,6 +90,24 @@ async def lifespan(app: FastAPI):
         sqlite_conn=app.state.sqlite,
         sources_provider=lambda: getattr(app.state, "weekly_sources", None),
     )
+
+    # Catch-up on launch (issue #41): the crons above only tick while the app is
+    # open, so fire any pull whose window has already passed since it last ran.
+    if settings.catchup_on_launch:
+        from deadparrots import catchup
+
+        try:
+            catchup.run_catchup_on_launch(
+                scheduler,
+                settings=settings,
+                sqlite_conn=app.state.sqlite,
+                duckdb_conn=app.state.duckdb,
+                weekly_sources_provider=lambda: getattr(
+                    app.state, "weekly_sources", None
+                ),
+            )
+        except Exception:  # a broken sweep must never block startup
+            logger.exception("launch catch-up sweep failed")
 
     try:
         yield

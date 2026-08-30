@@ -18,22 +18,29 @@ so the backend re-scores this payload with `RIP_TIDE_RULESET`
 
 ## Not long-running
 
-This container is a one-shot (spec issue #8). Nothing keeps it alive. It is
-scheduled from the host by the systemd units in `deploy/`:
+This container is a one-shot (spec issue #8). Nothing keeps it alive — you run
+it when you want a fresh drop:
 
 ```sh
-sudo cp deploy/consensus-feed.{service,timer} /etc/systemd/system/
-sudo systemctl enable --now consensus-feed.timer   # fires Wednesday 05:30 ET
+docker build -t deadparrots-rsidecar ./rsidecar
+docker run --rm \
+  -e DEADPARROTS_DATA_DIR=/data -e DEADPARROTS_CONSENSUS_WEEK=<week> \
+  -v "$(pwd)/data:/data" \
+  deadparrots-rsidecar
 ```
 
-Both just run `docker compose run --rm rsidecar` on a weekly `OnCalendar`. A
-cron entry doing the same works equally well.
+It writes one `<UTC-timestamp>.json` into `data/consensus/rsidecar/` and exits.
 
-The `api` service's APScheduler job (`consensus-weekly-pull`, Wednesday morning)
-independently reads the newest drop, re-scores it, archives the raw payload, and
-records a `consensus_pull_status` row. If no fresh drop exists — Week 1, or the
-sidecar failed — that job falls back to the **Sleeper public API** stopgap
-(`DEADPARROTS_CONSENSUS_SOURCE=auto`, the default).
+The dashboard's `consensus-weekly-pull` APScheduler job (Wednesday morning, plus
+the catch-up on launch — `docs/adr/0016`) reads the newest drop, re-scores it,
+archives the raw payload, and records a `consensus_pull_status` row. If there is
+no fresh drop — Week 1, or you have not run the sidecar — that job falls back to
+the **Sleeper public API** stopgap (`DEADPARROTS_CONSENSUS_SOURCE=auto`, the
+default), so running the sidecar is optional.
+
+The `deploy/consensus-feed.{service,timer}` systemd units were for the retired
+VPS deployment (`docs/adr/0015`); they are dead weight now — the desktop app has
+no always-on host to schedule them from.
 
 ## Payload contract (`payload_version: 1`)
 
@@ -67,7 +74,8 @@ scoring units: `QB/RB/WR/TE → offense`, `K → kicker`, `DST → team defense`
 CI does not build or run this image. To iterate locally:
 
 ```sh
-docker compose build rsidecar
-DEADPARROTS_CONSENSUS_WEEK=1 docker compose run --rm rsidecar
+docker build -t deadparrots-rsidecar .
+docker run --rm -e DEADPARROTS_DATA_DIR=/data -e DEADPARROTS_CONSENSUS_WEEK=1 \
+  -v "$(pwd)/../data:/data" deadparrots-rsidecar
 uv --project ../backend run python -m deadparrots.consensus --source rsidecar --week 1
 ```

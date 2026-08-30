@@ -8,6 +8,7 @@ from apscheduler.schedulers.base import BaseScheduler
 from apscheduler.triggers.cron import CronTrigger
 
 from ..config import Settings
+from ..scheduler import LAUNCH_MISFIRE_GRACE_SECONDS
 from .raw import ConsensusRawStore
 from .runner import run_consensus_pull
 from .sources import ConsensusSource, build_consensus_source, current_season_week
@@ -61,7 +62,7 @@ def register_weekly_consensus_pull(
         id=WEEKLY_JOB_ID,
         name="consensus feed weekly refresh",
         replace_existing=True,
-        misfire_grace_time=3600,
+        misfire_grace_time=LAUNCH_MISFIRE_GRACE_SECONDS,
         coalesce=True,
         max_instances=1,
     )
