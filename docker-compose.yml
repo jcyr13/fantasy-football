@@ -1,35 +1,96 @@
-# Two deployables + the consensus sidecar, per docs/adr/0003.
-#   api      FastAPI backend, owns all numeric logic; hosts the scheduler.
-#   web      nginx serving the built SPA and proxying /api to api.
-#   rsidecar ffanalytics consensus feed — a one-shot, not a service (issue #8,
-#            docs/adr/0005). A host timer runs `docker compose run --rm rsidecar`
-#            weekly; the api's APScheduler job re-scores whatever it drops into
-#            ./data/consensus/rsidecar/ (falling back to the Sleeper API).
+# Two deployables + the consensus sidecar, per docs/adr/0003 and docs/adr/0015.
+#   api       FastAPI backend, owns all numeric logic; hosts the APScheduler
+#             crons (weekly nflverse refresh, weekly consensus re-score, news
+#             poll, Sunday snapshot capture).
+#   web       nginx serving the built SPA and proxying /api to api.
+#   rsidecar  ffanalytics consensus feed — a one-shot, not a service (issue #8,
+#             docs/adr/0005). The systemd units in rsidecar/deploy/ run
+#             `docker compose run --rm rsidecar` weekly; the api's re-score job
+#             consumes whatever it drops into ./data/consensus/rsidecar/.
+#   cloudflared  Cloudflare Tunnel — the fallback access path when Tailscale is
+#             unavailable (docs/adr/0015). Profile-gated: `docker compose up`
+#             never starts it; bring it up with `--profile cloudflare`.
+#
+# Published ports bind to ${WEB_BIND} / ${API_BIND} (default 127.0.0.1 —
+# loopback only). On the VPS set WEB_BIND to the host's Tailscale IP so the
+# dashboard is reachable over the tailnet and nowhere else. See deploy/README.md
+# and .env.example.
 
 services:
   api:
     build: ./backend
     environment:
       DEADPARROTS_DATA_DIR: /data
+      TZ: ${TZ:-America/New_York}
+      # nflverse pull failure alert (user story #42). Blank until set -> logged
+      # at ERROR instead of emailed. See .env.example.
+      DEADPARROTS_SMTP_HOST: ${DEADPARROTS_SMTP_HOST:-}
+      DEADPARROTS_SMTP_PORT: ${DEADPARROTS_SMTP_PORT:-587}
+      DEADPARROTS_SMTP_USERNAME: ${DEADPARROTS_SMTP_USERNAME:-}
+      DEADPARROTS_SMTP_PASSWORD: ${DEADPARROTS_SMTP_PASSWORD:-}
+      DEADPARROTS_SMTP_STARTTLS: ${DEADPARROTS_SMTP_STARTTLS:-true}
+      DEADPARROTS_ALERT_EMAIL_TO: ${DEADPARROTS_ALERT_EMAIL_TO:-johncyrboston@gmail.com}
+      DEADPARROTS_ALERT_EMAIL_FROM: ${DEADPARROTS_ALERT_EMAIL_FROM:-deadparrots-dashboard@localhost}
     volumes:
       - ./data:/data
     ports:
-      - "8000:8000"
+      # Loopback-only by default; nothing but `web` needs the API and it reaches
+      # it over the compose network. Leave API_BIND on 127.0.0.1 in production.
+      - "${API_BIND:-127.0.0.1}:8000:8000"
+    restart: unless-stopped
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/api/health').read()"
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
 
   web:
     build: ./frontend
     depends_on:
-      - api
+      api:
+        condition: service_healthy
     ports:
-      - "8080:80"
+      # In production WEB_BIND is the host's Tailscale IP (`tailscale ip -4`), so
+      # the dashboard is reachable over the tailnet and not the public internet.
+      - "${WEB_BIND:-127.0.0.1}:8080:80"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1/"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
 
   rsidecar:
     build: ./rsidecar
     environment:
       DEADPARROTS_DATA_DIR: /data
+      TZ: ${TZ:-America/New_York}
     volumes:
       - ./data:/data
     # One-shot: it scrapes ffanalytics once and exits. No restart — it is
-    # invoked on a schedule from the host, not kept running.
+    # invoked on a schedule from the host (rsidecar/deploy/consensus-feed.timer),
+    # not kept running.
     restart: "no"
     profiles: ["sidecar"]
+
+  cloudflared:
+    # Fallback access path (docs/adr/0015). Only starts with `--profile
+    # cloudflare`. TUNNEL_TOKEN comes from the Cloudflare Zero Trust dashboard
+    # (Networks -> Tunnels). Pair it with a Cloudflare Access policy so the
+    # public hostname stays restricted to John. Bump the tag to the current
+    # release when setting up: https://github.com/cloudflare/cloudflared/releases
+    image: cloudflare/cloudflared:2026.8.2
+    command: tunnel --no-autoupdate run
+    environment:
+      TUNNEL_TOKEN: ${TUNNEL_TOKEN:-}
+      TZ: ${TZ:-America/New_York}
+    depends_on:
+      - web
+    restart: unless-stopped
+    profiles: ["cloudflare"]

@@ -27,7 +27,18 @@ docker compose up --build
 
 - `web`  → http://localhost:8080 (SPA; proxies `/api` to `api`)
 - `api`  → http://localhost:8000 (FastAPI; `GET /api/health`)
-- `rsidecar` → idles with a heartbeat until ticket #8
+- `rsidecar` → one-shot consensus scrape, only with `--profile sidecar`
+
+Published ports bind to `127.0.0.1` by default (`WEB_BIND` / `API_BIND` in
+`.env` — see `.env.example`), so nothing is exposed beyond the host until you
+say so.
+
+## Deploy to the VPS
+
+The full stack runs on the Hostinger VPS as one `docker compose up -d`,
+reachable over Tailscale and not the public internet, with Cloudflare Tunnel as
+the fallback. Runbook: **`deploy/README.md`**. Decision record:
+`docs/adr/0015-vps-deployment-over-tailscale.md`.
 
 ## Develop a service
 
