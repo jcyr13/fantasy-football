@@ -74,19 +74,25 @@ The APScheduler crons (nflverse refresh, consensus re-score, news poll, Sunday
 snapshot capture) only tick while the app is open, and the owner's computer is
 off overnight. Two mechanisms cover the gap:
 
-- **Misfire grace** on the four jobs goes from 1 hour to **6 hours**
-  (`scheduler.LAUNCH_MISFIRE_GRACE_SECONDS`), covering a normal overnight
-  close.
+- **Misfire grace** on the three weekly cron jobs (nflverse refresh, consensus
+  re-score, Sunday snapshot) goes from 1 hour to **6 hours**
+  (`scheduler.RECURRING_JOB_MISFIRE_GRACE_SECONDS`), covering a normal
+  overnight close. The news poll keeps its 5-minute grace — a 30-minute
+  interval job that the launch sweep re-fires on any cold start anyway.
 - **A launch sweep** (`deadparrots.catchup`) runs on startup: for each job
   whose last **successful** run predates its most recent scheduled window, it
   bumps the job's `next_run_time` to now — reusing the exact callable the cron
   registered. The weekly **snapshot** is special-cased: if the current NFL
   week (per the latest Yahoo matchup pull) has **no snapshot** and its games
-  are **final** (every kickoff date in that week is in the past), the capture
-  is fired now, so an app closed all of Sunday still records that week on the
-  History screen before Yahoo rolls the matchup page forward. Mid-week (games
-  not final) is left to the normal Sunday cron. `DEADPARROTS_CATCHUP_ON_LAUNCH`
-  turns the sweep off.
+  are **final** (every kickoff date in that week is in the past, per the
+  cached `nflverse_schedules` view), the capture is fired now, so an app
+  closed all of Sunday still records that week on the History screen before
+  Yahoo rolls the matchup page forward. Mid-week (games not final) is left to
+  the normal Sunday cron. **Known limitation**: the "games final" check needs
+  the nflverse schedule parquet to be cached; on a launch where it is not yet
+  present the snapshot catch-up defers to a later launch (the nflverse refresh
+  is itself part of the same sweep). A schedule-independent "week is over"
+  signal is a follow-up. `DEADPARROTS_CATCHUP_ON_LAUNCH` turns the sweep off.
 
 ### 5. Packaging
 
@@ -117,8 +123,8 @@ the owner runs the sidecar by hand.
   built in CI.
 - **Backend**: `Settings.yahoo_extractor_url` / `yahoo_extractor_timeout_seconds`
   / `catchup_on_launch`; `HttpPageExtractor` and `build_yahoo_source` in
-  `deadparrots.yahoo.scrape`; `deadparrots.catchup`; the four scheduled jobs
-  share `LAUNCH_MISFIRE_GRACE_SECONDS`. `app.py` wires both on startup.
+  `deadparrots.yahoo.scrape`; `deadparrots.catchup`; the three weekly cron jobs
+  share `RECURRING_JOB_MISFIRE_GRACE_SECONDS`. `app.py` wires both on startup.
 - **Removed**: `docker-compose.yml`, `backend/Dockerfile`, `frontend/Dockerfile`,
   `frontend/nginx.conf`, `deploy/preflight.sh`, `.dockerignore`, the
   `test_deployment_compose.py` guard, and the `WEB_BIND` / `API_BIND` /

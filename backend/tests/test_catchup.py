@@ -8,15 +8,19 @@ scheduler-bump wrapper (:func:`run_catchup_on_launch`).
 
 from __future__ import annotations
 
-from datetime import UTC, datetime, timedelta
+from dataclasses import dataclass
+from datetime import UTC, date, datetime, timedelta
 
+import duckdb
 import pytest
 
 from deadparrots.api.history import SNAPSHOT_JOB_ID
 from deadparrots.catchup import (
     CatchupAction,
     SnapshotCatchup,
+    _week_games_final,
     due_catchup_actions,
+    resolve_snapshot_catchup,
     run_catchup_on_launch,
 )
 from deadparrots.config import Settings
@@ -249,3 +253,79 @@ def test_run_catchup_is_a_noop_when_nothing_is_overdue(sqlite_conn, settings):
 
     assert actions == []
     assert scheduler.bumped == []
+
+
+# --- _week_games_final / resolve_snapshot_catchup -------------------------
+
+
+@dataclass
+class _FakeSources:
+    season: int
+    week: int
+
+    def assemble(self, *, season=None, week=None):
+        return self
+
+
+def _schedules_conn(rows: list[tuple[int, int, str]]) -> duckdb.DuckDBPyConnection:
+    """An in-memory DuckDB with an ``nflverse_schedules`` relation carrying the
+    ``season`` / ``week`` / ``gameday`` columns ``_week_games_final`` reads."""
+    conn = duckdb.connect(":memory:")
+    conn.execute(
+        "CREATE TABLE nflverse_schedules "
+        "(season INTEGER, week INTEGER, gameday VARCHAR)"
+    )
+    conn.executemany(
+        "INSERT INTO nflverse_schedules VALUES (?, ?, ?)", rows
+    )
+    return conn
+
+
+def test_week_games_final_true_when_every_kickoff_is_in_the_past():
+    conn = _schedules_conn(
+        [(2026, 3, "2026-09-20"), (2026, 3, "2026-09-21"), (2026, 4, "2026-09-28")]
+    )
+    assert _week_games_final(conn, 2026, 3, date(2026, 9, 23)) is True
+
+
+def test_week_games_final_false_while_a_kickoff_is_still_ahead():
+    conn = _schedules_conn([(2026, 3, "2026-09-21"), (2026, 3, "2026-09-22")])
+    # a Monday-night game on the 22nd, "today" is that Monday
+    assert _week_games_final(conn, 2026, 3, date(2026, 9, 22)) is False
+
+
+def test_week_games_final_false_when_the_schedule_is_not_cached():
+    empty = duckdb.connect(":memory:")
+    assert _week_games_final(empty, 2026, 3, date(2026, 9, 23)) is False
+    assert _week_games_final(None, 2026, 3, date(2026, 9, 23)) is False
+
+
+def test_resolve_snapshot_catchup_reports_week_snapshot_and_finality(
+    sqlite_conn, settings
+):
+    conn = _schedules_conn([(2026, 3, "2026-09-20"), (2026, 3, "2026-09-21")])
+
+    ctx = resolve_snapshot_catchup(
+        duckdb_conn=conn,
+        sqlite_conn=sqlite_conn,
+        settings=settings,
+        weekly_sources_provider=lambda: _FakeSources(season=2026, week=3),
+        now=datetime(2026, 9, 23, 15, 0, tzinfo=UTC),
+    )
+
+    assert (ctx.season, ctx.week) == (2026, 3)
+    assert ctx.has_snapshot is False
+    assert ctx.games_final is True
+
+
+def test_resolve_snapshot_catchup_is_none_without_a_weekly_source(
+    sqlite_conn, settings
+):
+    ctx = resolve_snapshot_catchup(
+        duckdb_conn=None,
+        sqlite_conn=sqlite_conn,
+        settings=settings,
+        weekly_sources_provider=lambda: None,
+        now=NOW,
+    )
+    assert ctx == SnapshotCatchup.none()

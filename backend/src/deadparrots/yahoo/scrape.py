@@ -63,24 +63,23 @@ class BrowserYahooSource(YahooSource):
 
 class HttpPageExtractor:
     """A :class:`PageExtractor` that delegates the scrape to the desktop app's
-    local extractor endpoint (issue #41).
+    local extractor endpoint (issue #41; docs/adr/0016 §3).
 
     The desktop shell owns the embedded, signed-in Yahoo browser view. Its main
     process exposes a loopback HTTP endpoint that, given a page name and URL,
     drives the webview to that page, reads the payload out of the DOM / the
     embedded JSON blob, and returns it as JSON in the shape ``normalize``
     expects. This class is the backend half of that seam; it does no scraping
-    itself. Like every real transport boundary in this package it is not
-    unit-tested — the tested surface is the normalizer, fed recorded payloads.
+    itself. The live call reaches Yahoo only through that shell; the
+    request/response contract is covered by a loopback stub in
+    ``test_yahoo_scrape_wiring.py``.
     """
 
     def __init__(self, endpoint_url: str, *, timeout: float = 90.0) -> None:
         self._endpoint = endpoint_url.rstrip("/")
         self._timeout = timeout
 
-    def __call__(  # pragma: no cover - HTTP boundary, not unit-tested
-        self, page: YahooPage, url: str
-    ) -> dict[str, Any]:
+    def __call__(self, page: YahooPage, url: str) -> dict[str, Any]:
         request_body = json.dumps({"page": page.value, "url": url}).encode("utf-8")
         req = urllib.request.Request(
             self._endpoint,
@@ -107,8 +106,8 @@ def build_yahoo_source(settings: Settings) -> YahooSource | None:
     Returns a :class:`BrowserYahooSource` wired to the desktop app's extractor
     endpoint when ``settings.yahoo_extractor_url`` is set, otherwise ``None`` — a
     bare backend with no desktop shell keeps answering ``POST /api/yahoo/pull``
-    with 503 (issue #41). A test or an out-of-band capture can still inject its
-    own source via ``create_app(yahoo_source=...)``.
+    with 503 (issue #41; docs/adr/0016 §3). A test or an out-of-band capture can
+    still inject its own source via ``create_app(yahoo_source=...)``.
     """
     if not settings.yahoo_extractor_url:
         return None

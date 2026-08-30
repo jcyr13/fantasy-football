@@ -5,9 +5,13 @@ import sqlite3
 from collections.abc import Callable
 from dataclasses import dataclass
 from datetime import UTC, date, datetime, timedelta
+from typing import Protocol
 from zoneinfo import ZoneInfo
 
+import duckdb
+
 from .api.history import SNAPSHOT_JOB_ID
+from .api.weekly_sources import WeeklyDataSources
 from .config import Settings
 from .consensus.schedule import WEEKLY_JOB_ID as CONSENSUS_JOB_ID
 from .consensus.status import last_successful_pull_at as last_consensus_pull_at
@@ -19,16 +23,22 @@ from .snapshot import get_snapshot
 
 logger = logging.getLogger(__name__)
 
-# Catch-up scheduling on launch (issue #41). The APScheduler crons only tick
-# while the desktop app is open, and the owner's computer is off overnight, so
-# on startup we re-run any scheduled pull whose window has already passed since
-# its last successful run. The mechanism is deliberately small: decide what is
-# overdue (:func:`due_catchup_actions`, a pure read of the status tables), then
-# ask APScheduler to fire that job now (:func:`run_catchup_on_launch` via
-# ``modify_job(next_run_time=...)``), which reuses the exact callable the cron
-# registered — no second copy of the pull wiring.
+# Catch-up scheduling on launch (issue #41; docs/adr/0016 §4). The APScheduler
+# crons only tick while the desktop app is open, and John's computer is off
+# overnight, so on startup we re-run any scheduled pull whose window has already
+# passed since its last successful run. The mechanism is deliberately small:
+# decide what is overdue (:func:`due_catchup_actions`, a pure read of the status
+# tables), then ask APScheduler to fire that job now (:func:`run_catchup_on_launch`
+# via ``modify_job(next_run_time=...)``), which reuses the exact callable the
+# cron registered — no second copy of the pull wiring.
 
 _WEEKDAYS = {"mon": 0, "tue": 1, "wed": 2, "thu": 3, "fri": 4, "sat": 5, "sun": 6}
+
+
+class SchedulerLike(Protocol):
+    """The one APScheduler method the catch-up sweep needs."""
+
+    def modify_job(self, job_id: str, *, next_run_time: datetime) -> object: ...
 
 
 @dataclass(frozen=True)
@@ -53,6 +63,14 @@ def _previous_fire(
     return candidate  # pragma: no cover - unreachable with a real weekday
 
 
+def _as_aware(value: datetime, tz: ZoneInfo) -> datetime:
+    return (
+        value.astimezone(tz)
+        if value.tzinfo
+        else value.replace(tzinfo=UTC).astimezone(tz)
+    )
+
+
 def _last_nflverse_ok(conn: sqlite3.Connection) -> datetime | None:
     """When any nflverse dataset last pulled cleanly (newest ``ok`` row)."""
     for status in recent_pull_statuses(conn, limit=500):
@@ -61,8 +79,36 @@ def _last_nflverse_ok(conn: sqlite3.Connection) -> datetime | None:
     return None
 
 
-def _as_aware(value: datetime, tz: ZoneInfo) -> datetime:
-    return value.astimezone(tz) if value.tzinfo else value.replace(tzinfo=UTC).astimezone(tz)
+def _weekly_cron_overdue(
+    *,
+    job_id: str,
+    label: str,
+    last_ok: datetime | None,
+    now: datetime,
+    timezone: str,
+    day_of_week: str,
+    hour: int,
+    minute: int,
+) -> CatchupAction | None:
+    """A ``CatchupAction`` when ``label``'s last successful run predates its most
+    recent scheduled fire, else ``None``. Reads the same ``settings`` cron fields
+    the job was registered from, so the two stay in step."""
+    tz = ZoneInfo(timezone)
+    fire = _previous_fire(
+        now.astimezone(tz),
+        weekday=_WEEKDAYS[day_of_week.lower()],
+        hour=hour,
+        minute=minute,
+    )
+    if last_ok is not None and _as_aware(last_ok, tz) >= fire:
+        return None
+    due = fire.strftime("%a %Y-%m-%d %H:%M %Z")
+    if last_ok is None:
+        reason = f"{label}: never run; a pull was due {due}"
+    else:
+        when = _as_aware(last_ok, tz).strftime("%a %Y-%m-%d %H:%M %Z")
+        reason = f"{label}: last ok {when}; a pull was due {due}"
+    return CatchupAction(job_id, reason)
 
 
 @dataclass(frozen=True)
@@ -95,37 +141,31 @@ def due_catchup_actions(
     :func:`resolve_snapshot_catchup`)."""
     actions: list[CatchupAction] = []
 
-    nfl_tz = ZoneInfo(settings.nflverse_cron_timezone)
-    nfl_fire = _previous_fire(
-        now.astimezone(nfl_tz),
-        weekday=_WEEKDAYS[settings.nflverse_cron_day_of_week.lower()],
+    nflverse = _weekly_cron_overdue(
+        job_id=NFLVERSE_JOB_ID,
+        label="nflverse refresh",
+        last_ok=_last_nflverse_ok(conn),
+        now=now,
+        timezone=settings.nflverse_cron_timezone,
+        day_of_week=settings.nflverse_cron_day_of_week,
         hour=settings.nflverse_cron_hour,
         minute=settings.nflverse_cron_minute,
     )
-    last_nfl = _last_nflverse_ok(conn)
-    if last_nfl is None or _as_aware(last_nfl, nfl_tz) < nfl_fire:
-        actions.append(
-            CatchupAction(
-                NFLVERSE_JOB_ID,
-                _overdue_reason("nflverse refresh", last_nfl, nfl_fire, nfl_tz),
-            )
-        )
+    if nflverse is not None:
+        actions.append(nflverse)
 
-    con_tz = ZoneInfo(settings.consensus_cron_timezone)
-    con_fire = _previous_fire(
-        now.astimezone(con_tz),
-        weekday=_WEEKDAYS[settings.consensus_cron_day_of_week.lower()],
+    consensus = _weekly_cron_overdue(
+        job_id=CONSENSUS_JOB_ID,
+        label="consensus re-score",
+        last_ok=last_consensus_pull_at(conn),
+        now=now,
+        timezone=settings.consensus_cron_timezone,
+        day_of_week=settings.consensus_cron_day_of_week,
         hour=settings.consensus_cron_hour,
         minute=settings.consensus_cron_minute,
     )
-    last_con = last_consensus_pull_at(conn)
-    if last_con is None or _as_aware(last_con, con_tz) < con_fire:
-        actions.append(
-            CatchupAction(
-                CONSENSUS_JOB_ID,
-                _overdue_reason("consensus re-score", last_con, con_fire, con_tz),
-            )
-        )
+    if consensus is not None:
+        actions.append(consensus)
 
     # The news poll is an interval job (~30 min). Any cold start is past a
     # window; fire it once so fresh news is not 30 minutes stale on open. The
@@ -154,22 +194,12 @@ def due_catchup_actions(
     return actions
 
 
-def _overdue_reason(
-    label: str, last: datetime | None, fire: datetime, tz: ZoneInfo
-) -> str:
-    due = fire.strftime("%a %Y-%m-%d %H:%M %Z")
-    if last is None:
-        return f"{label}: never run; a pull was due {due}"
-    when = _as_aware(last, tz).strftime("%a %Y-%m-%d %H:%M %Z")
-    return f"{label}: last ok {when}; a pull was due {due}"
-
-
 def resolve_snapshot_catchup(
     *,
-    duckdb_conn: object | None,
+    duckdb_conn: duckdb.DuckDBPyConnection | None,
     sqlite_conn: sqlite3.Connection,
     settings: Settings,
-    weekly_sources_provider: Callable[[], object | None],
+    weekly_sources_provider: Callable[[], WeeklyDataSources | None],
     now: datetime,
 ) -> SnapshotCatchup:
     """Work out the weekly-snapshot launch context: assemble the current week to
@@ -196,12 +226,17 @@ def resolve_snapshot_catchup(
 
 
 def _week_games_final(
-    duckdb_conn: object | None, season: int, week: int, today: date
+    duckdb_conn: duckdb.DuckDBPyConnection | None,
+    season: int,
+    week: int,
+    today: date,
 ) -> bool:
     """True when every game of ``season``/``week`` has a kickoff date before
     ``today`` — a conservative "the week is over" read from the nflverse
-    schedule. Unknown (no parquet cached, no rows) counts as not final: the
-    normal Sunday cron owns the live week."""
+    schedule view. Unknown (no parquet cached, no rows) counts as not final: the
+    normal Sunday cron owns the live week, and the snapshot catch-up gets its
+    chance on a later launch once nflverse has been pulled (docs/adr/0016 §4
+    records this dependency)."""
     if duckdb_conn is None:
         return False
     try:
@@ -226,12 +261,12 @@ def _week_games_final(
 
 
 def run_catchup_on_launch(
-    scheduler: object,
+    scheduler: SchedulerLike,
     *,
     settings: Settings,
     sqlite_conn: sqlite3.Connection,
-    duckdb_conn: object | None,
-    weekly_sources_provider: Callable[[], object | None],
+    duckdb_conn: duckdb.DuckDBPyConnection | None,
+    weekly_sources_provider: Callable[[], WeeklyDataSources | None],
     now: datetime | None = None,
 ) -> list[CatchupAction]:
     """Fire every overdue scheduled job now by bumping its ``next_run_time``.
@@ -264,6 +299,7 @@ def run_catchup_on_launch(
 
 __all__ = [
     "CatchupAction",
+    "SchedulerLike",
     "SnapshotCatchup",
     "due_catchup_actions",
     "resolve_snapshot_catchup",
