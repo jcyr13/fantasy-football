@@ -6,6 +6,7 @@ const http = require("node:http");
 
 const {
   buildBackendCommand,
+  buildBackendEnv,
   waitForHealth,
   startBackend,
   stopBackend,
@@ -36,6 +37,21 @@ test("buildBackendCommand honours DEADPARROTS_UV_BIN and an explicit host", () =
     if (prev === undefined) delete process.env.DEADPARROTS_UV_BIN;
     else process.env.DEADPARROTS_UV_BIN = prev;
   }
+});
+
+test("buildBackendEnv points the data dir at the app-data dir", () => {
+  const env = buildBackendEnv({ dataDir: "/app/data" });
+  assert.equal(env.DEADPARROTS_DATA_DIR, "/app/data");
+  assert.equal(env.DEADPARROTS_YAHOO_EXTRACTOR_URL, undefined);
+  assert.equal(env.PATH, process.env.PATH); // inherits the rest of the env
+});
+
+test("buildBackendEnv wires the Yahoo extractor endpoint when the shell has one", () => {
+  const env = buildBackendEnv({
+    dataDir: "/app/data",
+    yahooExtractorUrl: "http://127.0.0.1:51234/scrape",
+  });
+  assert.equal(env.DEADPARROTS_YAHOO_EXTRACTOR_URL, "http://127.0.0.1:51234/scrape");
 });
 
 test("waitForHealth resolves once /api/health answers 200", async () => {

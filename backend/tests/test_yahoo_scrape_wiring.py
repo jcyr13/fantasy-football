@@ -137,3 +137,55 @@ def test_missing_waiver_priority_still_flags_for_manual_entry(
         pulled = client.post("/api/yahoo/pull").json()
         assert pulled["ok"] is True
         assert pulled["waiver_priority_needs_manual_entry"] is True
+
+
+class _ExpiredSessionHandler(BaseHTTPRequestHandler):
+    """The desktop app's answer when the signed-in Yahoo session has expired:
+    ``401`` with the reason phrase the shell puts on the status line (issue #45,
+    acceptance criterion 5 — a clear signal, never a silent success)."""
+
+    def log_message(self, *args):
+        pass
+
+    def do_POST(self):
+        length = int(self.headers.get("Content-Length", 0))
+        self.rfile.read(length)
+        self.send_response(401, "Yahoo sign-in required")
+        self.send_header("Content-Type", "application/json")
+        body = b'{"error": "yahoo-auth-required"}'
+        self.send_header("Content-Length", str(len(body)))
+        self.end_headers()
+        self.wfile.write(body)
+
+
+@pytest.fixture
+def expired_session_extractor_url() -> Iterator[str]:
+    server = HTTPServer(("127.0.0.1", 0), _ExpiredSessionHandler)
+    thread = threading.Thread(target=server.serve_forever, daemon=True)
+    thread.start()
+    try:
+        host, port = server.server_address
+        yield f"http://{host}:{port}/scrape"
+    finally:
+        server.shutdown()
+        thread.join()
+
+
+def test_expired_yahoo_session_is_a_clear_per_page_failure(
+    data_dir, expired_session_extractor_url
+):
+    app = create_app(
+        settings=Settings(
+            data_dir=data_dir, yahoo_extractor_url=expired_session_extractor_url
+        )
+    )
+    with TestClient(app) as client:
+        pulled = client.post("/api/yahoo/pull").json()
+
+    assert pulled["ok"] is False
+    assert pulled["pages"], "a failed pull still reports one row per page"
+    for page in pulled["pages"]:
+        assert page["status"] == "failed"
+        # The reason phrase rides through urllib's HTTPError into the row so
+        # Job 3 (#46) can tell an expired session from any other scrape failure.
+        assert "Yahoo sign-in required" in page["error"]

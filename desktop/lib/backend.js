@@ -22,6 +22,19 @@ function buildBackendCommand({ port, host = "127.0.0.1" }) {
   };
 }
 
+// The environment the backend child runs with: the current env plus the
+// per-user data directory and, when the shell has an embedded Yahoo browser
+// running (issue #45 — Job 2), the loopback extractor endpoint that turns
+// `POST /api/yahoo/pull` from a 503 into a real assisted pull. With
+// `yahooExtractorUrl` omitted the var is left unset and the backend behaves
+// exactly as a bare standalone run.
+function buildBackendEnv({ dataDir, yahooExtractorUrl } = {}) {
+  const env = { ...process.env };
+  if (dataDir) env.DEADPARROTS_DATA_DIR = dataDir;
+  if (yahooExtractorUrl) env.DEADPARROTS_YAHOO_EXTRACTOR_URL = yahooExtractorUrl;
+  return env;
+}
+
 // Poll `GET /api/health` until it answers 2xx or the timeout elapses.
 async function waitForHealth(origin, { timeoutMs = 30000, intervalMs = 300 } = {}) {
   const deadline = Date.now() + timeoutMs;
@@ -54,13 +67,14 @@ function startBackend({
   port,
   dataDir,
   host = "127.0.0.1",
+  yahooExtractorUrl,
   onExit,
   onError,
 }) {
   const { command, args } = buildBackendCommand({ port, host });
   const child = spawn(command, args, {
     cwd: backendDir,
-    env: { ...process.env, DEADPARROTS_DATA_DIR: dataDir },
+    env: buildBackendEnv({ dataDir, yahooExtractorUrl }),
     stdio: "inherit",
     detached: process.platform !== "win32",
     windowsHide: true,
@@ -108,4 +122,10 @@ function stopBackend(child) {
   }
 }
 
-module.exports = { buildBackendCommand, waitForHealth, startBackend, stopBackend };
+module.exports = {
+  buildBackendCommand,
+  buildBackendEnv,
+  waitForHealth,
+  startBackend,
+  stopBackend,
+};

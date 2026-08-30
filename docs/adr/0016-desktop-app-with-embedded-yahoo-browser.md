@@ -72,6 +72,24 @@ The backend half is `BrowserYahooSource(HttpPageExtractor(url))`, wired into
 `DEADPARROTS_YAHOO_EXTRACTOR_URL` is set. A bare backend with no shell leaves it
 unset and `POST /api/yahoo/pull` answers 503 exactly as before.
 
+*(As built in #45: `desktop/lib/scrape-server.js` is the loopback endpoint;
+`desktop/lib/yahoo-window.js` drives a hidden `BrowserWindow` on the
+`persist:yahoo` partition; `desktop/lib/yahoo-extract.js` holds the pure parts —
+the signed-out detector, the payload check, and the injected script. An expired
+session surfaces as `401 Yahoo sign-in required` from `/scrape`, which the
+backend records as a per-page failure carrying that phrase (the shell also
+re-raises the sign-in window, as §2's "the flow reopens this window" calls for);
+Job 3 (#46) keys its re-sign-in prompt off it.*
+
+***Deviation from this section, recorded per #43, pending the first live pull:***
+*the injected script maps each payload from the **classic-UI DOM tables** that
+`football.fantasysports.yahoo.com/f1/<id>/<page>` still serves — the shape the
+recorded fixtures were built from — and reads `__PRELOADED_STATE__` only for
+diagnostics. The "bootstrap JSON first, DOM fallback" order above is inverted
+because the live bootstrap shape is unknown; adding a `state → payload` mapper,
+and tightening the script's header-text-driven selectors against the real pages,
+is follow-up work once a signed-in session is available.)*
+
 ### 4. Catch-up scheduling on launch
 
 The APScheduler crons (nflverse refresh, consensus re-score, news poll, Sunday
