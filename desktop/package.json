@@ -1,0 +1,18 @@
+{
+  "name": "deadparrots-desktop",
+  "productName": "Dead Parrots Dashboard",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Electron shell that boots the Dead Parrots Dashboard backend and SPA as a desktop app (docs/adr/0016).",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "node --test test/*.test.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "electron": "^44.0.0"
+  }
+}

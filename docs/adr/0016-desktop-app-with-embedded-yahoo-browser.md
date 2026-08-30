@@ -19,7 +19,11 @@ The dashboard becomes a desktop application. The Electron **main process**:
 - spawns the existing FastAPI backend as a local child process
   (`uvicorn deadparrots.app:app`), bound to `127.0.0.1` on a free port;
 - loads the already-built SPA (`frontend/dist`) in the main `BrowserWindow`,
-  pointed at that backend;
+  pointed at that backend. *(As built in #44: the shell registers a privileged
+  `app://` scheme that serves the bundle and reverse-proxies `/api/*` to the
+  backend's loopback port. The SPA's API base is a hard-coded `/api`
+  (`frontend/src/api.ts`); a same-origin proxy keeps it working with no change
+  to `frontend/` and no CORS surface.)*
 - stores all data in a per-user app-data directory
   (`app.getPath('userData')/data`), passed to the backend as
   `DEADPARROTS_DATA_DIR`. This replaces the compose bind mount.
