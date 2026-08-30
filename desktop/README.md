@@ -5,10 +5,13 @@ The Electron shell that runs the Dead Parrots Dashboard as a desktop app
 process on a private loopback port, serves the already-built SPA, and points the
 backend's data directory at a per-user app-data folder.
 
-Jobs **1** (#44 — shell boots the Dashboard) and **2** (#45 — embedded Yahoo
-browser + live scrape endpoint) have landed. The "Pull from Yahoo" control (#46)
-and the Windows installer (#47) come later. Nothing here bundles Python; dev uses
-the repo's `uv`.
+All four jobs have landed: **1** (#44 — shell boots the Dashboard), **2** (#45 —
+embedded Yahoo browser + live scrape endpoint), **3** (#46 — the in-app "Pull
+from Yahoo" control), **4** (#47 — the unsigned Windows installer).
+
+**Development uses the repo's `uv`** to run the backend. The **packaged** app
+bundles no Python: `npm run dist` ships a PyInstaller-frozen backend, and the
+shell picks that over `uv` by `app.isPackaged`. See [Packaging](#packaging-job-4-47).
 
 ## Prerequisites
 
@@ -110,11 +113,37 @@ The backend is unchanged and still runs standalone:
 cd ../backend && uv run uvicorn deadparrots.app:app
 ```
 
+## Packaging (Job 4, #47)
+
+`npm run dist` builds one **unsigned NSIS `.exe`** for Windows
+(`../docs/adr/0016 §5`). The full runbook — prereqs, the SPA build, the backend
+freeze, SmartScreen, data/uninstall behaviour — is in
+[`../deploy/README.md`](../deploy/README.md#building-the-installer). In short:
+
+```powershell
+npm --prefix ../frontend ci && npm --prefix ../frontend run build   # -> ../frontend/dist
+npm ci
+npm run build:backend      # scripts/build-backend.ps1 -> backend-dist/deadparrots-backend/ (PyInstaller --onedir)
+npm run dist               # electron-builder --win nsis -> dist/Dead Parrots Dashboard Setup <version>.exe
+```
+
+`electron-builder.yml` copies `../frontend/dist` and `backend-dist/deadparrots-backend/`
+in as `extraResources` (`resources/frontend/`, `resources/backend/`).
+`lib/paths.js#appPaths` reads them from there when `app.isPackaged`, and
+`lib/backend.js` runs `resources/backend/deadparrots-backend.exe --host --port`
+instead of `uv run uvicorn`. `backend-dist/` and `dist/` are gitignored.
+
+`scripts/backend_entry.py` is the frozen entry point (same `deadparrots.app:app`,
+under uvicorn). The `--collect-*` list in `build-backend.ps1` is a first cut —
+widen it (duckdb native lib, nflreadpy → polars/pyarrow) against
+`backend-build/warn-deadparrots-backend.txt` on the first real build. The build
+run and the clean-Windows-box check (issue #47 AC 3) are manual.
+
 ## Environment overrides
 
 | Variable                | Effect                                                      |
 | ----------------------- | --------------------------------------------------------- |
-| `DEADPARROTS_UV_BIN`    | Full path to the `uv` executable if it is not on `PATH`.  |
+| `DEADPARROTS_UV_BIN`    | Full path to the `uv` executable if it is not on `PATH` (dev only — ignored by the packaged app).  |
 
 ## Tests
 
@@ -124,10 +153,12 @@ npm test      # node --test, no Electron runtime needed
 
 The suite covers the pure pieces of the shell: free-port selection, the
 `app://` request handler (static files + `/api` proxy, gzip pass-through, 404 /
-502 paths), the backend command builder / env / health poll, MIME mapping, path
-resolution and the "SPA not built" guard, and — for Job 2 — the `/scrape` server
-(payload pass-through, the 401 auth signal, 400/404/405/500/502 paths), the
-Yahoo login-URL detector, the payload sanity check and the injected-script
-builder. The Electron windows (main + the `persist:yahoo` Yahoo view) and the
-live scrape against Yahoo are verified by hand against the acceptance criteria in
-issues #44 and #45.
+502 paths), the backend command builder / env / health poll, MIME mapping, dev
+vs packaged path resolution (`appPaths`) and the "SPA not built" / "packaged
+backend missing" guards, the frozen-backend command shape, and — for Job 2 — the
+`/scrape` server (payload pass-through, the 401 auth signal, 400/404/405/500/502
+paths), the Yahoo login-URL detector, the payload sanity check and the
+injected-script builder. The Electron windows (main + the `persist:yahoo` Yahoo
+view), the live scrape against Yahoo, the packaged `.exe` build, and the
+clean-Windows-box install are verified by hand against the acceptance criteria in
+issues #44, #45 and #47.

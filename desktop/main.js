@@ -19,7 +19,7 @@ const path = require("node:path");
 const { app, protocol, BrowserWindow, shell, dialog } = require("electron");
 
 const { pickFreePort } = require("./lib/ports");
-const { repoPaths, assertSpaBuilt } = require("./lib/paths");
+const { appPaths, assertSpaBuilt, assertBackendBuilt } = require("./lib/paths");
 const {
   startBackend,
   stopBackend,
@@ -80,9 +80,15 @@ function fail(title, message) {
 }
 
 async function main() {
-  const { backendDir, frontendDistDir } = repoPaths();
+  // Dev: backend + SPA in the repo tree, backend via `uv`. Packaged: both under
+  // `resources/`, backend is the frozen exe (issue #47; docs/adr/0016 §5).
+  const { backendDir, frontendDistDir, frozenBackendExe } = appPaths({
+    isPackaged: app.isPackaged,
+    resourcesPath: process.resourcesPath,
+  });
   try {
     assertSpaBuilt(frontendDistDir);
+    assertBackendBuilt(frozenBackendExe);
   } catch (err) {
     await app.whenReady().catch(() => {});
     fail("Dead Parrots Dashboard", err.message);
@@ -120,6 +126,7 @@ async function main() {
     port,
     dataDir,
     host: HOST,
+    frozenBackendExe,
     yahooExtractorUrl: scrapeServer.url,
     onError: (err) => {
       backendChild = null;

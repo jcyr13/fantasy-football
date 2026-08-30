@@ -122,6 +122,28 @@ An `electron-builder` NSIS installer for **Windows** (the owner's OS). The v1
 build is **unsigned** — SmartScreen will warn on first run; the owner clicks
 through. Code signing is a later nicety, not a blocker for a single-user tool.
 
+*(As built in #47: the open "how does the backend ship without a system Python"
+decision is resolved as a **PyInstaller `--onedir` bundle** — not an embedded
+CPython + venv, not `--onefile`. `desktop/scripts/build-backend.ps1` (Windows-only, matching the target) freezes
+`desktop/scripts/backend_entry.py` — which runs the same `deadparrots.app:app`
+under uvicorn — to `desktop/backend-dist/deadparrots-backend/`;
+`desktop/electron-builder.yml` copies that tree and `frontend/dist` in as
+`extraResources` (`resources/backend`, `resources/frontend`). The shell chooses
+the runtime by `app.isPackaged` (`desktop/lib/paths.js#appPaths`): packaged runs
+the frozen `deadparrots-backend.exe` with `--host/--port`; development is
+`uv run uvicorn`, unchanged. `--onedir` over `--onefile` to skip the per-launch
+self-extract and reduce antivirus false positives on an unsigned binary;
+PyInstaller over a bundled interpreter because it is the standard Electron-app
+pattern and avoids shipping pip + a machine-fragile venv. The `--collect-*` set
+in the build script is a first cut — the dynamic importers (uvicorn protocol/loop
+autodetect, `duckdb` native lib, `nflreadpy` → polars/pyarrow) are the expected
+gaps to widen on the first real Windows build. Data still lands in
+`app.getPath('userData')/data`; the installer is **assisted** (`oneClick: false`),
+whose NSIS uninstaller does not touch `%APPDATA%`, so a reinstall or upgrade
+keeps the History screen's snapshots — John deletes that folder by hand to wipe
+it. `npm run dist` builds the `.exe`; not built in CI. The build run and the
+clean-Windows-box verification (issue #47 AC 3) are manual.)*
+
 ### 6. Local development
 
 `docker compose` is **removed**, not kept. Development runs the two processes
@@ -141,8 +163,9 @@ the owner runs the sidecar by hand.
 ## Consequences
 
 - **New**: a top-level desktop-shell directory (Electron main + preload +
-  extractor), `electron-builder` config, the Windows installer artifact. Not
-  built in CI.
+  extractor), `desktop/electron-builder.yml`, the PyInstaller entry point +
+  `desktop/scripts/build-backend.ps1` freeze script, the Windows installer
+  artifact. Not built in CI.
 - **Backend**: `Settings.yahoo_extractor_url` / `yahoo_extractor_timeout_seconds`
   / `catchup_on_launch`; `HttpPageExtractor` and `build_yahoo_source` in
   `deadparrots.yahoo.scrape`; `deadparrots.catchup`; the three weekly cron jobs

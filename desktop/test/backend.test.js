@@ -39,6 +39,25 @@ test("buildBackendCommand honours DEADPARROTS_UV_BIN and an explicit host", () =
   }
 });
 
+test("buildBackendCommand runs the frozen exe directly when packaged", () => {
+  const prev = process.env.DEADPARROTS_UV_BIN;
+  process.env.DEADPARROTS_UV_BIN = "/opt/uv/bin/uv"; // must be ignored when frozen
+  try {
+    const { command, args } = buildBackendCommand({
+      port: 55001,
+      frozenBackendExe: "C:\\Program Files\\Dead Parrots Dashboard\\resources\\backend\\deadparrots-backend.exe",
+    });
+    assert.equal(
+      command,
+      "C:\\Program Files\\Dead Parrots Dashboard\\resources\\backend\\deadparrots-backend.exe",
+    );
+    assert.deepEqual(args, ["--host", "127.0.0.1", "--port", "55001"]);
+  } finally {
+    if (prev === undefined) delete process.env.DEADPARROTS_UV_BIN;
+    else process.env.DEADPARROTS_UV_BIN = prev;
+  }
+});
+
 test("buildBackendEnv points the data dir at the app-data dir", () => {
   const env = buildBackendEnv({ dataDir: "/app/data" });
   assert.equal(env.DEADPARROTS_DATA_DIR, "/app/data");
@@ -101,6 +120,20 @@ test("startBackend surfaces a missing launcher via onError, not a crash", async 
     if (prev === undefined) delete process.env.DEADPARROTS_UV_BIN;
     else process.env.DEADPARROTS_UV_BIN = prev;
   }
+});
+
+test("startBackend surfaces a missing frozen backend as a reinstall hint", async () => {
+  const err = await new Promise((resolve) => {
+    startBackend({
+      backendDir: process.cwd(),
+      port: 0,
+      dataDir: process.cwd(),
+      frozenBackendExe: "definitely-not-a-real-frozen-backend-xyz",
+      onError: resolve,
+    });
+  });
+  assert.match(err.message, /packaged backend/);
+  assert.match(err.message, /reinstall the app/);
 });
 
 test("stopBackend is a no-op for a child that already exited", () => {

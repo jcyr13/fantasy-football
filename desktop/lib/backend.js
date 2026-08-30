@@ -2,11 +2,24 @@
 
 const { spawn, spawnSync } = require("node:child_process");
 
-// The command the shell uses to run the backend — the same one the README gives
-// for a standalone run (`uv run uvicorn deadparrots.app:app`), with the loopback
-// host and the chosen free port pinned. `DEADPARROTS_UV_BIN` overrides the `uv`
-// executable for the case where it is not on Electron's PATH.
-function buildBackendCommand({ port, host = "127.0.0.1" }) {
+const { DAMAGED_INSTALL_HINT } = require("./paths");
+
+// The command the shell uses to run the backend, with the loopback host and the
+// chosen free port pinned.
+//
+//   - packaged (`frozenBackendExe` given): the PyInstaller `--onedir` exe run
+//     directly with `--host` / `--port` (issue #47; docs/adr/0016 §5). No `uv`,
+//     no Python on the machine.
+//   - development: the same standalone command `backend/README.md` gives,
+//     `uv run uvicorn deadparrots.app:app`. `DEADPARROTS_UV_BIN` overrides the
+//     `uv` executable for the case where it is not on Electron's PATH.
+function buildBackendCommand({ port, host = "127.0.0.1", frozenBackendExe = null }) {
+  if (frozenBackendExe) {
+    return {
+      command: frozenBackendExe,
+      args: ["--host", host, "--port", String(port)],
+    };
+  }
   const uv = process.env.DEADPARROTS_UV_BIN || "uv";
   return {
     command: uv,
@@ -67,11 +80,12 @@ function startBackend({
   port,
   dataDir,
   host = "127.0.0.1",
+  frozenBackendExe = null,
   yahooExtractorUrl,
   onExit,
   onError,
 }) {
-  const { command, args } = buildBackendCommand({ port, host });
+  const { command, args } = buildBackendCommand({ port, host, frozenBackendExe });
   const child = spawn(command, args, {
     cwd: backendDir,
     env: buildBackendEnv({ dataDir, yahooExtractorUrl }),
@@ -82,8 +96,11 @@ function startBackend({
   child.on("error", (err) => {
     if (err.code === "ENOENT") {
       err = new Error(
-        `could not launch the backend: "${command}" was not found on PATH. ` +
-          "Install uv, or set DEADPARROTS_UV_BIN to its full path.",
+        frozenBackendExe
+          ? `could not launch the packaged backend at "${command}". ` +
+            DAMAGED_INSTALL_HINT
+          : `could not launch the backend: "${command}" was not found on PATH. ` +
+            "Install uv, or set DEADPARROTS_UV_BIN to its full path.",
       );
     }
     if (onError) onError(err);
