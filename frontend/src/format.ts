@@ -10,8 +10,27 @@ export function signedPts(n: number): string {
   return n > 0 ? `+${s}` : s;
 }
 
+/** A signed integer, e.g. a positional-rank trade edge: `+12`, `0`, `-6`. */
+export function signedInt(n: number): string {
+  return n > 0 ? `+${n}` : `${n}`;
+}
+
+/** A player's positional rank as printed, e.g. `QB4`, `WR12`. */
+export function posRank(position: string, rank: number): string {
+  return `${position}${rank}`;
+}
+
 export function pct(fraction: number): string {
   return `${(fraction * 100).toFixed(0)}%`;
+}
+
+/**
+ * A percentile rank that is *already* on the 0–100 scale (team strength,
+ * points-for percentile, the contend/rebuild thresholds) — printed as a plain
+ * rank, not scaled again the way `pct` scales a 0–1 fraction.
+ */
+export function pctile(rank0to100: number): string {
+  return rank0to100.toFixed(0);
 }
 
 /** `max_p_win` / `free_agent` → `max p win` / `free agent`. */

@@ -2,6 +2,7 @@ import { useState } from "react";
 
 import type { RecommendationEngine, SideTotals, WeeklyView } from "../api";
 import { fetchWeeklyView } from "../api";
+import { Caveats } from "../components/Caveats";
 import { LineupTable } from "../components/LineupTable";
 import { Metric } from "../components/Metric";
 import { humanizeLabel, pct, pts, signedPts } from "../format";
@@ -261,16 +262,7 @@ export function ThisWeek() {
         </div>
       </div>
 
-      {weekly.caveats.length > 0 && (
-        <div className="panel">
-          <h2>Methodology &amp; confidence</h2>
-          <ul className="caveats">
-            {weekly.caveats.map((c, i) => (
-              <li key={i}>{c}</li>
-            ))}
-          </ul>
-        </div>
-      )}
+      <Caveats items={weekly.caveats} />
     </div>
   );
 }
