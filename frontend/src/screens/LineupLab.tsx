@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 
 import type { LineupLabResult, LineupSlotProjection } from "../api";
 import { computeLineupLab, fetchAutoFill } from "../api";
+import { Caveats } from "../components/Caveats";
 import { Metric } from "../components/Metric";
 import { pct, pts } from "../format";
 import { usePoll } from "../usePoll";
@@ -226,16 +227,7 @@ export function LineupLab() {
         </div>
       )}
 
-      {autoFill.caveats.length > 0 && (
-        <div className="panel mt-12">
-          <h2>Methodology &amp; confidence</h2>
-          <ul className="caveats">
-            {autoFill.caveats.map((c, i) => (
-              <li key={i}>{c}</li>
-            ))}
-          </ul>
-        </div>
-      )}
+      <Caveats items={autoFill.caveats} />
     </div>
   );
 }

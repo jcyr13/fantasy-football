@@ -332,6 +332,24 @@ h3 {
   font-size: 10px;
   text-align: center;
 }
+
+/* An annotation cell that is allowed to wrap and grow, against the table's
+   default `white-space: nowrap` — used for the per-row `reasons` on the
+   Waiver/FA, Team Outlook, and Trade Desk screens. */
+.tbl td.wrap {
+  white-space: normal;
+  min-width: 220px;
+}
+.reasons {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: var(--text-dim);
+  font-size: 11px;
+}
+.reasons li {
+  margin: 1px 0;
+}
 .lowconf {
   color: var(--warn);
   cursor: help;

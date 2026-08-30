@@ -222,3 +222,221 @@ export interface FreshnessResponse {
 export function fetchFreshness(): Promise<FreshnessResponse> {
   return getJSON<FreshnessResponse>("/freshness");
 }
+
+// --- Waiver / Free Agents (GET /api/free-agents) -------------------
+
+export interface FreeAgent {
+  player_id: string;
+  name: string;
+  position: string;
+  ros_projected_points: number;
+  value_over_replacement: number;
+  positional_rank: number;
+  need_fit: string;
+  own_bye: string;
+  priority_verdict: string;
+  reasons: string[];
+}
+
+export interface Streamer {
+  player_id: string;
+  name: string;
+  position: string;
+  hole_role: string;
+  next_week_ceiling: number;
+  need_fit: string;
+  priority_verdict: string;
+  reasons: string[];
+}
+
+export interface WaiverPriority {
+  current_priority: number;
+  team_count: number;
+  is_last: boolean;
+  drops_to_on_claim: number;
+  note: string;
+}
+
+export interface CutdownWindow {
+  window_name: string;
+  opens: string;
+  closes: string;
+  is_open: boolean;
+  is_upcoming: boolean;
+  days_until_open: number;
+  note: string;
+}
+
+export interface FreeAgentsResponse {
+  season: number;
+  week: number;
+  rest_of_season: FreeAgent[];
+  streamers: Streamer[];
+  hole_roles: string[];
+  waiver_priority: WaiverPriority;
+  cutdown_window: CutdownWindow;
+  caveats: string[];
+}
+
+export function fetchFreeAgents(): Promise<FreeAgentsResponse> {
+  return getJSON<FreeAgentsResponse>("/free-agents");
+}
+
+// --- Team Outlook (GET /api/team-outlook) -------------------------
+
+export interface TeamStrength {
+  decay_weighted_points_for: number;
+  percentile: number;
+  weeks_counted: number;
+  rank: number;
+}
+
+export interface ExpectedWins {
+  expected_wins: number;
+  actual_wins: number;
+  luck: number;
+  weeks_counted: number;
+}
+
+export interface Signal {
+  signal: string;
+  week: number;
+  signal_start_week: number;
+  points_for_percentile: number;
+  playoff_odds: number;
+  contend_percentile_threshold: number;
+  rebuild_percentile_threshold: number;
+  rationale: string[];
+  recommends_transaction: boolean;
+}
+
+export interface ByePosition {
+  role: string;
+  starters_on_bye: number;
+  starter_names: string[];
+}
+
+export interface ByeCrunchWeek {
+  week: number;
+  grade: string;
+  max_at_one_position: number;
+  can_field_legal_lineup: boolean;
+  per_position: ByePosition[];
+  reasons: string[];
+}
+
+export interface TeamOutlookResponse {
+  season: number;
+  week: number;
+  team_strength: TeamStrength;
+  expected_wins: ExpectedWins;
+  playoff_odds: number;
+  signal: Signal;
+  bye_crunch: ByeCrunchWeek[];
+  caveats: string[];
+}
+
+export function fetchTeamOutlook(): Promise<TeamOutlookResponse> {
+  return getJSON<TeamOutlookResponse>("/team-outlook");
+}
+
+// --- Trade Desk (GET /api/trade-desk) ----------------------------
+
+export interface Opportunity {
+  player_id: string;
+  position: string;
+  opportunity_index: number;
+  opportunity_trend: number;
+  output_index: number;
+  output_trend: number;
+  games_counted: number;
+}
+
+export interface TradeCandidate {
+  player_id: string;
+  name: string;
+  position: string;
+  side: string;
+  market_rank: number;
+  model_rank: number;
+  trade_edge: number;
+  priority: number;
+  reasons: string[];
+}
+
+export interface DesperateTeam {
+  team_id: string;
+  team_name: string;
+  score: number;
+  rank: number;
+  reasons: string[];
+}
+
+export interface Countdown {
+  target_date: string;
+  as_of: string;
+  days_remaining: number;
+  is_past: boolean;
+}
+
+export interface TradeDeskResponse {
+  season: number;
+  week: number;
+  opportunity: Opportunity[];
+  buy_low: TradeCandidate[];
+  sell_high: TradeCandidate[];
+  desperate_teams: DesperateTeam[];
+  countdown: Countdown;
+  caveats: string[];
+}
+
+export function fetchTradeDesk(): Promise<TradeDeskResponse> {
+  return getJSON<TradeDeskResponse>("/trade-desk");
+}
+
+// --- History (GET /api/history) ---------------------------------
+
+export interface PlayerActual {
+  player_id: string;
+  name: string;
+  projected_points: number;
+  actual_points: number;
+  delta: number;
+}
+
+export interface SnapshotOutcome {
+  backfilled_at: string;
+  dead_parrots_total: number;
+  opponent_total: number;
+  result: string;
+  player_actuals: PlayerActual[];
+}
+
+// The frozen JSON of the four screen contracts for the week (backend
+// `build_captured_payload`, ADR-0014 §1). History only reads the `weekly` slice.
+export interface HistoryCaptured {
+  weekly: WeeklyView;
+  team_outlook: TeamOutlookResponse;
+  trade_desk: TradeDeskResponse;
+  free_agents: FreeAgentsResponse;
+}
+
+export interface HistoryRecord {
+  snapshot_id: string;
+  season: number;
+  week: number;
+  created_at: string;
+  rng_seed: number;
+  captured: HistoryCaptured;
+  outcome: SnapshotOutcome | null;
+}
+
+export interface HistoryResponse {
+  pending: boolean;
+  reason: string;
+  snapshots: HistoryRecord[];
+}
+
+export function fetchHistory(): Promise<HistoryResponse> {
+  return getJSON<HistoryResponse>("/history");
+}
