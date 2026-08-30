@@ -6,6 +6,10 @@ build/
 *.log
 .DS_Store
 
+# Desktop installer build outputs (issue #47): PyInstaller freeze + work dir
+/desktop/backend-dist/
+/desktop/backend-build/
+
 # Python
 .venv/
 __pycache__/

@@ -27,22 +27,48 @@ four jobs is 6 hours (`DEADPARROTS_CATCHUP_ON_LAUNCH=false` disables the sweep).
 
 ### Building the installer
 
-> The Electron shell (main process, preload, the Yahoo `PageExtractor`, and the
-> `electron-builder` config) lands in a follow-up sub-issue of #41. The backend
-> seam it plugs into is already here:
-> `DEADPARROTS_YAHOO_EXTRACTOR_URL` → `build_yahoo_source` →
-> `BrowserYahooSource` on `app.state.yahoo_source`.
+`electron-builder` produces one **unsigned NSIS `.exe`** for Windows
+(`../docs/adr/0016 §5`; issue #47). The backend ships **frozen** — a PyInstaller
+`--onedir` bundle — so the target machine needs neither Python nor `uv` nor Node.
 
-When the shell exists, packaging is:
+**Guided path:** `bash desktop/scripts/build-installer-wizard.sh` (Git Bash on
+the Windows build machine) walks all of this stage by stage — preflight,
+SPA build, backend freeze, `npm run dist`, an optional local smoke test, and the
+clean-Windows-box verification checklist (issue #47 AC 3) — and writes a build
+log. The manual steps below are what it runs.
 
-```sh
-cd frontend && npm ci && npm run build      # SPA into frontend/dist
-cd ../desktop && npm ci && npm run make     # electron-builder -> NSIS installer (Windows)
+Build machine (Windows): **Node 20+**, **`uv`**, and the backend deps synced once
+(`cd backend && uv sync`). Then, from the repo root:
+
+```powershell
+# 1. Build the SPA  ->  frontend/dist
+npm --prefix frontend ci
+npm --prefix frontend run build
+
+# 2. Freeze the backend  ->  desktop/backend-dist/deadparrots-backend/
+cd desktop
+npm ci
+npm run build:backend            # runs scripts/build-backend.ps1 (PyInstaller)
+
+# 3. Build the installer  ->  desktop/dist/Dead Parrots Dashboard Setup <version>.exe
+npm run dist                     # electron-builder --win nsis
 ```
 
-The v1 installer is **unsigned** — Windows SmartScreen warns on first run; click
-"More info" → "Run anyway". Signing is a later nicety, not a blocker for one
-known user (`../docs/adr/0016 §5`).
+`npm run dist` does **not** run steps 1–2 — the frozen backend and the built SPA
+must already be in place; `electron-builder.yml` copies both in as
+`extraResources` (`resources/backend/`, `resources/frontend/`). The shell then
+picks the frozen `deadparrots-backend.exe` over `uv run uvicorn` by
+`app.isPackaged` (`desktop/lib/paths.js`).
+
+The `--collect-*` list in `scripts/build-backend.ps1` is a **first cut**: expect
+to add hidden imports on the first real build (uvicorn's protocol/loop
+autodetect, the `duckdb` native lib, `nflreadpy` → polars/pyarrow).
+PyInstaller's `warn-deadparrots-backend.txt` under `desktop/backend-build/` lists
+what it could not trace.
+
+The installer is **unsigned** for v1 — Windows SmartScreen shows *"Windows
+protected your PC"* on first run; click **More info → Run anyway**. Not built in
+CI.
 
 ### First run
 
@@ -55,6 +81,16 @@ known user (`../docs/adr/0016 §5`).
 4. Seed nflverse + consensus if the freshness header shows them as "never" —
    the catch-up sweep does this automatically on the next launch, or run
    `python -m deadparrots.ingest` / `deadparrots.consensus` in the checkout.
+
+### Data & uninstall
+
+All data lives in the per-user app-data dir —
+`%APPDATA%\Dead Parrots Dashboard\data` — the SQLite app DB, the DuckDB file, the
+parquet cache, archived Yahoo pulls, and weekly snapshots. The installer is
+**assisted** (`oneClick: false` in `../desktop/electron-builder.yml`), and an
+assisted NSIS uninstaller **leaves `%APPDATA%` in place** — so reinstalling or
+upgrading keeps the History screen's snapshots. To wipe it, delete that folder by
+hand after uninstalling.
 
 ### Running for development
 

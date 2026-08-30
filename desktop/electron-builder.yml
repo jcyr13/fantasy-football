@@ -1,0 +1,55 @@
+# Unsigned NSIS installer for Windows (issue #47; docs/adr/0016 §5).
+#
+# Run these first — `npm run dist` does not:
+#   1. npm --prefix ../frontend run build     -> ../frontend/dist
+#   2. npm run build:backend                  -> backend-dist/deadparrots-backend/
+#
+# Then `npm run dist` (= electron-builder --win nsis) emits
+#   dist/Dead Parrots Dashboard Setup <version>.exe
+# bundling the Electron shell, the built SPA, and the frozen backend.
+
+appId: com.deadparrots.dashboard
+productName: Dead Parrots Dashboard
+copyright: © John Cyr
+
+directories:
+  output: dist
+  buildResources: build
+
+# Ship the shell itself; keep tests, the Python build inputs, and the build
+# outputs (they ride in via extraResources / their own dir) out of the asar.
+files:
+  - "main.js"
+  - "lib/**/*"
+  - "package.json"
+  - "!test/**"
+  - "!scripts/**"
+  - "!backend-dist/**"
+  - "!backend-build/**"
+  - "!dist/**"
+  - "!electron-builder.yml"
+
+# The SPA and the frozen backend ride alongside the app as plain files under
+# the install's resources/ dir — lib/paths.js#appPaths reads them from there.
+extraResources:
+  - from: ../frontend/dist
+    to: frontend
+  - from: backend-dist/deadparrots-backend
+    to: backend
+
+win:
+  target:
+    - target: nsis
+      arch:
+        - x64
+  artifactName: ${productName} Setup ${version}.${ext}
+
+nsis:
+  # Assisted (not one-click) installer: its uninstaller does not remove
+  # %APPDATA%\Dead Parrots Dashboard\data, so a reinstall or upgrade keeps the
+  # History screen's snapshots. (`deleteAppDataOnUninstall` is a one-click-only
+  # option and would be a no-op here — the retain behaviour comes from the
+  # assisted uninstaller itself.)
+  oneClick: false
+  perMachine: false
+  allowToChangeInstallationDirectory: true
