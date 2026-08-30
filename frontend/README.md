@@ -14,7 +14,9 @@ npm test         # vitest (jsdom)
 npm run build
 ```
 
-## Screens (issue #18)
+## Screens
+
+### Issue #18
 
 - **This Week** — `GET /api/weekly`. Opponent + likely lineup with the stated
   assumption, both totals (floor / projection / ceiling) with the Yahoo
@@ -28,9 +30,23 @@ npm run build
   render side by side on demand. `src/screens/LineupLab.test.tsx` drives the
   drag → recompute + illegal-lineup marking against a mocked API.
 
+### Issue #19
+
+- **Waiver / FA** — `GET /api/free-agents`. Rest-of-season (value-over-replacement)
+  and this-week streamer lists, each row with bench-need fit, own-bye note, and
+  the worth-the-priority verdict + reasons. Plus the waiver-priority readout
+  (rank, drop-to-last cost, no FAAB) and the post-cutdown window flag.
+- **Team Outlook** — `GET /api/team-outlook`. Team strength (league percentile,
+  0–100), expected vs actual wins + luck, the contend/rebuild/hold signal with
+  all of its inputs and rationale, and the bye-week crunch map with per-week
+  grades.
+- **Trade Desk** — `GET /api/trade-desk`. Buy-low / sell-high tables with market
+  rank, model rank, signed trade edge and reasons; the desperate-team read; the
+  November-28 trade-deadline countdown.
+- **History** — `GET /api/history`. Every stored weekly snapshot, newest first,
+  as "what the model said" beside "what happened" — with the per-player
+  projected / actual / delta table once the week's outcome is backfilled.
+
 Global chrome (`src/components/`): the top-pinned `NewsTicker` (`GET /api/news`,
 pause on hover, sources open in a new tab, self-hides with a notice when all
 sources fail) and the always-visible `FreshnessHeader` (`GET /api/freshness`).
-
-The remaining four screens (Waiver/FA, Team Outlook, Trade Desk, History) are
-issue #19.
