@@ -118,7 +118,9 @@ cd ../backend && uv run uvicorn deadparrots.app:app
 `npm run dist` builds one **unsigned NSIS `.exe`** for Windows
 (`../docs/adr/0016 §5`). The full runbook — prereqs, the SPA build, the backend
 freeze, SmartScreen, data/uninstall behaviour — is in
-[`../deploy/README.md`](../deploy/README.md#building-the-installer). In short:
+[`../deploy/README.md`](../deploy/README.md#building-the-installer), and
+`scripts/build-installer-wizard.sh` (Git Bash) walks it stage by stage including
+the clean-box verification. In short:
 
 ```powershell
 npm --prefix ../frontend ci && npm --prefix ../frontend run build   # -> ../frontend/dist

@@ -31,6 +31,12 @@ four jobs is 6 hours (`DEADPARROTS_CATCHUP_ON_LAUNCH=false` disables the sweep).
 (`../docs/adr/0016 §5`; issue #47). The backend ships **frozen** — a PyInstaller
 `--onedir` bundle — so the target machine needs neither Python nor `uv` nor Node.
 
+**Guided path:** `bash desktop/scripts/build-installer-wizard.sh` (Git Bash on
+the Windows build machine) walks all of this stage by stage — preflight,
+SPA build, backend freeze, `npm run dist`, an optional local smoke test, and the
+clean-Windows-box verification checklist (issue #47 AC 3) — and writes a build
+log. The manual steps below are what it runs.
+
 Build machine (Windows): **Node 20+**, **`uv`**, and the backend deps synced once
 (`cd backend && uv sync`). Then, from the repo root:
 
