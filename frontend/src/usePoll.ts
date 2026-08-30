@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 
+import { onRefresh } from "./refreshBus";
+
 export type Loadable<T> =
   | { kind: "loading" }
   | { kind: "ready"; data: T; refreshing: boolean }
@@ -16,6 +18,9 @@ export type Loadable<T> =
  *
  * `fn` is read fresh each tick via a ref and is not a dependency, so an inline
  * arrow is fine.
+ *
+ * Every live hook also refetches on `requestRefresh()` (see `refreshBus`), which
+ * the "Pull from Yahoo" control fires after a pull lands new server-side data.
  */
 export function usePoll<T>(
   fn: () => Promise<T>,
@@ -45,14 +50,17 @@ export function usePoll<T>(
         });
     };
     tick();
+    const unsubscribe = onRefresh(tick);
     if (intervalMs <= 0) {
       return () => {
         cancelled = true;
+        unsubscribe();
       };
     }
     const id = setInterval(tick, intervalMs);
     return () => {
       cancelled = true;
+      unsubscribe();
       clearInterval(id);
     };
   }, [intervalMs, key]);
