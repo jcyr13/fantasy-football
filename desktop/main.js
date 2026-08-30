@@ -26,11 +26,15 @@ const {
   waitForHealth,
 } = require("./lib/backend");
 const { createRequestHandler } = require("./lib/request-handler");
+const { startScrapeServer } = require("./lib/scrape-server");
+const { createYahooExtractor } = require("./lib/yahoo-window");
 
 const SCHEME = "app";
 const HOST = "127.0.0.1";
 
 let backendChild = null;
+let scrapeServer = null;
+let yahooExtractor = null;
 let shuttingDown = false;
 
 // The `app://` scheme has to be registered as privileged before the app is
@@ -54,6 +58,14 @@ function shutdown() {
   shuttingDown = true;
   stopBackend(backendChild);
   backendChild = null;
+  if (scrapeServer) {
+    scrapeServer.close().catch(() => {});
+    scrapeServer = null;
+  }
+  if (yahooExtractor) {
+    yahooExtractor.destroy();
+    yahooExtractor = null;
+  }
 }
 
 function fail(title, message) {
@@ -85,12 +97,30 @@ async function main() {
   const port = await pickFreePort(HOST);
   const backendOrigin = `http://${HOST}:${port}`;
 
-  // Start the backend now so it boots while Electron finishes coming up.
+  // The embedded signed-in Yahoo browser and the loopback `/scrape` endpoint it
+  // backs (docs/adr/0016 §§2-3, issue #45). The window itself is created lazily
+  // on the first scrape / sign-in, so this is cheap and needs no `app.whenReady`.
+  yahooExtractor = createYahooExtractor({
+    onAuthRequired: () => {
+      if (!yahooExtractor) return;
+      yahooExtractor
+        .showSignIn()
+        .catch((err) => console.error("could not open the Yahoo sign-in window:", err));
+    },
+  });
+  scrapeServer = await startScrapeServer({
+    host: HOST,
+    extract: (page, url) => yahooExtractor.extract(page, url),
+  });
+
+  // Start the backend now so it boots while Electron finishes coming up. With
+  // the extractor URL set, `POST /api/yahoo/pull` runs the real assisted pull.
   backendChild = startBackend({
     backendDir,
     port,
     dataDir,
     host: HOST,
+    yahooExtractorUrl: scrapeServer.url,
     onError: (err) => {
       backendChild = null;
       if (!shuttingDown) fail("Dead Parrots Dashboard", err.message);
