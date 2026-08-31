@@ -90,6 +90,24 @@ because the live bootstrap shape is unknown; adding a `state → payload` mapper
 and tightening the script's header-text-driven selectors against the real pages,
 is follow-up work once a signed-in session is available.)*
 
+*(As built in #43, first signed-in session: `football.fantasysports.yahoo.com`
+no longer serves a "classic" table UI to a real login — the four pages render
+from a React SPA with atomic (hashed-utility) CSS. `desktop/lib/yahoo-extract.js`
+`SCRIPT_BODY` was retuned against saved DOM dumps of that markup and verified
+offline: the **matchup**, **players** and **injuries** pages each produce a
+payload that passes `validateScrapePayload`. The signed-in matchup header still
+carries each side's real team name (not a bare "My Team" label), so the two
+sides and the Dead-Parrots flag resolve from `#matchup-header`. The
+**standings** page is unchanged from preseason — `/f1/<id>/standings` still
+renders the matchup grid, with no W-L-T table — so that page returns an honest
+failure ("re-pull once week 1 games are final") until the first week's games are
+final; it needs a re-dump and a second tuning pass then. The `players` page's
+Pre-Season/Actual stat view has only a season-total "Fan Pts" column and no
+per-week projection, so `projected_points` is left null there rather than carry a
+season total into a per-week field; a per-week value would need a
+`backend/.../pages.py` URL change. `__PRELOADED_STATE__` mapping is still
+unbuilt — the DOM remains the only mapped path.)*
+
 ### 4. Catch-up scheduling on launch
 
 The APScheduler crons (nflverse refresh, consensus re-score, news poll, Sunday

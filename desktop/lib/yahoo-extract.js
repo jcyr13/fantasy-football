@@ -16,11 +16,17 @@
 // request and pick the right in-page mapper.
 const PAGES = new Set(["matchup", "players", "injuries", "standings"]);
 
-// The RIP TIDE team the owner manages. The matchup payload must flag exactly one
-// side `is_dead_parrots: true` (see `normalize_matchup`); the classic Yahoo
-// matchup page also renders a "My Team" marker, which the script prefers when it
-// finds one. Adjust here if the team is ever renamed (CONTEXT.md "Matchup").
+// John's team in the RIP TIDE League (CONTEXT.md "Dead Parrots"). The matchup
+// payload must flag exactly one side `is_dead_parrots: true` (see
+// `normalize_matchup`); the script matches it by name in the matchup header.
+// Adjust here if the team is ever renamed.
 const DEAD_PARROTS_TEAM_NAME = "Dead Parrots";
+
+// Yahoo labels the signed-in manager's own side "My Team" in some of its
+// navigation chrome. The matchup header itself uses the real team name, but a
+// stray "My Team" link inside it must not be read as a team (CONTEXT.md: no
+// "my team" in logic — this is the one guarded reference to Yahoo's own label).
+const YAHOO_SELF_LABEL = "My Team";
 
 class ScrapeError extends Error {
   constructor(message) {
@@ -125,6 +131,7 @@ function validateScrapePayload(page, payload) {
 const SCRIPT_BODY = String.raw`
   const clean = (s) => (s == null ? null : String(s).replace(/\s+/g, " ").trim() || null);
   const dp = ${JSON.stringify(DEAD_PARROTS_TEAM_NAME)};
+  const SELF_LABEL = ${JSON.stringify(YAHOO_SELF_LABEL)}.toLowerCase();
   const LOGIN_HOSTS = ${JSON.stringify(YAHOO_LOGIN_HOSTS)};
   const LOGIN_HOST_PREFIXES = ${JSON.stringify(YAHOO_LOGIN_HOST_PREFIXES)};
 
@@ -178,10 +185,10 @@ const SCRIPT_BODY = String.raw`
     const i = tbl.headers.findIndex((h) => h && re.test(h));
     return i < 0 ? null : i;
   };
-  const colByRegex = (row, tbl, re) => {
-    const i = pick(tbl, re);
-    return i == null ? null : (row.cells[i] ?? null);
-  };
+  // One row cell by column index, tolerant of the "not found" sentinels both
+  // pick() (null) and Array#indexOf (-1) return.
+  const cellAt = (row, i) => (i == null || i < 0 ? null : (row.cells[i] ?? null));
+  const colByRegex = (row, tbl, re) => cellAt(row, pick(tbl, re));
 
   // A Yahoo player cell — the same DOM shape on the matchup, players and
   // injuries pages: a .ysf-player-name block holding the name link, an optional
@@ -241,17 +248,17 @@ const SCRIPT_BODY = String.raw`
     // The free-agent table has a td.player name column and an "Add player"
     // link in every row; the page's other <table>s are stat-abbreviation keys.
     const t = tables().find(
-      (tb) => tb.el.querySelector("td.player") && tb.el.querySelector('a[href*="addplayer?"]'),
+      (tbl) => tbl.el.querySelector("td.player") && tbl.el.querySelector('a[href*="addplayer?"]'),
     );
     if (!t) return null;
 
     // "% Ros" is the roster share; "% Ros (diamond)" — Yahoo's premium column —
     // sits right next to it, so match the plain header only.
-    const rosIdx = t.headers.findIndex((h) => h && /^%\s*ros$/.test(h));
+    const rosIdx = pick(t, /^%\s*ros$/);
     // The Pre-Season / Actual stat view carries only a season-total "Fan Pts",
     // no per-week projection. Leave projected_points null rather than pass a
     // season total into a per-week field (docs/adr/0016 §3 — deferred tuning).
-    const projIdx = t.headers.findIndex((h) => h && /\bproj/.test(h));
+    const projIdx = pick(t, /\bproj/);
 
     const players = t.rows
       .map((row) => {
@@ -273,8 +280,8 @@ const SCRIPT_BODY = String.raw`
           position: p.position,
           availability,
           waiver_claim_date,
-          percent_rostered: rosIdx >= 0 ? (row.cells[rosIdx] ?? null) : null,
-          projected_points: projIdx >= 0 ? (row.cells[projIdx] ?? null) : null,
+          percent_rostered: cellAt(row, rosIdx),
+          projected_points: cellAt(row, projIdx),
           opponent: p.opponent,
           injury_status: p.injury_code,
         };
@@ -286,11 +293,11 @@ const SCRIPT_BODY = String.raw`
   // ----- injuries ------------------------------------------------------------
   function fromDomInjuries() {
     const t = tables().find(
-      (tb) => tb.el.querySelector("td.player") && hasHeader(tb, /injury|designation|status/),
+      (tbl) => tbl.el.querySelector("td.player") && hasHeader(tbl, /injury|designation|status/),
     );
     if (!t) return null;
-    const detailIdx = t.headers.findIndex((h) => h && /injury type|type|detail/.test(h));
-    const updatedIdx = t.headers.findIndex((h) => h && /updated|report date|as of/.test(h));
+    const detailIdx = pick(t, /injury type|type|detail/);
+    const updatedIdx = pick(t, /updated|report date|as of/);
     const entries = t.rows
       .map((row) => {
         const p = playerCell(playerTd(row));
@@ -299,9 +306,11 @@ const SCRIPT_BODY = String.raw`
           team: p.team,
           position: p.position,
           // The status pill's long form: "Questionable", "Suspended", "Out"...
+          // The modern injuries page has no separate status column — the pill is
+          // the only source (verified against a signed-in dump, docs/adr/0016).
           status: p.injury_label || p.injury_code,
-          detail: detailIdx >= 0 ? (row.cells[detailIdx] ?? null) : null,
-          updated: updatedIdx >= 0 ? (row.cells[updatedIdx] ?? null) : null,
+          detail: cellAt(row, detailIdx),
+          updated: cellAt(row, updatedIdx),
         };
       })
       .filter((e) => e.name && e.status);
@@ -312,7 +321,7 @@ const SCRIPT_BODY = String.raw`
   function fromDomStandings() {
     // The real standings grid: a "Team" column beside a W-L-T / record / PCT one.
     const t = tables().find(
-      (tb) => hasHeader(tb, /team/) && hasHeader(tb, /w-l-t|record|wins|pct/),
+      (tbl) => hasHeader(tbl, /team/) && hasHeader(tbl, /w-l-t|record|wins|pct/),
     );
     if (t) {
       const teamI = pick(t, /team/) ?? 0;
@@ -330,6 +339,8 @@ const SCRIPT_BODY = String.raw`
             rank: rankCell != null ? rankCell : idx + 1,
             team_name,
             manager:
+              // "owner" here is a Yahoo standings-header token, not the repo's
+              // vocabulary (CONTEXT.md: the person is a "Manager").
               clean(teamTd && teamTd.getAttribute("title")) ||
               colByRegex(row, t, /manager|owner/),
             division: colByRegex(row, t, /division|div/),
@@ -396,7 +407,7 @@ const SCRIPT_BODY = String.raw`
       const href = a.getAttribute("href") || "";
       if (!/\/f1\/\d+\/\d+(?:$|[/?#])/.test(href)) continue;
       const team_name = clean(a.textContent);
-      if (!team_name || /^my team$/i.test(team_name)) continue;
+      if (!team_name || team_name.toLowerCase() === SELF_LABEL) continue;
       const key = team_name.toLowerCase();
       if (seen.has(key)) continue;
       seen.add(key);
@@ -416,7 +427,7 @@ const SCRIPT_BODY = String.raw`
     // class and .ysf-player-name cells. Every row mirrors BOTH rosters:
     //   [_, playerL, projL, fanPtsL, pos, pos, pos, fanPtsR, projR, playerR, _]
     const rosterTables = tables().filter(
-      (tb) => /datatable/i.test(tb.el.className) && tb.el.querySelector(".ysf-player-name"),
+      (tbl) => /datatable/i.test(tbl.el.className) && tbl.el.querySelector(".ysf-player-name"),
     );
     if (!rosterTables.length) return null;
 
@@ -438,34 +449,36 @@ const SCRIPT_BODY = String.raw`
     }
 
     const rosters = [[], []];
-    for (const tb of rosterTables) {
-      const pL = tb.headers.indexOf("player");
-      const pR = tb.headers.lastIndexOf("player");
+    for (const tbl of rosterTables) {
+      const pL = tbl.headers.indexOf("player");
+      const pR = tbl.headers.lastIndexOf("player");
       if (pL < 0 || pR <= pL) continue;
-      const jL = tb.headers.indexOf("proj");
-      const jR = tb.headers.lastIndexOf("proj");
+      const jL = tbl.headers.indexOf("proj");
+      const jR = tbl.headers.lastIndexOf("proj");
       const midI = Math.floor((pL + pR) / 2);
-      for (const row of tb.rows) {
+      // Every row mirrors both matchup sides: the left team reads from the first
+      // "player"/"proj" header pair, the right team from the last.
+      const sides = [
+        { playerCol: pL, projCol: jL, roster: rosters[0] },
+        { playerCol: pR, projCol: jR, roster: rosters[1] },
+      ];
+      for (const row of tbl.rows) {
         const tds = Array.from(row.el.children);
         const slotEl = row.el.querySelector(".pos-label[data-pos]");
         const slot =
           (slotEl && clean(slotEl.getAttribute("data-pos"))) ||
           (tds[midI] && clean(tds[midI].textContent)) ||
           null;
-        const sides = [
-          [pL, jL, 0],
-          [pR, jR, 1],
-        ];
-        for (const s of sides) {
-          const p = playerCell(tds[s[0]]);
+        for (const side of sides) {
+          const p = playerCell(tds[side.playerCol]);
           if (!p.name) continue;
-          rosters[s[2]].push({
+          side.roster.push({
             slot: slot || p.position || "?",
             name: p.name,
             team: p.team,
             position: p.position,
             opponent: p.opponent,
-            projected_points: s[1] >= 0 ? (row.cells[s[1]] ?? null) : null,
+            projected_points: cellAt(row, side.projCol),
             injury_status: p.injury_code,
           });
         }
