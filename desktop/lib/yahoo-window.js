@@ -1,5 +1,8 @@
 "use strict";
 
+const fs = require("node:fs");
+const path = require("node:path");
+
 const { BrowserWindow } = require("electron");
 
 const {
@@ -104,6 +107,8 @@ function createYahooExtractor({ onAuthRequired = () => {} } = {}) {
 
     if (isYahooLoginUrl(safeUrl(target))) throw raiseAuthRequired(page);
 
+    await maybeDumpHtml(target, page);
+
     let result;
     try {
       result = await target.webContents.executeJavaScript(buildExtractionScript(page), true);
@@ -143,6 +148,26 @@ function createYahooExtractor({ onAuthRequired = () => {} } = {}) {
   }
 
   return { extract, showSignIn, destroy };
+}
+
+// Diagnostic only: when DEADPARROTS_YAHOO_DUMP_DIR is set, write the settled
+// page's rendered HTML to <dir>/<page>.html before the extractor runs. This is
+// how the header-text selectors in yahoo-extract.js get tuned against the real
+// signed-in markup (docs/adr/0016 §3, issue #43) — off by default, never in the
+// scrape path when the env var is unset.
+async function maybeDumpHtml(target, page) {
+  const dir = process.env.DEADPARROTS_YAHOO_DUMP_DIR;
+  if (!dir) return;
+  try {
+    const html = await target.webContents.executeJavaScript(
+      "document.documentElement.outerHTML",
+      true,
+    );
+    fs.mkdirSync(dir, { recursive: true });
+    fs.writeFileSync(path.join(dir, `${page}.html`), String(html), "utf8");
+  } catch {
+    /* diagnostic only — never fail a pull because the dump didn't write */
+  }
 }
 
 function safeUrl(target) {

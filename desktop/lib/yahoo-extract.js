@@ -148,7 +148,10 @@ const SCRIPT_BODY = String.raw`
   function tables() {
     return Array.from(document.querySelectorAll("table")).map((t) => {
       const headCells = Array.from(t.querySelectorAll("thead th, thead td"));
-      const headers = headCells.map((c) => clean(c.textContent || "").toLowerCase());
+      // clean() returns null for an empty cell (Yahoo's icon-only / checkbox
+      // header columns), so coalesce before lowercasing — a bare .toLowerCase()
+      // here threw and aborted the whole extraction ("via exception").
+      const headers = headCells.map((c) => (clean(c.textContent) || "").toLowerCase());
       const bodyRows = Array.from(t.querySelectorAll("tbody tr")).filter(
         (tr) => tr.querySelector("td"),
       );
@@ -320,8 +323,14 @@ const SCRIPT_BODY = String.raw`
         t.is_dead_parrots = !!(t.team_name && t.team_name.toLowerCase().includes(dp.toLowerCase()));
       });
     }
+    if (teams.filter((t) => t.is_dead_parrots).length !== 1) {
+      return { __reason:
+        "found " + rosterTables.length + ' roster tables but could not tell which side is "' + dp +
+        '" (team headings read as ' + JSON.stringify(teams.map((t) => t.team_name)) + ")" };
+    }
     const week = weekNumber();
-    if (week == null || teams.some((t) => !t.roster.length)) return null;
+    if (week == null) return { __reason: "roster tables found but no week number on the page" };
+    if (teams.some((t) => !t.roster.length)) return { __reason: "a matchup roster table parsed to zero players" };
     return { week, teams };
   }
 
@@ -340,13 +349,14 @@ const SCRIPT_BODY = String.raw`
     // classic-UI DOM is the shape the fixtures were built from, so it wins when
     // it produces a payload. (#45: add a state->payload mapper here once the
     // real bootstrap shape is known.)
-    const payload = DOM[page] ? DOM[page]() : null;
-    if (payload) return { ok: true, payload, via: "dom" };
+    const out = DOM[page] ? DOM[page]() : null;
+    if (out && !out.__reason) return { ok: true, payload: out, via: "dom" };
 
     return {
       ok: false,
       via: pre ? "dom (state present, unmapped)" : "dom",
       reason:
+        (out && out.__reason ? out.__reason + "; " : "") +
         (pre ? "found " + pre.name + " but no DOM tables matched; " : "no matching DOM tables; ") +
         "tables on page: " + document.querySelectorAll("table").length,
     };
