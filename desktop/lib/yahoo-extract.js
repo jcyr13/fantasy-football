@@ -147,7 +147,14 @@ const SCRIPT_BODY = String.raw`
   // Read every data table on the page into { headers:[lowercased], rows:[{by, cells, text}] }.
   function tables() {
     return Array.from(document.querySelectorAll("table")).map((t) => {
-      const headCells = Array.from(t.querySelectorAll("thead th, thead td"));
+      // Yahoo's stat tables stack two <thead> rows: group labels ("Passing")
+      // over the real column headers ("Yds", "TD"), the first row full of
+      // colspans. Only the LAST thead row lines up one-to-one with the body
+      // <td>s, so index-based column lookup has to read from that row alone.
+      const headRows = Array.from(t.querySelectorAll("thead tr"));
+      const headCells = headRows.length
+        ? Array.from(headRows[headRows.length - 1].querySelectorAll("th, td"))
+        : [];
       // clean() returns null for an empty cell (Yahoo's icon-only / checkbox
       // header columns), so coalesce before lowercasing — a bare .toLowerCase()
       // here threw and aborted the whole extraction ("via exception").
@@ -176,161 +183,316 @@ const SCRIPT_BODY = String.raw`
     return i == null ? null : (row.cells[i] ?? null);
   };
 
-  // "Josh Allen Buf - QB" / "Ravens Bal - DEF"  ->  { name, team, position }
+  // A Yahoo player cell — the same DOM shape on the matchup, players and
+  // injuries pages: a .ysf-player-name block holding the name link, an optional
+  // injury badge (.ysf-player-status, its title attr = the long form), a
+  // "Team - POS" span, and a .ysf-game-status line ("Sun 1:00 pm @ Det").
+  //   -> { name, team, position, injury_code, injury_label, opponent }
   function playerCell(td) {
-    if (!td) return { name: null, team: null, position: null };
-    const link = td.querySelector("a");
-    const name = clean(link ? link.textContent : td.textContent);
-    const meta = clean((td.textContent || "").replace(name || "", ""));
+    const empty = {
+      name: null, team: null, position: null,
+      injury_code: null, injury_label: null, opponent: null,
+    };
+    if (!td) return empty;
+    const nameEl =
+      td.querySelector("a.name") ||
+      td.querySelector(".ysf-player-name a[href]") ||
+      td.querySelector("a[data-ys-playerid]");
+    const name = clean(
+      nameEl ? nameEl.textContent || nameEl.getAttribute("title") : td.textContent,
+    );
+    if (!name) return empty;
+
     let team = null, position = null;
-    const m = meta && meta.match(/([A-Za-z]{2,4})\s*[-–]\s*([A-Za-z/]+)/);
-    if (m) { team = m[1]; position = m[2]; }
-    const inj = td.querySelector('[class*="injury" i], [class*="status" i] abbr, abbr[title]');
-    const injury_status = inj ? clean(inj.textContent) : null;
-    return { name, team, position, injury_status: injury_status || null };
+    // "Team - POS" always renders spaced ("NO - WR", "KC - RB"). The injury
+    // badge inside .ysf-player-status can hold a dashed code ("IR-R", "PUP-P")
+    // that a spaceless pattern would grab first, so skip that subtree and
+    // require the spaces.
+    const tp = Array.from(td.querySelectorAll("span"))
+      .filter((s) => !(s.closest && s.closest(".ysf-player-status")))
+      .map((s) => clean(s.textContent))
+      .find((x) => x && /^[A-Za-z.]{2,4}\s+[-–]\s+[A-Za-z/]{1,6}$/.test(x));
+    if (tp) {
+      const m = tp.match(/^([A-Za-z.]{2,4})\s+[-–]\s+([A-Za-z/]{1,6})$/);
+      team = m[1];
+      position = m[2];
+    }
+
+    const badge = td.querySelector(".ysf-player-status [title], .ysf-player-status abbr, .ysf-player-status span");
+    const injury_code = badge ? clean(badge.textContent) : null;
+    const injury_label = badge
+      ? clean((badge.getAttribute && badge.getAttribute("title")) || "") || injury_code
+      : null;
+
+    let opponent = null;
+    const gs = td.querySelector(".ysf-game-status");
+    const gm = gs && (gs.textContent || "").match(/(@|vs)\s*([A-Za-z]{2,4})\b/i);
+    if (gm) opponent = (/^@/.test(gm[1]) ? "@" : "vs ") + gm[2];
+
+    return { name, team, position, injury_code, injury_label, opponent };
   }
-  const firstPlayerTd = (row) =>
-    Array.from(row.el.children).find((td) => td.querySelector("a")) || row.el.querySelector("td");
+  // On the players and injuries pages the player-name cell carries a bare
+  // "player" class token ("Alt Ta-start player"). The matchup page has no such
+  // token — its player cells are found by header-index instead (fromDomMatchup).
+  const playerTd = (row) => row.el.querySelector("td.player");
 
   // ----- players ---------------------------------------------------------
   function fromDomPlayers() {
+    // The free-agent table has a td.player name column and an "Add player"
+    // link in every row; the page's other <table>s are stat-abbreviation keys.
     const t = tables().find(
-      (tb) => hasHeader(tb, /player/) && hasHeader(tb, /proj|fan pts|%|owned/),
+      (tb) => tb.el.querySelector("td.player") && tb.el.querySelector('a[href*="addplayer?"]'),
     );
     if (!t) return null;
-    const players = t.rows.map((row) => {
-      const p = playerCell(firstPlayerTd(row));
-      const claim = colByRegex(row, t, /add|waiver|claim/);
-      const waiver_claim_date = claim && !/^(add|\+|drop)$/i.test(claim) ? claim : null;
-      return {
-        name: p.name,
-        team: p.team,
-        position: p.position,
-        availability: waiver_claim_date ? "W" : "FA",
-        waiver_claim_date,
-        percent_rostered: colByRegex(row, t, /%|owned|rostered/),
-        projected_points: colByRegex(row, t, /proj/),
-        opponent: colByRegex(row, t, /opp/),
-        injury_status: p.injury_status,
-      };
-    }).filter((p) => p.name);
+
+    // "% Ros" is the roster share; "% Ros (diamond)" — Yahoo's premium column —
+    // sits right next to it, so match the plain header only.
+    const rosIdx = t.headers.findIndex((h) => h && /^%\s*ros$/.test(h));
+    // The Pre-Season / Actual stat view carries only a season-total "Fan Pts",
+    // no per-week projection. Leave projected_points null rather than pass a
+    // season total into a per-week field (docs/adr/0016 §3 — deferred tuning).
+    const projIdx = t.headers.findIndex((h) => h && /\bproj/.test(h));
+
+    const players = t.rows
+      .map((row) => {
+        const pcTd = playerTd(row);
+        const p = playerCell(pcTd);
+        // The cell right after the name is "Roster Status": "FA", "W", or a
+        // pending waiver-claim date ("Wed").
+        const rs = clean(
+          pcTd && pcTd.nextElementSibling ? pcTd.nextElementSibling.textContent : "",
+        );
+        let availability = null;
+        let waiver_claim_date = null;
+        if (!rs || /^FA\b/i.test(rs)) availability = "FA";
+        else if (/^W\b/i.test(rs) || /waiver/i.test(rs)) availability = "W";
+        else waiver_claim_date = rs; // a date -> normalize infers "W"
+        return {
+          name: p.name,
+          team: p.team,
+          position: p.position,
+          availability,
+          waiver_claim_date,
+          percent_rostered: rosIdx >= 0 ? (row.cells[rosIdx] ?? null) : null,
+          projected_points: projIdx >= 0 ? (row.cells[projIdx] ?? null) : null,
+          opponent: p.opponent,
+          injury_status: p.injury_code,
+        };
+      })
+      .filter((p) => p.name && p.position); // normalize requires both
     return players.length ? { players } : null;
   }
 
   // ----- injuries ------------------------------------------------------------
   function fromDomInjuries() {
     const t = tables().find(
-      (tb) => hasHeader(tb, /player/) && hasHeader(tb, /status|report|designation/),
+      (tb) => tb.el.querySelector("td.player") && hasHeader(tb, /injury|designation|status/),
     );
     if (!t) return null;
-    const entries = t.rows.map((row) => {
-      const p = playerCell(firstPlayerTd(row));
-      return {
-        name: p.name,
-        team: p.team,
-        position: p.position,
-        status: colByRegex(row, t, /status|report|designation/),
-        detail: colByRegex(row, t, /type|detail|injury|note/),
-        updated: colByRegex(row, t, /updated|date|report date/),
-      };
-    }).filter((e) => e.name && e.status);
+    const detailIdx = t.headers.findIndex((h) => h && /injury type|type|detail/.test(h));
+    const updatedIdx = t.headers.findIndex((h) => h && /updated|report date|as of/.test(h));
+    const entries = t.rows
+      .map((row) => {
+        const p = playerCell(playerTd(row));
+        return {
+          name: p.name,
+          team: p.team,
+          position: p.position,
+          // The status pill's long form: "Questionable", "Suspended", "Out"...
+          status: p.injury_label || p.injury_code,
+          detail: detailIdx >= 0 ? (row.cells[detailIdx] ?? null) : null,
+          updated: updatedIdx >= 0 ? (row.cells[updatedIdx] ?? null) : null,
+        };
+      })
+      .filter((e) => e.name && e.status);
     return entries.length ? { entries } : null;
   }
 
   // ----- standings ---------------------------------------------------------
   function fromDomStandings() {
+    // The real standings grid: a "Team" column beside a W-L-T / record / PCT one.
     const t = tables().find(
-      (tb) => hasHeader(tb, /team/) && hasHeader(tb, /w-l-t|record|wins/),
+      (tb) => hasHeader(tb, /team/) && hasHeader(tb, /w-l-t|record|wins|pct/),
     );
-    if (!t) return null;
-    const rows = t.rows.map((row, idx) => {
-      const teamTd = firstPlayerTd(row);
-      const link = teamTd && teamTd.querySelector("a");
-      const team_name = clean(link ? link.textContent : (row.cells[pick(t, /team/) ?? 0]));
-      const record = colByRegex(row, t, /w-l-t|record/);
-      let wins = 0, losses = 0, ties = 0;
-      const rm = record && record.match(/(\d+)\s*[-–]\s*(\d+)(?:\s*[-–]\s*(\d+))?/);
-      if (rm) { wins = +rm[1]; losses = +rm[2]; ties = +(rm[3] || 0); }
-      const rankCell = colByRegex(row, t, /rank|^#$|^pos$/);
+    if (t) {
+      const teamI = pick(t, /team/) ?? 0;
+      const rows = t.rows
+        .map((row, idx) => {
+          const teamTd = row.el.children[teamI];
+          const link = teamTd && teamTd.querySelector("a");
+          const team_name = clean(link ? link.textContent : row.cells[teamI]);
+          const record = colByRegex(row, t, /w-l-t|record/);
+          let wins = 0, losses = 0, ties = 0;
+          const rm = record && record.match(/(\d+)\s*[-–]\s*(\d+)(?:\s*[-–]\s*(\d+))?/);
+          if (rm) { wins = +rm[1]; losses = +rm[2]; ties = +(rm[3] || 0); }
+          const rankCell = colByRegex(row, t, /rank|^#$|^pos$/);
+          return {
+            rank: rankCell != null ? rankCell : idx + 1,
+            team_name,
+            manager:
+              clean(teamTd && teamTd.getAttribute("title")) ||
+              colByRegex(row, t, /manager|owner/),
+            division: colByRegex(row, t, /division|div/),
+            wins, losses, ties,
+            points_for: colByRegex(row, t, /^pf$|points for|pts for/),
+            points_against: colByRegex(row, t, /^pa$|points against|pts against/),
+            waiver_priority: colByRegex(row, t, /waiver/),
+          };
+        })
+        .filter((r) => r.team_name);
+      return rows.length ? { rows } : null;
+    }
+
+    // Preseason: /f1/<id>/standings still renders the matchup grid (S / BN
+    // player stat tables) — no standings until week 1 games are final. Say so
+    // honestly rather than fabricate zero-filled rows.
+    const teamIds = new Set(
+      Array.from(document.querySelectorAll('a[href*="/f1/"]'))
+        .map((a) => (a.getAttribute("href") || "").match(/\/f1\/\d+\/(\d+)(?:$|[/?#])/))
+        .filter(Boolean)
+        .map((m) => m[1]),
+    );
+    if (teamIds.size >= 2) {
       return {
-        rank: rankCell != null ? rankCell : idx + 1,
-        team_name,
-        manager: clean(teamTd && teamTd.getAttribute("title")) ||
-          colByRegex(row, t, /manager|owner/),
-        division: colByRegex(row, t, /division|div/),
-        wins, losses, ties,
-        points_for: colByRegex(row, t, /^pf$|points for|pts for/),
-        points_against: colByRegex(row, t, /^pa$|points against|pts against/),
-        waiver_priority: colByRegex(row, t, /waiver/),
+        __reason:
+          "the Live Standings page is still the preseason matchup grid (" +
+          teamIds.size +
+          " team links, no W-L-T table) — re-pull once week 1 games are final",
       };
-    }).filter((r) => r.team_name);
-    return rows.length ? { rows } : null;
+    }
+    return null;
   }
 
   // ----- matchup ---------------------------------------------------------
   function weekNumber() {
-    const sel = document.querySelector('select[name="week"] option[selected], select#week option[selected]');
-    if (sel) { const n = parseInt(sel.value || sel.textContent, 10); if (n) return n; }
-    const m = (document.body ? document.body.innerText : "").match(/week\s+(\d{1,2})/i);
+    const nav = document.querySelector("#matchup_selectlist_nav");
+    let m = nav && (nav.getAttribute("title") || "").match(/week\s+(\d{1,2})/i);
+    if (m) return parseInt(m[1], 10);
+    const opt = document.querySelector(
+      'select[name="week"] option[selected], select#week option[selected]',
+    );
+    if (opt) {
+      m =
+        (opt.value || "").match(/(?:week=)?(\d{1,2})/) ||
+        (opt.textContent || "").match(/week\s+(\d{1,2})/i);
+      if (m) return parseInt(m[1], 10);
+    }
+    const flt = document.querySelector(".flyout-title, .flyout_trigger");
+    m = flt && (flt.textContent || "").match(/week\s+(\d{1,2})/i);
+    if (m) return parseInt(m[1], 10);
+    m = (document.body ? document.body.innerText : "").match(/week\s+(\d{1,2})/i);
     return m ? parseInt(m[1], 10) : null;
   }
-  function rosterFromTable(t) {
-    return t.rows.map((row) => {
-      const p = playerCell(firstPlayerTd(row));
-      return {
-        slot: row.cells[0],
-        name: p.name,
-        team: p.team,
-        position: p.position,
-        opponent: colByRegex(row, t, /opp/),
-        projected_points: colByRegex(row, t, /proj/),
-        injury_status: p.injury_status,
-      };
-    }).filter((e) => e.name);
-  }
-  function fromDomMatchup() {
-    const rosterTables = tables().filter(
-      (tb) => hasHeader(tb, /proj/) && tb.rows.some((r) => r.el.querySelector("a")),
-    );
-    if (rosterTables.length < 2) return null;
-    const heads = Array.from(document.querySelectorAll(
-      '.Navtarget, .matchup-team-name, [class*="team-name" i], h3, h2',
-    ));
-    const nameFor = (tbl) => {
-      let el = tbl.el;
-      for (let i = 0; i < 6 && el; i++, el = el.parentElement) {
-        const h = heads.find((x) => el.contains(x) && clean(x.textContent));
-        if (h) return clean(h.textContent);
+
+  // The two named teams from #matchup-header, in DOM order (on your own matchup
+  // view Yahoo renders your team first / left, the opponent second / right —
+  // the same order as the stat tables' left and right player columns).
+  function matchupHeads() {
+    const header = document.querySelector("#matchup-header");
+    if (!header) return [];
+    const out = [];
+    const seen = new Set();
+    for (const a of Array.from(header.querySelectorAll('a[href*="/f1/"]'))) {
+      const href = a.getAttribute("href") || "";
+      if (!/\/f1\/\d+\/\d+(?:$|[/?#])/.test(href)) continue;
+      const team_name = clean(a.textContent);
+      if (!team_name || /^my team$/i.test(team_name)) continue;
+      const key = team_name.toLowerCase();
+      if (seen.has(key)) continue;
+      seen.add(key);
+      let manager = null;
+      let scope = a.parentElement;
+      for (let i = 0; i < 4 && scope && !manager; i++, scope = scope.parentElement) {
+        const u = scope.querySelector(".user-id");
+        if (u) manager = clean(u.textContent);
       }
-      return null;
-    };
-    const teams = rosterTables.slice(0, 2).map((tbl) => {
-      const name = nameFor(tbl);
-      const block = tbl.el.closest('[class*="matchup" i], .Grid-u, section, div');
-      const mine =
-        (block && /my team/i.test(block.textContent || "")) ||
-        (name && name.toLowerCase().includes(dp.toLowerCase()));
+      out.push({ team_name, manager });
+    }
+    return out;
+  }
+
+  function fromDomMatchup() {
+    // statTable1 (starters) + statTable2 (bench/IR): both carry the Datatable
+    // class and .ysf-player-name cells. Every row mirrors BOTH rosters:
+    //   [_, playerL, projL, fanPtsL, pos, pos, pos, fanPtsR, projR, playerR, _]
+    const rosterTables = tables().filter(
+      (tb) => /datatable/i.test(tb.el.className) && tb.el.querySelector(".ysf-player-name"),
+    );
+    if (!rosterTables.length) return null;
+
+    const heads = matchupHeads();
+    if (heads.length !== 2) {
       return {
-        team_name: name,
-        manager: null,
-        is_dead_parrots: !!mine,
-        roster: rosterFromTable(tbl),
+        __reason:
+          "the matchup header did not resolve to two teams (read as " +
+          JSON.stringify(heads.map((h) => h.team_name)) + ")",
       };
-    });
-    if (teams.filter((t) => t.is_dead_parrots).length !== 1) {
-      // Fall back to name match only, so exactly one side is flagged.
-      teams.forEach((t) => {
-        t.is_dead_parrots = !!(t.team_name && t.team_name.toLowerCase().includes(dp.toLowerCase()));
-      });
     }
-    if (teams.filter((t) => t.is_dead_parrots).length !== 1) {
-      return { __reason:
-        "found " + rosterTables.length + ' roster tables but could not tell which side is "' + dp +
-        '" (team headings read as ' + JSON.stringify(teams.map((t) => t.team_name)) + ")" };
+    const dpIdx = heads.findIndex((h) => h.team_name.toLowerCase().includes(dp.toLowerCase()));
+    if (dpIdx < 0) {
+      return {
+        __reason:
+          'neither matchup side is "' + dp + '" (header read as ' +
+          JSON.stringify(heads.map((h) => h.team_name)) + ")",
+      };
     }
+
+    const rosters = [[], []];
+    for (const tb of rosterTables) {
+      const pL = tb.headers.indexOf("player");
+      const pR = tb.headers.lastIndexOf("player");
+      if (pL < 0 || pR <= pL) continue;
+      const jL = tb.headers.indexOf("proj");
+      const jR = tb.headers.lastIndexOf("proj");
+      const midI = Math.floor((pL + pR) / 2);
+      for (const row of tb.rows) {
+        const tds = Array.from(row.el.children);
+        const slotEl = row.el.querySelector(".pos-label[data-pos]");
+        const slot =
+          (slotEl && clean(slotEl.getAttribute("data-pos"))) ||
+          (tds[midI] && clean(tds[midI].textContent)) ||
+          null;
+        const sides = [
+          [pL, jL, 0],
+          [pR, jR, 1],
+        ];
+        for (const s of sides) {
+          const p = playerCell(tds[s[0]]);
+          if (!p.name) continue;
+          rosters[s[2]].push({
+            slot: slot || p.position || "?",
+            name: p.name,
+            team: p.team,
+            position: p.position,
+            opponent: p.opponent,
+            projected_points: s[1] >= 0 ? (row.cells[s[1]] ?? null) : null,
+            injury_status: p.injury_code,
+          });
+        }
+      }
+    }
+
     const week = weekNumber();
-    if (week == null) return { __reason: "roster tables found but no week number on the page" };
-    if (teams.some((t) => !t.roster.length)) return { __reason: "a matchup roster table parsed to zero players" };
+    if (week == null) {
+      return {
+        __reason:
+          "found both matchup rosters but no week number (checked #matchup_selectlist_nav, " +
+          "the week <select>, and the page text)",
+      };
+    }
+    const teams = heads.map((h, i) => ({
+      team_name: h.team_name,
+      manager: h.manager,
+      is_dead_parrots: i === dpIdx,
+      roster: rosters[i],
+    }));
+    if (teams.some((t) => !t.roster.length)) {
+      return {
+        __reason:
+          "a matchup side parsed to zero players (roster sizes " +
+          JSON.stringify(teams.map((t) => t.roster.length)) + ")",
+      };
+    }
     return { week, teams };
   }
 
