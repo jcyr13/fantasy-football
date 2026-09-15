@@ -146,6 +146,8 @@ run and the clean-Windows-box check (issue #47 AC 3) are manual.
 | Variable                | Effect                                                      |
 | ----------------------- | --------------------------------------------------------- |
 | `DEADPARROTS_UV_BIN`    | Full path to the `uv` executable if it is not on `PATH` (dev only — ignored by the packaged app).  |
+| `DEADPARROTS_YAHOO_DUMP_DIR` | Diagnostic: write each Yahoo page's rendered HTML to `<dir>/<page>.html` during a pull. Off when unset. |
+| `DEADPARROTS_YAHOO_NET_DUMP_DIR` | Diagnostic (#56): record each Yahoo page's JSON network responses to `<dir>/<page>/NNN.json` and its bootstrap state to `<dir>/<page>/bootstrap.<moment>.json` (`dom-ready`, `settled`). Off when unset; never fails a pull. See [`../docs/research/yahoo-json-capture.md`](../docs/research/yahoo-json-capture.md). |
 
 ## Tests
 
@@ -159,8 +161,9 @@ The suite covers the pure pieces of the shell: free-port selection, the
 vs packaged path resolution (`appPaths`) and the "SPA not built" / "packaged
 backend missing" guards, the frozen-backend command shape, and — for Job 2 — the
 `/scrape` server (payload pass-through, the 401 auth signal, 400/404/405/500/502
-paths), the Yahoo login-URL detector, the payload sanity check and the
-injected-script builder. The Electron windows (main + the `persist:yahoo` Yahoo
+paths), the Yahoo login-URL detector, the payload sanity check, the
+injected-script builder, and the #56 network-capture diagnostic (against a fake
+debugger). The Electron windows (main + the `persist:yahoo` Yahoo
 view), the live scrape against Yahoo, the packaged `.exe` build, and the
 clean-Windows-box install are verified by hand against the acceptance criteria in
 issues #44, #45 and #47.

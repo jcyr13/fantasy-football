@@ -12,6 +12,7 @@ const {
   ScrapeError,
   YahooAuthRequiredError,
 } = require("./yahoo-extract");
+const { startNetCapture } = require("./yahoo-net-capture");
 
 // The embedded, persistently signed-in Yahoo browser (docs/adr/0016 §2, issue
 // #45 — Job 2). A hidden `BrowserWindow` on the named `persist:yahoo` session
@@ -94,7 +95,29 @@ function createYahooExtractor({ onAuthRequired = () => {} } = {}) {
   // `url`, let it settle, and read the payload out of the page.
   async function extract(page, url) {
     const target = ensureWindow();
+    const capture = await startNetCapture({
+      debugger: target.webContents.debugger,
+      dir: process.env.DEADPARROTS_YAHOO_NET_DUMP_DIR,
+      page,
+    });
+    // Probe bootstrap state as soon as the DOM exists too: an SPA may delete
+    // `__PRELOADED_STATE__` once it hydrates, before the settled probe runs.
+    const contents = target.webContents;
+    let domReadyDump = Promise.resolve();
+    const onDomReady = () => {
+      domReadyDump = capture.dumpBootstrap(contents, "dom-ready");
+    };
+    contents.once("dom-ready", onDomReady);
+    try {
+      return await loadPage(target, page, url, capture);
+    } finally {
+      contents.removeListener("dom-ready", onDomReady);
+      await domReadyDump;
+      await capture.stop();
+    }
+  }
 
+  async function loadPage(target, page, url, capture) {
     try {
       await target.webContents.loadURL(url);
     } catch (err) {
@@ -108,6 +131,7 @@ function createYahooExtractor({ onAuthRequired = () => {} } = {}) {
     if (isYahooLoginUrl(safeUrl(target))) throw raiseAuthRequired(page);
 
     await maybeDumpHtml(target, page);
+    await capture.dumpBootstrap(target.webContents, "settled");
 
     let result;
     try {
