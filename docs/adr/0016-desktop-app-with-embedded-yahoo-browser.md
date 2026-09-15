@@ -98,10 +98,15 @@ offline: the **matchup**, **players** and **injuries** pages each produce a
 payload that passes `validateScrapePayload`. The signed-in matchup header still
 carries each side's real team name (not a bare "My Team" label), so the two
 sides and the Dead-Parrots flag resolve from `#matchup-header`. The
-**standings** page is unchanged from preseason — `/f1/<id>/standings` still
-renders the matchup grid, with no W-L-T table — so that page returns an honest
-failure ("re-pull once week 1 games are final") until the first week's games are
-final; it needs a re-dump and a second tuning pass then. The `players` page's
+**standings** page is read from the league home's standings tab
+(`/f1/<id>?lhst=stand`, `pages.py::page_path`), not `/f1/<id>/standings`: that
+URL is Yahoo's "Live Standings" head-to-head grid and never carries a W-L-T
+table, preseason or not (#52). The home page still serves a classic
+`#standingstable` — Rank / Team / W-L-T / Div / PF / PA / Streak / Waiver /
+Moves, split by division heading rows — and the mapper is covered by a jsdom
+test over a trimmed week-1 capture (`desktop/test/fixtures/`); a live 4-of-4
+pull against that URL is still to be confirmed. "Div" there is the in-division record; the division name comes
+from the heading row, and the table carries no manager name. The `players` page's
 Pre-Season/Actual stat view has only a season-total "Fan Pts" column and no
 per-week projection, so `projected_points` is left null there rather than carry a
 season total into a per-week field; a per-week value would need a

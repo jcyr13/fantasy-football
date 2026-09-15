@@ -2,9 +2,14 @@
 
 const test = require("node:test");
 const assert = require("node:assert/strict");
+const fs = require("node:fs");
+const path = require("node:path");
+
+const { JSDOM } = require("jsdom");
 
 const {
   PAGES,
+  DEAD_PARROTS_TEAM_NAME,
   ScrapeError,
   isYahooLoginUrl,
   validateScrapePayload,
@@ -107,4 +112,65 @@ test("buildExtractionScript returns an IIFE string naming the page, and rejects 
     assert.doesNotThrow(() => new Function(`return ${src};`));
   }
   assert.throws(() => buildExtractionScript("teams"), RangeError);
+});
+
+// Run the injected script against saved markup in jsdom — the same string the
+// Yahoo webview evaluates, so the mapper is exercised exactly as shipped.
+function runScript(page, html, url = "https://football.fantasysports.yahoo.com/f1/735806") {
+  const dom = new JSDOM(html, { url, runScripts: "outside-only" });
+  // jsdom has no layout, so no innerText; the script only reads it as text.
+  Object.defineProperty(dom.window.HTMLElement.prototype, "innerText", {
+    get() {
+      return this.textContent;
+    },
+  });
+  // executeJavaScript hands back a structured clone; a JSON round trip does the
+  // same here and drops jsdom's other-realm prototypes.
+  return JSON.parse(JSON.stringify(dom.window.eval(buildExtractionScript(page))));
+}
+
+const fixture = (name) => fs.readFileSync(path.join(__dirname, "fixtures", name), "utf8");
+
+test("standings: the league-home #standingstable maps to every team's line", () => {
+  const result = runScript("standings", fixture("standings-league-home.html"));
+  assert.equal(result.ok, true, result.reason);
+  const { rows } = validateScrapePayload("standings", result.payload);
+
+  assert.equal(rows.length, 12);
+  assert.deepEqual(rows[0], {
+    rank: "2",
+    team_name: "KG 55",
+    manager: null,
+    division: "High Tide",
+    wins: 1,
+    losses: 0,
+    ties: 0,
+    points_for: "151.22",
+    points_against: "118.36",
+    waiver_priority: "11",
+  });
+  const dp = rows.find((r) => r.team_name.includes(DEAD_PARROTS_TEAM_NAME));
+  assert.equal(dp.team_name, "The Dead Parrots");
+  assert.equal(dp.division, "Low Tide");
+  assert.equal(dp.rank, "9");
+  assert.deepEqual([dp.wins, dp.losses, dp.ties], [0, 1, 0]);
+  assert.equal(dp.waiver_priority, "4");
+});
+
+test("standings: the Live Standings matchup view says it is the wrong page", () => {
+  const liveStandings = `<!DOCTYPE html><html><body>
+    <a href="/f1/735806/9">The Dead Parrots</a><a href="/f1/735806/4">Wild Blue</a>
+    <table><thead><tr><th>Stats</th><th>Player</th><th>Proj</th><th>Fan Pts</th><th>Pos</th>
+    <th>Fan Pts</th><th>Proj</th><th>Player</th><th>Stats</th></tr></thead>
+    <tbody><tr><td></td><td>J. Dart</td><td>21.46</td><td>30.60</td><td>QB</td>
+    <td>33.10</td><td>19.18</td><td>T. Lawrence</td><td></td></tr></tbody></table>
+    </body></html>`;
+  const result = runScript(
+    "standings",
+    liveStandings,
+    "https://football.fantasysports.yahoo.com/f1/735806/standings",
+  );
+  assert.equal(result.ok, false);
+  assert.match(result.reason, /Live Standings/);
+  assert.match(result.reason, /league home/);
 });

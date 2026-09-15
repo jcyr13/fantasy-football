@@ -319,56 +319,57 @@ const SCRIPT_BODY = String.raw`
 
   // ----- standings ---------------------------------------------------------
   function fromDomStandings() {
-    // The real standings grid: a "Team" column beside a W-L-T / record / PCT one.
-    const t = tables().find(
-      (tbl) => hasHeader(tbl, /team/) && hasHeader(tbl, /w-l-t|record|wins|pct/),
-    );
+    // The league home page's #standingstable (verified against the week-1
+    // signed-in markup, issue #52): Rank | Team | W-L-T | Div | PF | PA |
+    // Streak | Waiver | Moves, its body split by one-cell division heading rows
+    // ("High Tide", "Low Tide"). "Div" is the in-division RECORD, not the
+    // division's name — the name comes from the heading row above each team.
+    const TEAM = /^team$/;
+    const RECORD = /w-l-t|record/;
+    const t = tables().find((tbl) => hasHeader(tbl, TEAM) && hasHeader(tbl, RECORD));
     if (t) {
-      const teamI = pick(t, /team/) ?? 0;
-      const rows = t.rows
-        .map((row, idx) => {
-          const teamTd = row.el.children[teamI];
-          const link = teamTd && teamTd.querySelector("a");
-          const team_name = clean(link ? link.textContent : row.cells[teamI]);
-          const record = colByRegex(row, t, /w-l-t|record/);
-          let wins = 0, losses = 0, ties = 0;
-          const rm = record && record.match(/(\d+)\s*[-–]\s*(\d+)(?:\s*[-–]\s*(\d+))?/);
-          if (rm) { wins = +rm[1]; losses = +rm[2]; ties = +(rm[3] || 0); }
-          const rankCell = colByRegex(row, t, /rank|^#$|^pos$/);
-          return {
-            rank: rankCell != null ? rankCell : idx + 1,
-            team_name,
-            manager:
-              // "owner" here is a Yahoo standings-header token, not the repo's
-              // vocabulary (CONTEXT.md: the person is a "Manager").
-              clean(teamTd && teamTd.getAttribute("title")) ||
-              colByRegex(row, t, /manager|owner/),
-            division: colByRegex(row, t, /division|div/),
-            wins, losses, ties,
-            points_for: colByRegex(row, t, /^pf$|points for|pts for/),
-            points_against: colByRegex(row, t, /^pa$|points against|pts against/),
-            waiver_priority: colByRegex(row, t, /waiver/),
-          };
-        })
-        .filter((r) => r.team_name);
+      const teamI = pick(t, TEAM);
+      const recordI = pick(t, RECORD);
+      const isDivisionHeading = (row) => row.cells.length === 1;
+      const rows = [];
+      let division = null;
+      for (const row of t.rows) {
+        if (isDivisionHeading(row)) {
+          division = row.cells[0];
+          continue;
+        }
+        const teamTd = row.el.children[teamI];
+        // The team cell holds two links to the team page: the logo (no text)
+        // then the name — take the first that has any text.
+        const link = teamTd && Array.from(teamTd.querySelectorAll("a")).find((a) => clean(a.textContent));
+        const team_name = clean(link ? link.textContent : row.cells[teamI]);
+        if (!team_name) continue;
+        const [, wins = 0, losses = 0, ties = 0] = ((cellAt(row, recordI) || "")
+          .match(/(\d+)\s*[-–]\s*(\d+)(?:\s*[-–]\s*(\d+))?/) || [])
+          .map((n) => (n == null ? undefined : +n));
+        rows.push({
+          rank: colByRegex(row, t, /^rank$|^#$/) ?? String(rows.length + 1),
+          team_name,
+          // Not on this table; normalize treats manager as optional.
+          manager: null,
+          division,
+          wins, losses, ties,
+          points_for: colByRegex(row, t, /^pf$|points for/),
+          points_against: colByRegex(row, t, /^pa$|points against/),
+          waiver_priority: colByRegex(row, t, /waiver/),
+        });
+      }
       return rows.length ? { rows } : null;
     }
 
-    // Preseason: /f1/<id>/standings still renders the matchup grid (S / BN
-    // player stat tables) — no standings until week 1 games are final. Say so
-    // honestly rather than fabricate zero-filled rows.
-    const teamIds = new Set(
-      Array.from(document.querySelectorAll('a[href*="/f1/"]'))
-        .map((a) => (a.getAttribute("href") || "").match(/\/f1\/\d+\/(\d+)(?:$|[/?#])/))
-        .filter(Boolean)
-        .map((m) => m[1]),
-    );
-    if (teamIds.size >= 2) {
+    // /f1/<id>/standings is Yahoo's "Live Standings" — a head-to-head matchup
+    // grid with no W-L-T table. The backend asks for the league home instead
+    // (pages.py::page_path); landing here means that URL has drifted.
+    if (/\/f1\/\d+\/standings/.test(location.pathname)) {
       return {
         __reason:
-          "the Live Standings page is still the preseason matchup grid (" +
-          teamIds.size +
-          " team links, no W-L-T table) — re-pull once week 1 games are final",
+          "this is the Live Standings matchup view, not the standings table — " +
+          "the standings are read from the league home page (/f1/<id>?lhst=stand)",
       };
     }
     return null;

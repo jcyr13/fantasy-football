@@ -16,7 +16,8 @@
   },
   "devDependencies": {
     "electron": "^44.0.0",
-    "electron-builder": "^25.1.8"
+    "electron-builder": "^25.1.8",
+    "jsdom": "^30.0.1"
   },
   "author": "John Cyr <johncyrboston@gmail.com>"
 }
