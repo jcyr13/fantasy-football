@@ -90,6 +90,30 @@ because the live bootstrap shape is unknown; adding a `state → payload` mapper
 and tightening the script's header-text-driven selectors against the real pages,
 is follow-up work once a signed-in session is available.)*
 
+*(As built in #43, first signed-in session: `football.fantasysports.yahoo.com`
+no longer serves a "classic" table UI to a real login — the four pages render
+from a React SPA with atomic (hashed-utility) CSS. `desktop/lib/yahoo-extract.js`
+`SCRIPT_BODY` was retuned against saved DOM dumps of that markup and verified
+offline: the **matchup**, **players** and **injuries** pages each produce a
+payload that passes `validateScrapePayload`. The signed-in matchup header still
+carries each side's real team name (not a bare "My Team" label), so the two
+sides and the Dead-Parrots flag resolve from `#matchup-header`. The
+**standings** page is read from the league home's standings tab
+(`/f1/<id>?lhst=stand`, `pages.py::page_path`), not `/f1/<id>/standings`: that
+URL is Yahoo's "Live Standings" head-to-head grid and never carries a W-L-T
+table, preseason or not (#52). The home page still serves a classic
+`#standingstable` — Rank / Team / W-L-T / Div / PF / PA / Streak / Waiver /
+Moves, split by division heading rows — and the mapper is covered by a jsdom
+test over a trimmed week-1 capture (`desktop/test/fixtures/`). A live 4-of-4
+pull from the installed app on 2026-09-15 confirmed it end to end: all four
+pages map and the `/weekly*` tabs load. "Div" there is the in-division record; the division name comes
+from the heading row, and the table carries no manager name. The `players` page's
+Pre-Season/Actual stat view has only a season-total "Fan Pts" column and no
+per-week projection, so `projected_points` is left null there rather than carry a
+season total into a per-week field; a per-week value would need a
+`backend/.../pages.py` URL change. `__PRELOADED_STATE__` mapping is still
+unbuilt — the DOM remains the only mapped path.)*
+
 ### 4. Catch-up scheduling on launch
 
 The APScheduler crons (nflverse refresh, consensus re-score, news poll, Sunday

@@ -33,7 +33,13 @@ def page_path(page: YahooPage, *, week: int | None = None) -> str:
 
     ``week`` is only meaningful for the matchup page; Yahoo ignores it elsewhere,
     so it is appended only there.
+
+    Standings is read from the league home page's standings tab, not
+    ``/f1/<id>/standings`` — that is Yahoo's "Live Standings" head-to-head grid,
+    which carries no W-L-T table (issue #52).
     """
+    if page is YahooPage.STANDINGS:
+        return f"/f1/{LEAGUE_ID}?lhst=stand"
     path = f"/f1/{LEAGUE_ID}/{page.value}"
     if week is not None and page is YahooPage.MATCHUP:
         path = f"{path}?week={week}"

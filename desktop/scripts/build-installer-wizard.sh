@@ -240,6 +240,32 @@ else
   fail=1
 fi
 
+# electron-builder (Stage 5) unpacks a winCodeSign bundle that contains symlinks.
+# Creating a symlink on Windows needs Developer Mode on, or an elevated shell.
+# With neither, Stage 5 dies four download-retries deep on:
+#   ERROR: Cannot create symbolic link : A required privilege is not held by the client
+symlink_ok=0
+devmode="$(reg query "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\AppModelUnlock" \
+  //v AllowDevelopmentWithoutDevLicense 2>/dev/null | grep -oiE '0x[0-9a-f]+' || true)"
+if [[ "$devmode" == "0x1" ]]; then
+  note "Windows Developer Mode is on ✓  (electron-builder can unpack winCodeSign)"
+  symlink_ok=1
+elif net session >/dev/null 2>&1; then
+  note "shell is elevated ✓  (electron-builder can unpack winCodeSign)"
+  symlink_ok=1
+fi
+if (( ! symlink_ok )); then
+  warn "Developer Mode is off and this shell is not elevated."
+  warn "electron-builder (Stage 5) will fail unpacking winCodeSign:"
+  note "  ERROR: Cannot create symbolic link : A required privilege is not held by the client"
+  say "Fix ONE of these, then re-run:"
+  step "Settings → Privacy & security → For developers → Developer Mode = On  (preferred, no elevation)"
+  step "or reopen Git Bash 'as administrator' and run this wizard there"
+  note "It only has to succeed once — winCodeSign is then cached under"
+  note "%LOCALAPPDATA%\\electron-builder\\Cache and later builds reuse it."
+  fail=1
+fi
+
 if ! grep -q '"author"' desktop/package.json; then
   warn "desktop/package.json has no \"author\" field; electron-builder can refuse an NSIS build."
   if confirm "Add   \"author\": \"John Cyr <johncyrboston@gmail.com>\"   to desktop/package.json now?"; then
