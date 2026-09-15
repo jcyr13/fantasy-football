@@ -29,7 +29,8 @@ type PullState =
   | { kind: "error"; message: string }
   | { kind: "unavailable" };
 
-function DoneSummary({ result }: { result: YahooPullResponse }) {
+/** Which pages landed and which failed — shared with the import pull (#55). */
+export function DoneSummary({ result }: { result: YahooPullResponse }) {
   const failed = result.pages.filter((p) => p.status === "failed");
   const ok = result.pages.filter((p) => p.status === "ok");
   return (

@@ -2,6 +2,7 @@ import type { FreshnessResponse } from "../api";
 import { fetchFreshness } from "../api";
 import { ageLabel, shortStamp } from "../format";
 import { usePoll } from "../usePoll";
+import { ImportPull } from "./ImportPull";
 import { PullFromYahoo } from "./PullFromYahoo";
 
 // The always-visible per-source status strip: last successful pull (absolute
@@ -9,7 +10,8 @@ import { PullFromYahoo } from "./PullFromYahoo";
 // nflverse, consensus, news, and Yahoo — plus the Yahoo staleness reminder and
 // the manual waiver-priority flag when the backend reports them. The "Pull from
 // Yahoo" control (issue #46) rides at the end of the strip and stays visible
-// even when the freshness endpoint itself is unreachable.
+// even when the freshness endpoint itself is unreachable, with "Import pull…"
+// (issue #55) beside it for payloads captured outside the app.
 
 export function FreshnessHeader() {
   const state = usePoll(fetchFreshness, 60_000);
@@ -28,6 +30,7 @@ export function FreshnessHeader() {
         <Sources freshness={state.data} />
       )}
       <PullFromYahoo />
+      <ImportPull />
     </div>
   );
 }

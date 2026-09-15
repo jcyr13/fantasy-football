@@ -114,6 +114,16 @@ season total into a per-week field; a per-week value would need a
 `backend/.../pages.py` URL change. `__PRELOADED_STATE__` mapping is still
 unbuilt — the DOM remains the only mapped path.)*
 
+*(As built in #55: a second way in, the **import pull**, alongside the
+extractor. Page payloads captured outside the app, for example by a Claude in
+Chrome / Cowork session, are served by `StaticYahooSource` through the same
+`run_yahoo_pull`. They enter by `POST /api/yahoo/import`, by
+`python -m deadparrots.yahoo --import <dir>`, or by the dashboard's "Import
+pull…". The import needs no wired source, and its manifest records
+`yahoo-static`. `YahooRawStore.latest_payload_path` now skips a payload whose
+manifest marks that page `failed`, so a bad pull or import keeps the last good
+copy (docs/yahoo-import.md).)*
+
 ### 4. Catch-up scheduling on launch
 
 The APScheduler crons (nflverse refresh, consensus re-score, news poll, Sunday

@@ -92,11 +92,21 @@ class YahooRawStore:
         return sorted(p.name for p in self._root.iterdir() if p.is_dir())
 
     def latest_payload_path(self, page: YahooPage) -> Path | None:
+        """The newest archived payload for ``page`` that did not fail.
+
+        A payload the normalizer rejected stays on disk for diagnosis, but its
+        manifest marks it failed and it never displaces the last good copy — so
+        one bad pull or import cannot break the weekly view (issue #55).
+        """
         for pull_id in reversed(self.pull_ids()):
             path = self.payload_path(pull_id, page)
-            if path.exists():
+            if path.exists() and not self._page_failed(pull_id, page):
                 return path
         return None
+
+    def _page_failed(self, pull_id: str, page: YahooPage) -> bool:
+        manifest = self.load_manifest(pull_id) or {}
+        return manifest.get("pages", {}).get(page.value, {}).get("status") == "failed"
 
     def load_payload(self, pull_id: str, page: YahooPage) -> RawYahooPayload | None:
         """Reconstruct an archived payload for replay. Provenance fields that are

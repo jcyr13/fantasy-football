@@ -289,6 +289,29 @@ export async function triggerYahooPull(): Promise<YahooPullResponse> {
   return (await res.json()) as YahooPullResponse;
 }
 
+// --- Yahoo import pull (POST /api/yahoo/import) --------------------
+
+/** The Yahoo pages an import can carry, in pull order (issue #55). */
+export const YAHOO_PAGES = ["matchup", "players", "injuries", "standings"] as const;
+
+/** Run page payloads captured outside the app through the pull. `payloads`
+ * maps page names to a JSON document or its text; a payload the normalizer
+ * rejects comes back as a per-page failure, not a thrown error. No source has
+ * to be wired, so there is no 503 case to tell apart. */
+export async function importYahooPull(
+  payloads: Record<string, unknown>,
+): Promise<YahooPullResponse> {
+  const res = await fetch(`${API_BASE}/yahoo/import`, {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify(payloads),
+  });
+  if (!res.ok) {
+    throw new Error(`POST /yahoo/import failed: ${res.status}`);
+  }
+  return (await res.json()) as YahooPullResponse;
+}
+
 // --- Waiver / Free Agents (GET /api/free-agents) -------------------
 
 export interface FreeAgent {

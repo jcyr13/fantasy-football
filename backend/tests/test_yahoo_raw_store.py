@@ -38,6 +38,19 @@ def test_pull_ids_and_latest_payload_path_track_the_newest_pull(tmp_path, yahoo_
     assert store.latest_payload_path(YahooPage.MATCHUP) is None
 
 
+def test_latest_payload_path_skips_a_page_its_manifest_marks_failed(tmp_path, yahoo_payload):
+    # A payload that failed to normalize is archived for diagnosis, but must not
+    # displace the last good copy the weekly view reads (issue #55 review).
+    store = YahooRawStore(tmp_path / "data")
+    store.write("20260901T120000Z", yahoo_payload(YahooPage.STANDINGS))
+    store.write("20260922T130000Z", yahoo_payload(YahooPage.STANDINGS))
+    store.write_manifest(
+        "20260922T130000Z", {"pages": {"standings": {"status": "failed"}}}
+    )
+
+    assert store.latest_payload_path(YahooPage.STANDINGS).parent.name == "20260901T120000Z"
+
+
 def test_archived_payload_round_trips_through_load_payload(tmp_path, yahoo_payload):
     store = YahooRawStore(tmp_path / "data")
     original = yahoo_payload(YahooPage.PLAYERS)
