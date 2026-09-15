@@ -247,17 +247,54 @@ def _week_games_final(
         ).fetchone()
     except Exception:
         return False
-    if not row or row[0] is None:
+    if not row:
         return False
-    last_gameday = row[0]
-    if isinstance(last_gameday, datetime):
-        last_gameday = last_gameday.date()
-    elif not isinstance(last_gameday, date):
-        try:
-            last_gameday = date.fromisoformat(str(last_gameday)[:10])
-        except ValueError:
-            return False
-    return last_gameday < today
+    return _is_final(_as_date(row[0]), today)
+
+
+def first_unfinished_week(
+    duckdb_conn: duckdb.DuckDBPyConnection | None, today: date
+) -> int | None:
+    """The week being played or set: the earliest regular-season week of the
+    latest cached season whose games are not all final, by the same :func:`_is_final` rule as
+    ``_week_games_final``. ``None`` when the nflverse
+    schedule is not cached or every week is over — callers then fall back to
+    the source's own default week (#53)."""
+    if duckdb_conn is None:
+        return None
+    try:
+        rows = duckdb_conn.execute(
+            'SELECT week, max(gameday) FROM "nflverse_schedules" '
+            "WHERE game_type = 'REG' "
+            'AND season = (SELECT max(season) FROM "nflverse_schedules") '
+            "GROUP BY week ORDER BY week"
+        ).fetchall()
+    except Exception:
+        return None
+    for week, last_gameday in rows:
+        if not _is_final(_as_date(last_gameday), today):
+            return int(week)
+    return None
+
+
+def _is_final(last_gameday: date | None, today: date) -> bool:
+    """A week is over once its last kickoff date is before ``today``; an unknown
+    date never is."""
+    return last_gameday is not None and last_gameday < today
+
+
+def _as_date(value: object) -> date | None:
+    """A schedule ``gameday`` (date, datetime, or ISO string) as a ``date``."""
+    if value is None:
+        return None
+    if isinstance(value, datetime):
+        return value.date()
+    if isinstance(value, date):
+        return value
+    try:
+        return date.fromisoformat(str(value)[:10])
+    except ValueError:
+        return None
 
 
 def run_catchup_on_launch(
