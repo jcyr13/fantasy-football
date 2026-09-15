@@ -1,16 +1,19 @@
 from __future__ import annotations
 
+import json
 from datetime import datetime
+from typing import Any
 from zoneinfo import ZoneInfo
 
-from fastapi import APIRouter, HTTPException, Query, Request
+from fastapi import APIRouter, Body, HTTPException, Query, Request
 from pydantic import BaseModel
 
 from deadparrots.catchup import first_unfinished_week
+from deadparrots.yahoo.importer import import_yahoo_pages
 from deadparrots.yahoo.pages import ALL_PAGES
 from deadparrots.yahoo.raw import YahooRawStore
 from deadparrots.yahoo.reminders import due_reminder
-from deadparrots.yahoo.runner import run_yahoo_pull
+from deadparrots.yahoo.runner import YahooPullRun, run_yahoo_pull
 from deadparrots.yahoo.status import last_successful_pull_at, recent_yahoo_pull_statuses
 
 router = APIRouter(tags=["yahoo"], prefix="/yahoo")
@@ -69,6 +72,10 @@ def trigger_pull(
         conn=request.app.state.sqlite,
         week=week,
     )
+    return _pull_response(run)
+
+
+def _pull_response(run: YahooPullRun) -> YahooPullResponse:
     return YahooPullResponse(
         pull_id=run.pull_id,
         ok=run.ok,
@@ -78,6 +85,34 @@ def trigger_pull(
         ],
         waiver_priority_needs_manual_entry=run.waiver_priority_needs_manual_entry,
     )
+
+
+@router.post("/import", response_model=YahooPullResponse)
+def import_pull(
+    request: Request, payloads: dict[str, Any] = Body(...)
+) -> YahooPullResponse:
+    """Run page payloads captured outside the app through the pull (#55).
+
+    The body maps page names (``matchup``, ``players``, ``injuries``,
+    ``standings``) to a payload — a JSON document, or its text as a string. A
+    payload the normalizer rejects is a per-page failure, not an error response.
+    """
+    known = {page.value: page for page in ALL_PAGES}
+    unknown = sorted(set(payloads) - set(known))
+    if unknown or not payloads:
+        raise HTTPException(
+            status_code=422,
+            detail=f"Expected one to four of {', '.join(known)}; got {unknown or 'none'}.",
+        )
+    bodies = {
+        known[name]: value if isinstance(value, str) else json.dumps(value)
+        for name, value in payloads.items()
+    }
+    settings = request.app.state.settings
+    run = import_yahoo_pages(
+        bodies, raw_store=YahooRawStore(settings.data_dir), conn=request.app.state.sqlite
+    )
+    return _pull_response(run)
 
 
 @router.get("/status", response_model=YahooFreshnessResponse)

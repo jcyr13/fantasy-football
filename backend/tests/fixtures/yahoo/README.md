@@ -18,3 +18,6 @@ unit-tested (same split as the 2025 scoring oracle — see
 
 These are hand-built representative captures. To refresh from a real signed-in
 pull, archive a live pull and copy its `data/yahoo/<pull_id>/*.json` here.
+
+These files are also the payload contract for the import pull (issue #55): pages
+captured outside the app must match these shapes. See `docs/yahoo-import.md`.

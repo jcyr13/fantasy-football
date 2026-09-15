@@ -138,6 +138,9 @@ The Sun–Tue weekly claim period. Also the flagged 24–48h after NFL roster cu
 **Assisted pull**:
 The way Yahoo data is retrieved in v1: John signs into Yahoo in the browser, then one click runs a browser-scrape (matchup, players, injuries, standings) against that live session. It ingests through a source interface designed so the official API can replace it later without changes downstream.
 
+**Import pull**:
+The fallback when the assisted pull breaks. Pages captured outside the app, such as a Claude in Chrome / Cowork session or hand-saved JSON, are loaded through "Import pull…", `POST /api/yahoo/import`, or `python -m deadparrots.yahoo --import <dir>`. They go through the same archive-and-normalize run as an assisted pull, with the manifest source `yahoo-static`. Any subset of the four pages can be imported. The recorded fixtures are the payload contract (docs/yahoo-import.md). The data still comes from John's signed-in session; there is no API.
+
 **News ticker**:
 The top-pinned horizontal scrolling strip of NFL news items from the last 48 hours that mention a Dead Parrots player, a current opponent's player, or a free-agent shortlist player. Sourced from free feeds, tagged by name match, labelled by bucket. Ephemeral — not part of a weekly snapshot.
 
