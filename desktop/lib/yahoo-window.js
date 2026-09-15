@@ -12,7 +12,7 @@ const {
   ScrapeError,
   YahooAuthRequiredError,
 } = require("./yahoo-extract");
-const { buildBootstrapProbeScript, startNetCapture } = require("./yahoo-net-capture");
+const { startNetCapture } = require("./yahoo-net-capture");
 
 // The embedded, persistently signed-in Yahoo browser (docs/adr/0016 §2, issue
 // #45 — Job 2). A hidden `BrowserWindow` on the named `persist:yahoo` session
@@ -100,14 +100,24 @@ function createYahooExtractor({ onAuthRequired = () => {} } = {}) {
       dir: process.env.DEADPARROTS_YAHOO_NET_DUMP_DIR,
       page,
     });
+    // Probe bootstrap state as soon as the DOM exists too: an SPA may delete
+    // `__PRELOADED_STATE__` once it hydrates, before the settled probe runs.
+    const contents = target.webContents;
+    let domReadyDump = Promise.resolve();
+    const onDomReady = () => {
+      domReadyDump = capture.dumpBootstrap(contents, "dom-ready");
+    };
+    contents.once("dom-ready", onDomReady);
     try {
-      return await loadAndExtract(target, page, url);
+      return await loadPage(target, page, url, capture);
     } finally {
+      contents.removeListener("dom-ready", onDomReady);
+      await domReadyDump;
       await capture.stop();
     }
   }
 
-  async function loadAndExtract(target, page, url) {
+  async function loadPage(target, page, url, capture) {
     try {
       await target.webContents.loadURL(url);
     } catch (err) {
@@ -121,7 +131,7 @@ function createYahooExtractor({ onAuthRequired = () => {} } = {}) {
     if (isYahooLoginUrl(safeUrl(target))) throw raiseAuthRequired(page);
 
     await maybeDumpHtml(target, page);
-    await maybeDumpBootstrap(target, page);
+    await capture.dumpBootstrap(target.webContents, "settled");
 
     let result;
     try {
@@ -179,21 +189,6 @@ async function maybeDumpHtml(target, page) {
     );
     fs.mkdirSync(dir, { recursive: true });
     fs.writeFileSync(path.join(dir, `${page}.html`), String(html), "utf8");
-  } catch {
-    /* diagnostic only — never fail a pull because the dump didn't write */
-  }
-}
-
-// Diagnostic only (issue #56): alongside the network capture, when
-// DEADPARROTS_YAHOO_NET_DUMP_DIR is set, write the page's state-like globals and
-// inline JSON/state scripts to <dir>/<page>/bootstrap.json.
-async function maybeDumpBootstrap(target, page) {
-  const dir = process.env.DEADPARROTS_YAHOO_NET_DUMP_DIR;
-  if (!dir) return;
-  try {
-    const probe = await target.webContents.executeJavaScript(buildBootstrapProbeScript(), true);
-    fs.mkdirSync(path.join(dir, page), { recursive: true });
-    fs.writeFileSync(path.join(dir, page, "bootstrap.json"), JSON.stringify(probe, null, 2), "utf8");
   } catch {
     /* diagnostic only — never fail a pull because the dump didn't write */
   }

@@ -7,10 +7,12 @@ const path = require("node:path");
 // DEADPARROTS_YAHOO_NET_DUMP_DIR is set, the Yahoo window attaches Chrome's
 // DevTools protocol through Electron's `webContents.debugger` while a page
 // loads and writes every JSON-ish response (URL, status, redacted request
-// headers, body) to `<dir>/<page>/NNN.json`. The point is evidence for whether
-// the pull can read the JSON Yahoo's own web app loads instead of the rendered
-// DOM (docs/research/yahoo-json-capture.md). Off by default, and nothing here
-// may fail a pull: every error degrades to "captured less".
+// headers, request body, response body) to `<dir>/<page>/NNN.json`, plus the
+// page's bootstrap state to `<dir>/<page>/bootstrap.<moment>.json`. The point
+// is evidence for whether the pull can read the JSON Yahoo's own web app loads
+// instead of the rendered DOM (docs/research/yahoo-json-capture.md). Off by
+// default, and nothing here may fail a pull: every error degrades to "captured
+// less".
 //
 // The debugger is injected, so this module is unit-tested against a fake; the
 // Electron wiring stays in `./yahoo-window.js`.
@@ -20,11 +22,18 @@ const CDP_VERSION = "1.3";
 // Resource types whose bodies are data rather than page furniture.
 const DATA_RESOURCE_TYPES = new Set(["XHR", "Fetch"]);
 
-// Header values that identify the session. The names stay, so the findings can
-// still say "this request sends a crumb".
+// Header and query names whose values identify the session. The names stay, so
+// the findings can still say "this request sends a crumb".
 const SENSITIVE_HEADER = /cookie|authorization|crumb|token/i;
+const SENSITIVE_QUERY = /crumb|token|auth|sig/i;
+const REDACTED = "<redacted>";
 
-const CAPTURE_FILE = /^\d{3,}\.json$/;
+// What a previous run of the same page left behind.
+const CAPTURE_FILE = /^(\d{3,}|bootstrap\.[\w-]+)\.json$/;
+
+// Long enough for a big players payload, short enough that one body Chrome
+// never hands back can't stall the pull.
+const DEFAULT_BODY_TIMEOUT_MS = 10_000;
 
 function isCandidateResponse(response, resourceType) {
   const mimeType = (response && response.mimeType) || "";
@@ -34,20 +43,51 @@ function isCandidateResponse(response, resourceType) {
 function redactHeaders(headers) {
   const out = {};
   for (const [name, value] of Object.entries(headers || {})) {
-    out[name] = SENSITIVE_HEADER.test(name) ? "<redacted>" : value;
+    out[name] = SENSITIVE_HEADER.test(name) ? REDACTED : value;
   }
   return out;
 }
 
-const NO_CAPTURE = Object.freeze({ stop: async () => ({ written: 0, failed: 0 }) });
+function redactUrl(url) {
+  let parsed;
+  try {
+    parsed = new URL(url);
+  } catch {
+    return url;
+  }
+  let changed = false;
+  for (const name of [...parsed.searchParams.keys()]) {
+    if (SENSITIVE_QUERY.test(name)) {
+      parsed.searchParams.set(name, REDACTED);
+      changed = true;
+    }
+  }
+  return changed ? parsed.toString() : url;
+}
 
-// Start recording `page`'s responses into `<dir>/<page>/`. Resolves to a handle
-// whose `stop()` waits for in-flight bodies, detaches (if it attached) and
-// reports how many files it wrote and how many of those are error entries.
-async function startNetCapture({ debugger: dbg, dir, page }) {
+const NO_CAPTURE = Object.freeze({
+  stop: async () => ({ written: 0, failed: 0 }),
+  dumpBootstrap: async () => {},
+});
+
+// Start recording `page`'s responses into `<dir>/<page>/`. Resolves to a handle:
+// - `dumpBootstrap(webContents, moment)` writes the bootstrap probe's result;
+// - `stop()` waits for in-flight bodies, detaches (if it attached) and reports
+//   how many files it wrote and how many of those are error entries.
+async function startNetCapture({ debugger: dbg, dir, page, bodyTimeoutMs = DEFAULT_BODY_TIMEOUT_MS }) {
   if (!dir || !dbg) return NO_CAPTURE;
 
   const pageDir = path.join(dir, page);
+
+  async function dumpBootstrap(webContents, moment) {
+    try {
+      const probe = await webContents.executeJavaScript(buildBootstrapProbeScript());
+      writeJson(path.join(pageDir, `bootstrap.${moment}.json`), probe);
+    } catch {
+      /* diagnostic only */
+    }
+  }
+
   let attachedHere = false;
   try {
     clearPreviousCaptures(pageDir);
@@ -58,51 +98,97 @@ async function startNetCapture({ debugger: dbg, dir, page }) {
     await dbg.sendCommand("Network.enable");
   } catch {
     if (attachedHere) safeDetach(dbg);
-    return NO_CAPTURE;
+    // No network capture, but the bootstrap probe doesn't need the debugger.
+    return { ...NO_CAPTURE, dumpBootstrap };
   }
 
   const requests = new Map(); // requestId -> what we know about it so far
+  const candidates = new Set(); // requestIds whose response is worth a file
   const pending = new Set();
   let sequence = 0;
+  let written = 0;
   let failed = 0;
   let stopped = false;
 
+  const known = (requestId) => requests.get(requestId) || {};
+
   function onMessage(_event, method, params) {
     if (stopped || !params) return;
+    const id = params.requestId;
     if (method === "Network.requestWillBeSent") {
-      requests.set(params.requestId, {
-        method: params.request && params.request.method,
-        requestHeaders: redactHeaders(params.request && params.request.headers),
+      const request = params.request || {};
+      requests.set(id, {
+        ...known(id),
+        url: redactUrl(request.url),
+        method: request.method,
+        requestHeaders: redactHeaders(request.headers),
+        postData: request.postData,
+        hasPostData: Boolean(request.hasPostData || request.postData),
         resourceType: params.type,
       });
+    } else if (method === "Network.requestWillBeSentExtraInfo") {
+      // The headers as sent on the wire, where cookies show up. May arrive
+      // before or after requestWillBeSent.
+      requests.set(id, { ...known(id), wireHeaders: redactHeaders(params.headers) });
     } else if (method === "Network.responseReceived") {
       if (!isCandidateResponse(params.response, params.type)) {
-        requests.delete(params.requestId);
+        requests.delete(id);
+        candidates.delete(id);
         return;
       }
-      const known = requests.get(params.requestId) || {};
-      requests.set(params.requestId, {
-        ...known,
-        url: params.response.url,
+      const request = known(id);
+      requests.set(id, {
+        ...request,
+        url: redactUrl(params.response.url),
         status: params.response.status,
         mimeType: params.response.mimeType,
-        resourceType: params.type || known.resourceType,
-        candidate: true,
+        resourceType: params.type || request.resourceType,
       });
+      candidates.add(id);
     } else if (method === "Network.loadingFinished") {
-      const request = requests.get(params.requestId);
-      requests.delete(params.requestId);
-      if (!request || !request.candidate) return;
-      const number = ++sequence;
-      const job = record(params.requestId, request, number).finally(() => pending.delete(job));
-      pending.add(job);
+      const request = requests.get(id);
+      const isCandidate = candidates.has(id);
+      forget(id);
+      if (request && isCandidate) track(record(id, request, ++sequence));
+    } else if (method === "Network.loadingFailed") {
+      const request = requests.get(id);
+      forget(id);
+      if (!request || !DATA_RESOURCE_TYPES.has(params.type || request.resourceType)) return;
+      failed += 1;
+      const entry = { ...withoutPostFlag(request), error: params.errorText || "loading failed" };
+      if (params.canceled) entry.canceled = true;
+      track(write(entry, ++sequence));
     }
   }
 
+  function forget(id) {
+    requests.delete(id);
+    candidates.delete(id);
+  }
+
+  function track(promise) {
+    const job = promise.finally(() => pending.delete(job));
+    pending.add(job);
+  }
+
   async function record(requestId, request, number) {
-    const { candidate, ...entry } = request;
+    const entry = withoutPostFlag(request);
+    if (request.hasPostData && entry.postData === undefined) {
+      try {
+        const answer = await withTimeout(
+          dbg.sendCommand("Network.getRequestPostData", { requestId }),
+          bodyTimeoutMs,
+        );
+        entry.postData = answer.postData;
+      } catch (err) {
+        entry.postDataError = errorText(err);
+      }
+    }
     try {
-      const { body, base64Encoded } = await dbg.sendCommand("Network.getResponseBody", { requestId });
+      const { body, base64Encoded } = await withTimeout(
+        dbg.sendCommand("Network.getResponseBody", { requestId }),
+        bodyTimeoutMs,
+      );
       const text = base64Encoded ? Buffer.from(body, "base64").toString("utf8") : body;
       try {
         entry.body = JSON.parse(text);
@@ -112,30 +198,57 @@ async function startNetCapture({ debugger: dbg, dir, page }) {
         entry.bodyIsJson = false;
       }
     } catch (err) {
-      entry.error = String((err && err.message) || err);
+      entry.error = errorText(err);
       failed += 1;
     }
-    try {
-      fs.mkdirSync(pageDir, { recursive: true });
-      const name = `${String(number).padStart(3, "0")}.json`;
-      fs.writeFileSync(path.join(pageDir, name), JSON.stringify(entry, null, 2), "utf8");
-    } catch {
-      /* diagnostic only */
-    }
+    await write(entry, number);
+  }
+
+  async function write(entry, number) {
+    const name = `${String(number).padStart(3, "0")}.json`;
+    if (writeJson(path.join(pageDir, name), entry)) written += 1;
   }
 
   dbg.on("message", onMessage);
 
   async function stop() {
-    if (stopped) return { written: sequence, failed };
-    stopped = true;
-    dbg.removeListener("message", onMessage);
-    await Promise.allSettled([...pending]);
-    if (attachedHere) safeDetach(dbg);
-    return { written: sequence, failed };
+    if (!stopped) {
+      stopped = true;
+      dbg.removeListener("message", onMessage);
+      await Promise.allSettled([...pending]);
+      if (attachedHere) safeDetach(dbg);
+    }
+    return { written, failed };
   }
 
-  return { stop };
+  return { stop, dumpBootstrap };
+}
+
+function withoutPostFlag({ hasPostData, ...entry }) {
+  return entry;
+}
+
+function withTimeout(promise, ms) {
+  let timer;
+  const timeout = new Promise((_, reject) => {
+    timer = setTimeout(() => reject(new Error(`timed out after ${ms}ms`)), ms);
+  });
+  return Promise.race([promise, timeout]).finally(() => clearTimeout(timer));
+}
+
+function errorText(err) {
+  return String((err && err.message) || err);
+}
+
+// Best-effort pretty JSON write; true if the file landed.
+function writeJson(file, value) {
+  try {
+    fs.mkdirSync(path.dirname(file), { recursive: true });
+    fs.writeFileSync(file, JSON.stringify(value, null, 2), "utf8");
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 function clearPreviousCaptures(pageDir) {
@@ -196,5 +309,6 @@ module.exports = {
   startNetCapture,
   isCandidateResponse,
   redactHeaders,
+  redactUrl,
   buildBootstrapProbeScript,
 };

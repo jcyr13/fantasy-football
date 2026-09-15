@@ -30,23 +30,34 @@ The capture is off by default and never fails a pull.
 
    | Path | What it holds |
    | --- | --- |
-   | `<page>/001.json`, `002.json`, … | One file per JSON-ish response the page loaded, in completion order: `url`, `status`, `method`, `resourceType`, `mimeType`, `requestHeaders`, `body` (parsed when it is JSON; `bodyIsJson` says which), or `error` if Chrome couldn't return the body |
-   | `<page>/bootstrap.json` | The page's state-like globals (`__PRELOADED_STATE__`, `YAHOO`, `__…__`, …) and inline JSON or state `<script>` blocks |
+   | `<page>/001.json`, `002.json`, … | One file per JSON-ish response the page loaded, in completion order: `url`, `status`, `method`, `resourceType`, `mimeType`, `requestHeaders` (what the page asked for), `wireHeaders` (what Chrome actually sent, which is where `Cookie` shows up), `postData` for POST/GraphQL requests, and `body` (parsed when it is JSON; `bodyIsJson` says which). An XHR/fetch that failed, or whose body Chrome couldn't return within 10 s, has `error` instead |
+   | `<page>/bootstrap.dom-ready.json` | The page's state-like globals (`__PRELOADED_STATE__`, `YAHOO`, `__…__`, …) and inline JSON or state `<script>` blocks, probed as soon as the DOM exists |
+   | `<page>/bootstrap.settled.json` | The same probe after the page settles. If a global is in `dom-ready` but gone here, the app deleted it on hydration: still readable, but only early |
    | `html/<page>.html` | The rendered DOM, if you set `DEADPARROTS_YAHOO_DUMP_DIR` |
 
    "JSON-ish" means a response with a JSON MIME type, or any XHR/fetch
    response, so JSONP and text-typed JSON aren't missed. Images, CSS, fonts and
    the HTML document are skipped.
 
-**Don't commit the dump.** Request header values that name a cookie,
-authorization, crumb or token are replaced with `<redacted>`, but response
-bodies are written as Yahoo sent them and include your league's data. Before
-pasting anything into this doc, trim it to the URL pattern and field names.
+**Don't commit the dump.** Header values that name a cookie, authorization,
+crumb or token, and URL query values that name a crumb, token, auth or sig, are
+replaced with `<redacted>` (in URLs it appears encoded as `%3Credacted%3E`).
+Request and response bodies are written as Yahoo sent them and include your
+league's data, and a crumb could still hide in a body or under an unexpected
+name. Before pasting anything into this doc, trim it to the URL pattern and
+field names.
 
 Only what loads during the pull is captured. That means the page load, the
 settle delay, and the extraction. Requests that fire only after scrolling,
 paging or clicking a tab won't be there. Note which fields seem to need one of
-those.
+those. For **players paging** in particular, the pull never clicks "next", so
+check it by hand: open the players page in a normal browser, open DevTools ›
+Network (filter Fetch/XHR), page forward, and note the request that fires.
+
+**"Needs beyond cookies" is a guess until replayed.** The capture shows what
+was sent, not what was required. To say a request works with cookies alone,
+replay it (for example "Copy as fetch" in DevTools, with any crumb header or
+query value removed) and confirm it still returns the data.
 
 ## Findings
 
@@ -59,7 +70,8 @@ Fill in one section per page. The target shapes are the fixtures in
   (735806), week and team are named in it.
 - **Needs beyond cookies:** _TBD_. Note any crumb or token, and whether the
   data is only loaded after an interaction.
-- **Bootstrap state:** _TBD_. Is the data in `bootstrap.json`?
+- **Bootstrap state:** _TBD_. Is the data in `bootstrap.dom-ready.json` or
+  `bootstrap.settled.json`, or both?
 
 | Fixture field | Present? | Where (JSON path) |
 | --- | --- | --- |
@@ -137,10 +149,17 @@ supersedes ADR-0016's rejection of intercepting Yahoo's responses).
   against a fake debugger in `desktop/test/yahoo-net-capture.test.js`:
   - it attaches Chrome DevTools Protocol `Network` through
     `webContents.debugger`;
-  - it records `responseReceived` and fetches bodies with `getResponseBody` on
-    `loadingFinished`;
-  - it also builds the bootstrap probe script.
+  - it merges `requestWillBeSent`, `requestWillBeSentExtraInfo` and
+    `responseReceived`, then on `loadingFinished` fetches the body with
+    `getResponseBody` (and a missing POST body with `getRequestPostData`),
+    each with a 10 s timeout;
+  - it records failed XHR/fetch requests from `loadingFailed`;
+  - it runs the bootstrap probe and writes `bootstrap.<moment>.json`.
 - `desktop/lib/yahoo-window.js` starts a capture before each page's
-  `loadURL` and stops it after extraction, even when the page fails.
+  `loadURL`, probes bootstrap state on `dom-ready` and again after settle, and
+  stops the capture after extraction, even when the page fails.
   - If the debugger can't attach (for example because DevTools is already open
-    on that window), the capture silently does nothing.
+    on that window), there is no network capture, but the bootstrap probes
+    still run.
+  - The Electron wiring has only been exercised against the fake; the first
+    real capture run is also its first live test.

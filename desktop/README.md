@@ -147,7 +147,7 @@ run and the clean-Windows-box check (issue #47 AC 3) are manual.
 | ----------------------- | --------------------------------------------------------- |
 | `DEADPARROTS_UV_BIN`    | Full path to the `uv` executable if it is not on `PATH` (dev only — ignored by the packaged app).  |
 | `DEADPARROTS_YAHOO_DUMP_DIR` | Diagnostic: write each Yahoo page's rendered HTML to `<dir>/<page>.html` during a pull. Off when unset. |
-| `DEADPARROTS_YAHOO_NET_DUMP_DIR` | Diagnostic (#56): record each Yahoo page's JSON network responses to `<dir>/<page>/NNN.json` and its bootstrap state to `<dir>/<page>/bootstrap.json`. Off when unset; never fails a pull. See [`../docs/research/yahoo-json-capture.md`](../docs/research/yahoo-json-capture.md). |
+| `DEADPARROTS_YAHOO_NET_DUMP_DIR` | Diagnostic (#56): record each Yahoo page's JSON network responses to `<dir>/<page>/NNN.json` and its bootstrap state to `<dir>/<page>/bootstrap.<moment>.json` (`dom-ready`, `settled`). Off when unset; never fails a pull. See [`../docs/research/yahoo-json-capture.md`](../docs/research/yahoo-json-capture.md). |
 
 ## Tests
 
