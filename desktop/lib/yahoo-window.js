@@ -12,6 +12,7 @@ const {
   ScrapeError,
   YahooAuthRequiredError,
 } = require("./yahoo-extract");
+const { buildBootstrapProbeScript, startNetCapture } = require("./yahoo-net-capture");
 
 // The embedded, persistently signed-in Yahoo browser (docs/adr/0016 §2, issue
 // #45 — Job 2). A hidden `BrowserWindow` on the named `persist:yahoo` session
@@ -94,7 +95,19 @@ function createYahooExtractor({ onAuthRequired = () => {} } = {}) {
   // `url`, let it settle, and read the payload out of the page.
   async function extract(page, url) {
     const target = ensureWindow();
+    const capture = await startNetCapture({
+      debugger: target.webContents.debugger,
+      dir: process.env.DEADPARROTS_YAHOO_NET_DUMP_DIR,
+      page,
+    });
+    try {
+      return await loadAndExtract(target, page, url);
+    } finally {
+      await capture.stop();
+    }
+  }
 
+  async function loadAndExtract(target, page, url) {
     try {
       await target.webContents.loadURL(url);
     } catch (err) {
@@ -108,6 +121,7 @@ function createYahooExtractor({ onAuthRequired = () => {} } = {}) {
     if (isYahooLoginUrl(safeUrl(target))) throw raiseAuthRequired(page);
 
     await maybeDumpHtml(target, page);
+    await maybeDumpBootstrap(target, page);
 
     let result;
     try {
@@ -165,6 +179,21 @@ async function maybeDumpHtml(target, page) {
     );
     fs.mkdirSync(dir, { recursive: true });
     fs.writeFileSync(path.join(dir, `${page}.html`), String(html), "utf8");
+  } catch {
+    /* diagnostic only — never fail a pull because the dump didn't write */
+  }
+}
+
+// Diagnostic only (issue #56): alongside the network capture, when
+// DEADPARROTS_YAHOO_NET_DUMP_DIR is set, write the page's state-like globals and
+// inline JSON/state scripts to <dir>/<page>/bootstrap.json.
+async function maybeDumpBootstrap(target, page) {
+  const dir = process.env.DEADPARROTS_YAHOO_NET_DUMP_DIR;
+  if (!dir) return;
+  try {
+    const probe = await target.webContents.executeJavaScript(buildBootstrapProbeScript(), true);
+    fs.mkdirSync(path.join(dir, page), { recursive: true });
+    fs.writeFileSync(path.join(dir, page, "bootstrap.json"), JSON.stringify(probe, null, 2), "utf8");
   } catch {
     /* diagnostic only — never fail a pull because the dump didn't write */
   }

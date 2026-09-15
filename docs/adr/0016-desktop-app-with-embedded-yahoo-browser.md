@@ -233,6 +233,9 @@ the owner runs the sidecar by hand.
 - **Intercepting Yahoo's XHR responses** instead of reading the DOM / embedded
   blob. Cleaner JSON, but couples the pull to Yahoo's private endpoints and
   drifts from the recorded fixture shapes the normalizers are tested against.
+  *(Reopened by #56 now that the official API is ruled out: the
+  `DEADPARROTS_YAHOO_NET_DUMP_DIR` diagnostic records those responses so the
+  trade-off can be judged on evidence — `docs/research/yahoo-json-capture.md`.)*
 - **Keeping the VPS and adding a headless-browser scrape there.** Rejected by
   the owner: the phone access it bought is not worth the moving parts (a public
   edge, an Access policy, a tailnet, a second scheduler story) for a tool one
