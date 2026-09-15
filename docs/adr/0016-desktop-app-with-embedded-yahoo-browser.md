@@ -104,8 +104,9 @@ URL is Yahoo's "Live Standings" head-to-head grid and never carries a W-L-T
 table, preseason or not (#52). The home page still serves a classic
 `#standingstable` — Rank / Team / W-L-T / Div / PF / PA / Streak / Waiver /
 Moves, split by division heading rows — and the mapper is covered by a jsdom
-test over a trimmed week-1 capture (`desktop/test/fixtures/`); a live 4-of-4
-pull against that URL is still to be confirmed. "Div" there is the in-division record; the division name comes
+test over a trimmed week-1 capture (`desktop/test/fixtures/`). A live 4-of-4
+pull from the installed app on 2026-09-15 confirmed it end to end: all four
+pages map and the `/weekly*` tabs load. "Div" there is the in-division record; the division name comes
 from the heading row, and the table carries no manager name. The `players` page's
 Pre-Season/Actual stat view has only a season-total "Fan Pts" column and no
 per-week projection, so `projected_points` is left null there rather than carry a
