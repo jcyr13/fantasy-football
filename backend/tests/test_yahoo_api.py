@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 from collections.abc import Iterator
+from datetime import date, timedelta
+from pathlib import Path
 
 import pytest
 from fastapi.testclient import TestClient
@@ -8,6 +10,7 @@ from fastapi.testclient import TestClient
 from deadparrots.app import create_app
 from deadparrots.config import Settings
 from deadparrots.yahoo.pages import YahooPage
+from deadparrots.yahoo.raw import YahooRawStore
 
 
 @pytest.fixture
@@ -40,6 +43,60 @@ def test_post_pull_runs_the_assisted_pull_and_reports_every_page(pull_client):
     assert {p["page"] for p in body["pages"]} == {"matchup", "players", "injuries", "standings"}
     assert all(p["status"] == "ok" for p in body["pages"])
     assert body["waiver_priority_needs_manual_entry"] is False
+
+
+def _cache_schedule(test_client: TestClient, rows: list[tuple[int, int, str]]) -> None:
+    """Stand in for a cached nflverse schedule on the server's DuckDB."""
+    conn = test_client.app.state.duckdb
+    conn.execute(
+        "CREATE TABLE nflverse_schedules "
+        "(season INTEGER, week INTEGER, gameday VARCHAR, game_type VARCHAR)"
+    )
+    conn.executemany(
+        "INSERT INTO nflverse_schedules VALUES (?, ?, ?, 'REG')", rows
+    )
+
+
+def _latest_manifest_week(data_dir: Path) -> int | None:
+    return YahooRawStore(data_dir).latest_manifest()["week"]
+
+
+def test_post_pull_targets_the_current_week_from_the_cached_schedule(
+    pull_client, fake_yahoo_source, data_dir
+):
+    today = date.today()
+    _cache_schedule(
+        pull_client,
+        [
+            (2026, 1, (today - timedelta(days=1)).isoformat()),  # week 1 final
+            (2026, 2, (today + timedelta(days=3)).isoformat()),
+        ],
+    )
+
+    assert pull_client.post("/api/yahoo/pull").status_code == 200
+
+    assert set(fake_yahoo_source.weeks) == {2}
+    assert _latest_manifest_week(data_dir) == 2
+
+
+def test_post_pull_without_a_cached_schedule_uses_yahoos_default_week(
+    pull_client, fake_yahoo_source, data_dir
+):
+    assert pull_client.post("/api/yahoo/pull").json()["ok"] is True
+
+    assert set(fake_yahoo_source.weeks) == {None}
+    assert _latest_manifest_week(data_dir) is None
+
+
+def test_post_pull_week_query_overrides_the_computed_week(
+    pull_client, fake_yahoo_source, data_dir
+):
+    _cache_schedule(pull_client, [(2026, 2, (date.today() + timedelta(days=3)).isoformat())])
+
+    assert pull_client.post("/api/yahoo/pull?week=5").status_code == 200
+
+    assert set(fake_yahoo_source.weeks) == {5}
+    assert _latest_manifest_week(data_dir) == 5
 
 
 def test_post_pull_is_503_when_no_source_is_configured(client):

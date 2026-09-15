@@ -1,10 +1,12 @@
 from __future__ import annotations
 
 from datetime import datetime
+from zoneinfo import ZoneInfo
 
-from fastapi import APIRouter, HTTPException, Request
+from fastapi import APIRouter, HTTPException, Query, Request
 from pydantic import BaseModel
 
+from deadparrots.catchup import first_unfinished_week
 from deadparrots.yahoo.pages import ALL_PAGES
 from deadparrots.yahoo.raw import YahooRawStore
 from deadparrots.yahoo.reminders import due_reminder
@@ -42,9 +44,14 @@ class YahooFreshnessResponse(BaseModel):
 
 
 @router.post("/pull", response_model=YahooPullResponse)
-def trigger_pull(request: Request) -> YahooPullResponse:
+def trigger_pull(
+    request: Request, week: int | None = Query(default=None, ge=1)
+) -> YahooPullResponse:
     """Run the assisted pull of all four Yahoo pages against the signed-in
     session behind the configured source.
+
+    The matchup is requested for ``week`` when given, otherwise for the current
+    week off the cached nflverse schedule, otherwise Yahoo's own default (#53).
     """
     source = getattr(request.app.state, "yahoo_source", None)
     if source is None:
@@ -53,10 +60,14 @@ def trigger_pull(request: Request) -> YahooPullResponse:
             detail="No Yahoo assisted-pull source is configured for this server.",
         )
     settings = request.app.state.settings
+    if week is None:
+        today = datetime.now(ZoneInfo(settings.snapshot_cron_timezone)).date()
+        week = first_unfinished_week(request.app.state.duckdb, today)
     run = run_yahoo_pull(
         source=source,
         raw_store=YahooRawStore(settings.data_dir),
         conn=request.app.state.sqlite,
+        week=week,
     )
     return YahooPullResponse(
         pull_id=run.pull_id,

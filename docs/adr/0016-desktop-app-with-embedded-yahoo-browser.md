@@ -139,6 +139,12 @@ off overnight. Two mechanisms cover the gap:
   present the snapshot catch-up defers to a later launch (the nflverse refresh
   is itself part of the same sweep). A schedule-independent "week is over"
   signal is a follow-up. `DEADPARROTS_CATCHUP_ON_LAUNCH` turns the sweep off.
+  *(As built in #53: the assisted pull reuses that "games final" rule. `POST /api/yahoo/pull`
+  requests the matchup for `catchup.first_unfinished_week` — the earliest week of the
+  latest cached season whose games are not all final — so a Tuesday pull gets
+  the week being set, not the one just played. `?week=N` overrides it; with no
+  cached schedule it falls back to Yahoo's default week, and the pull manifest
+  records the week used, `null` for the default.)*
 
 ### 5. Packaging
 

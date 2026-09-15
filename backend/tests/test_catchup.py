@@ -20,6 +20,7 @@ from deadparrots.catchup import (
     SnapshotCatchup,
     _week_games_final,
     due_catchup_actions,
+    first_unfinished_week,
     resolve_snapshot_catchup,
     run_catchup_on_launch,
 )
@@ -267,16 +268,20 @@ class _FakeSources:
         return self
 
 
-def _schedules_conn(rows: list[tuple[int, int, str]]) -> duckdb.DuckDBPyConnection:
+def _schedules_conn(
+    rows: list[tuple[int, int, str]], *, game_type: str = "REG"
+) -> duckdb.DuckDBPyConnection:
     """An in-memory DuckDB with an ``nflverse_schedules`` relation carrying the
-    ``season`` / ``week`` / ``gameday`` columns ``_week_games_final`` reads."""
+    ``season`` / ``week`` / ``gameday`` / ``game_type`` columns the catch-up
+    helpers read."""
     conn = duckdb.connect(":memory:")
     conn.execute(
         "CREATE TABLE nflverse_schedules "
-        "(season INTEGER, week INTEGER, gameday VARCHAR)"
+        "(season INTEGER, week INTEGER, gameday VARCHAR, game_type VARCHAR)"
     )
     conn.executemany(
-        "INSERT INTO nflverse_schedules VALUES (?, ?, ?)", rows
+        "INSERT INTO nflverse_schedules VALUES (?, ?, ?, ?)",
+        [(*row, game_type) for row in rows],
     )
     return conn
 
@@ -298,6 +303,48 @@ def test_week_games_final_false_when_the_schedule_is_not_cached():
     empty = duckdb.connect(":memory:")
     assert _week_games_final(empty, 2026, 3, date(2026, 9, 23)) is False
     assert _week_games_final(None, 2026, 3, date(2026, 9, 23)) is False
+
+
+# --- first_unfinished_week (#53) -----------------------------------------------------
+
+
+def test_first_unfinished_week_is_the_earliest_week_whose_games_are_not_all_final():
+    conn = _schedules_conn(
+        [
+            (2026, 1, "2026-09-10"),
+            (2026, 1, "2026-09-14"),  # week 1's Monday night
+            (2026, 2, "2026-09-17"),
+            (2026, 2, "2026-09-21"),
+            (2026, 3, "2026-09-28"),
+        ]
+    )
+    # Tuesday after week 1: week 1 is over, week 2 is the one being set
+    assert first_unfinished_week(conn, date(2026, 9, 15)) == 2
+    # on week 1's Monday night the week is still live
+    assert first_unfinished_week(conn, date(2026, 9, 14)) == 1
+
+
+def test_first_unfinished_week_reads_the_latest_cached_season():
+    conn = _schedules_conn(
+        [(2025, 1, "2025-09-07"), (2025, 18, "2026-01-04"), (2026, 1, "2026-09-14")]
+    )
+    assert first_unfinished_week(conn, date(2026, 9, 1)) == 1
+
+
+def test_first_unfinished_week_ignores_postseason_weeks():
+    conn = _schedules_conn([(2026, 18, "2027-01-03")])
+    conn.execute(
+        "INSERT INTO nflverse_schedules VALUES (2026, 19, '2027-01-10', 'WC')"
+    )
+    # the fantasy season ends with the regular season; no playoff week is targeted
+    assert first_unfinished_week(conn, date(2027, 1, 5)) is None
+
+
+def test_first_unfinished_week_is_none_without_a_schedule_or_once_the_season_is_over():
+    assert first_unfinished_week(None, date(2026, 9, 15)) is None
+    assert first_unfinished_week(duckdb.connect(":memory:"), date(2026, 9, 15)) is None
+    over = _schedules_conn([(2026, 1, "2026-09-14")])
+    assert first_unfinished_week(over, date(2026, 9, 15)) is None
 
 
 def test_resolve_snapshot_catchup_reports_week_snapshot_and_finality(

@@ -166,9 +166,11 @@ class FakeYahooSource:
         self.fail_for = fail_for or set()
         self.payload_names = payload_names or {}
         self.fetched: list[YahooPage] = []
+        self.weeks: list[int | None] = []
 
     def fetch(self, page: YahooPage, *, week: int | None = None) -> RawYahooPayload:
         self.fetched.append(page)
+        self.weeks.append(week)
         if page in self.fail_for:
             raise RuntimeError(f"simulated Yahoo scrape failure for {page.value}")
         return load_yahoo_payload(page, self.payload_names.get(page))
